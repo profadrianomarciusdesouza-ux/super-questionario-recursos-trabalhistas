@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<title>Direito Civil: Pessoa Jurídica - Prof. Adriano Március de Souza</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=DM+Mono&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+--azul: #1a3a6e; --azul2: #2563eb; --azul3: #3b82f6; --ouro: #c9a84c; --ouro2: #f0c96a;
+--bg: #0d1b2a; --bg2: #112240; --card: rgba(255,255,255,0.05); --card2: rgba(255,255,255,0.09);
+--txt: #e8edf5; --txt2: #9db4cc; --verde: #22c55e; --verd2: #16a34a; --verm: #ef4444; --verm2: #dc2626; --amarelo: #fbbf24;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--txt); height: 100vh; overflow: hidden; cursor: none; }
+#cursor { width: 14px; height: 14px; border: 2px solid var(--ouro); border-radius: 50%; position: fixed; top: 0; left: 0; pointer-events: none; z-index: 9999; transition: transform .1s ease; mix-blend-mode: difference; }
+#cursor.big { transform: scale(3); opacity: .5; }
+#progress-bar { position: fixed; top: 0; left: 0; height: 3px; background: linear-gradient(90deg, var(--ouro), var(--azul3)); transition: width .4s ease; z-index: 100; width: 0%; }
+.slide { display: none; position: absolute; inset: 0; flex-direction: column; justify-content: center; align-items: center; padding: 60px 80px; animation: slideIn .45s cubic-bezier(.22,1,.36,1); }
+.slide.active { display: flex; }
+@keyframes slideIn { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: translateY(0); } }
+.slide.capa { background: linear-gradient(145deg, #0a1628 0%, #112240 50%, #0d1b2a 100%); }
+.slide.teoria { background: var(--bg); }
+.slide.pratica { background: linear-gradient(145deg, #0a1a0e, #0d1b2a); }
+.slide.alerta { background: linear-gradient(145deg, #1a0e0a, #0d1b2a); }
+.capa-inner { display: flex; flex-direction: column; align-items: center; gap: 18px; position: relative; z-index: 1; }
+.badge { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 4px; color: var(--ouro); text-transform: uppercase; border: 1px solid rgba(201,168,76,.4); padding: 6px 18px; border-radius: 40px; }
+.capa-title { font-family: 'Playfair Display', serif; font-size: clamp(36px, 5vw, 60px); font-weight: 900; line-height: 1.1; text-align: center; background: linear-gradient(135deg, #ffffff 30%, var(--ouro2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.capa-sub { font-size: 16px; color: var(--txt2); letter-spacing: 5px; }
+.author { font-size: 15px; color: var(--ouro); font-weight: 600; margin-top: 4px; }
+.slide-header { position: relative; z-index: 1; text-align: center; margin-bottom: 24px; width: 100%; }
+.slide-num { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 3px; color: var(--ouro); text-transform: uppercase; margin-bottom: 8px; }
+.slide-title { font-family: 'Playfair Display', serif; font-size: clamp(22px, 3vw, 34px); font-weight: 700; color: #fff; line-height: 1.2; }
+.title-line { width: 60px; height: 3px; background: linear-gradient(90deg, var(--ouro), var(--azul3)); margin: 10px auto 0; border-radius: 2px; }
+.card { background: var(--card); border: 1px solid rgba(255,255,255,.1); border-radius: 16px; padding: 24px 28px; position: relative; z-index: 1; backdrop-filter: blur(8px); width: 100%; max-width: 820px; }
+.card-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; width: 100%; max-width: 820px; position: relative; z-index: 1; }
+.card h3 { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 2px; color: var(--ouro); text-transform: uppercase; margin-bottom: 10px; }
+.card ul { list-style: none; }
+.card ul li { padding: 6px 0 6px 28px; position: relative; border-bottom: 1px solid rgba(255,255,255,.05); font-size: 14px; color: var(--txt); }
+.card ul li::before { content: '>'; position: absolute; left: 8px; color: var(--ouro); font-size: 18px; }
+.destaque { background: rgba(201,168,76,.15); border-left: 3px solid var(--ouro); padding: 2px 8px; color: var(--ouro2); font-weight: 600; }
+.questao-box { background: rgba(37,99,235,.08); border: 1px solid rgba(37,99,235,.25); border-radius: 16px; padding: 22px 26px; width: 100%; max-width: 820px; position: relative; z-index: 1; }
+.q-enunciado { font-size: 15px; line-height: 1.65; color: var(--txt); margin-bottom: 14px; }
+.q-opcoes { display: flex; flex-direction: column; gap: 8px; }
+.q-opcao { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 10px 16px; cursor: pointer; font-size: 14px; color: var(--txt2); transition: all 0.2s ease; text-align: left; font-family: inherit; }
+.q-opcao:hover { background: rgba(255,255,255,0.1); border-color: var(--azul3); color: #fff; }
+.q-opcao.certa { background: rgba(34,197,94,0.15); border-color: var(--verde); color: var(--verde); }
+.q-opcao.errada { background: rgba(239,68,68,0.12); border-color: var(--verm); color: var(--verm); }
+.q-feedback { margin-top: 12px; padding: 12px 16px; border-radius: 10px; font-size: 14px; display: none; }
+.q-feedback.certa { background: rgba(34,197,94,0.12); color: #86efac; display: block; }
+.q-feedback.errada { background: rgba(239,68,68,0.10); color: #fca5a5; display: block; }
+.alerta-box { background: rgba(251,191,36,0.07); border: 1px solid rgba(251,191,36,0.3); border-left: 4px solid var(--amarelo); border-radius: 12px; padding: 18px 22px; width: 100%; max-width: 820px; margin-top: 15px; }
+.tabela { width: 100%; border-collapse: collapse; margin-top: 10px; color: var(--txt); }
+.tabela th { background: rgba(201,168,76,0.15); color: var(--ouro2); font-size: 11px; padding: 10px; text-align: left; text-transform: uppercase; border-bottom: 1px solid var(--ouro); }
+.tabela td { padding: 10px; font-size: 13px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+#nav { position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 12px; z-index: 200; background: rgba(13,27,42,0.8); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.1); border-radius: 50px; padding: 10px 20px; }
+.nav-btn { background: none; border: 1px solid rgba(255,255,255,0.2); color: var(--txt2); border-radius: 50%; width: 34px; height: 34px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; font-size: 18px; }
+.nav-btn:hover { background: var(--ouro); color: #000; border-color: var(--ouro); }
+#slide-counter { font-family: 'DM Mono', monospace; font-size: 12px; color: var(--txt2); min-width: 80px; text-align: center; }
+</style>
+</head>
+<body>
+<div id="cursor"></div>
+<div id="progress-bar"></div>
+
+<div class="slide capa active">
+<div class="capa-inner">
+<div class="badge">Direito Civil Aula Acadêmica</div>
+<div class="capa-title">Pessoa Jurídica:<br>Estrutura e Desconsideração</div>
+<div class="capa-sub">Avaliação e fixação de conteúdo (40 Questões).</div>
+<div class="author">Prof. Adriano Március de Souza</div>
+</div>
+</div>
+
+<div class="slide pratica">
+<div class="slide-header">
+<div class="slide-num">Questão 01</div>
+<div class="slide-title">Teorias da PJ</div>
+<div class="title-line"></div>
+</div>
+<div class="questao-box">
+<div class="q-enunciado">Qual é a teoria adotada pelo Código Civil brasileiro para explicar a natureza jurídica da Pessoa Jurídica?</div>
+<div class="q-opcoes">
+<button class="q-opcao" onclick="responder(this,'errada','A ficção legal de Savigny não foi adotada, pois nega a realidade sociológica da PJ.')">A) Teoria da Ficção Legal de Savigny.</button>
+<button class="q-opcao" onclick="responder(this,'certa','Correto! O CC adota a Teoria da Realidade Técnica, reconhecendo a PJ como realidade sociológica.')">B) Teoria da Realidade Objetiva ou Técnica.</button>
+<button class="q-opcao" onclick="responder(this,'errada','Teoria de Hauriou tem foco em Direito Administrativo.')">C) Teoria da Instituição de Hauriou.</button>
+<button class="q-opcao" onclick="responder(this,'errada','Explica fundações, mas não todas as PJs.')">D) Teoria do Patrimônio de Afetação de Brinz.</button>
+</div>
+<div class="q-feedback"></div>
+</div>
+</div>
+
+<div class="slide pratica">
+<div class="slide-header">
+<div class="slide-num">Questão 02</div>
+<div class="slide-title">Início da Personalidade</div>
+<div class="title-line"></div>
+</div>
+<div class="questao-box">
+<div class="q-enunciado">Em que momento se dá o início da existência legal das Pessoas Jurídicas de direito privado?</div>
+<div class="q-opcoes">
+<button class="q-opcao" onclick="responder(this,'errada','O contrato assinado obriga os sócios, mas não cria a PJ perante terceiros.')">A) Com a assinatura do contrato social.</button>
+<button class="q-opcao" onclick="responder(this,'certa','Correto! O art. 45 do CC exige a inscrição do ato constitutivo no respectivo registro.')">B) Com a inscrição do ato constitutivo no respectivo registro.</button>
+<button class="q-opcao" onclick="responder(this,'errada','CNPJ é um cadastro fiscal, não o registro civil/mercantil.')">C) Com a obtenção do CNPJ na Receita Federal.</button>
+<button class="q-opcao" onclick="responder(this,'errada','Atuar de fato sem registro forma sociedade irregular.')">D) Com o início fático das atividades econômicas.</button>
+</div>
+<div class="q-feedback"></div>
+</div>
+</div>
+
+<div class="slide pratica">
+<div class="slide-header">
+<div class="slide-num">Questão 03</div>
+<div class="slide-title">Entes Despersonalizados</div>
+<div class="title-line"></div>
+</div>
+<div class="questao-box">
+<div class="q-enunciado">Qual dos entes abaixo NÃO é considerado Pessoa Jurídica pelo CC, sendo tratado como ente despersonalizado?</div>
+<div class="q-opcoes">
+<button class="q-opcao" onclick="responder(this,'errada','Partido político é PJ de direito privado.')">A) Partido Político.</button>
+<button class="q-opcao" onclick="responder(this,'errada','Fundação privada é PJ.')">B) Fundação Privada.</button>
+<button class="q-opcao" onclick="responder(this,'certa','Correto! Condomínio, massa falida e espólio possuem capacidade judiciária, mas não personalidade.')">C) Condomínio Edilício.</button>
+<button class="q-opcao" onclick="responder(this,'errada','Organização religiosa é expressamente PJ.')">D) Organização Religiosa.</button>
+</div>
+<div class="q-feedback"></div>
+</div>
+</div>
+
+<div class="slide pratica">
+<div class="slide-header">
+<div class="slide-num">Questão 04</div>
+<div class="slide-title">Estatais</div>
+<div class="title-line"></div>
+</div>
+<div class="questao-box">
+<div class="q-enunciado">Como Empresas Públicas e Sociedades de Economia Mista são classificadas quanto à sua natureza jurídica?</div>
+<div class="q-opcoes">
+<button class="q-opcao" onclick="responder(this,'errada','Embora da administração, exploram economia.')">A) Pessoas Jurídicas de Direito Público Interno.</button>
+<button class="q-opcao" onclick="responder(this,'certa','Exato! Regime de Direito Privado (Art. 173 CF).')">B) Pessoas Jurídicas de Direito Privado.</button>
+<button class="q-opcao" onclick="responder(this,'errada','Elas possuem personalidade própria.')">C) Entes despersonalizados da Administração.</button>
+<button class="q-opcao" onclick="responder(this,'errada','Direito Externo é para Estados estrangeiros.')">D) Pessoas Jurídicas de Direito Público Externo.</button>
+</div>
+<div class="q-feedback"></div>
+</div>
+</div>
+
+<div class="slide pratica">
+<div class="slide-header">
+<div class="slide-num">Questão 05</div>
+<div class="slide-title">Conceito de Associação</div>
+<div class="title-line"></div>
+</div>
+<div class="questao-box">
+<div class="q-enunciado">Como a doutrina e a lei definem o conceito estrutural das Associações (Art. 53 do CC)?</div>
+<div class="q-opcoes">
+<button class="q-opcao" onclick="responder(this,'certa','Correto! São uniões de pessoas voltadas a fins ideais, proibida a partilha de lucros.')">A) União de pessoas que se organizam para fins não econômicos.</button>
+<button class="q-opcao" onclick="responder(this,'errada','Isso caracteriza Fundações.')">B) Afetação de um patrimônio para fim social.</button>
+<button class="q-opcao" onclick="responder(this,'errada','Isso define a Sociedade (que visa lucro).')">C) União de pessoas para partilhar lucros.</button>
+<button class="q-opcao" onclick="responder(this,'errada','Isso descreve a Autarquia.')">D) Instituição criada por lei para função de Estado.</button>
+</div>
+<div class="q-feedback"></div>
+</div>
+</div>
+
+<div class="slide pratica">
+<div class="slide-header">
+<div class="slide-num">Questão 06</div>
+<div class="slide-title">Atividade Econômica</div>
+<div class="title-line"></div>
+</div>
+<div class="questao-box">
+<div class="q-enunciado">Uma Associação pode realizar atividades que gerem receita ou lucro (como vender ingressos)?</div>
+<div class="q-opcoes">
+<button class="q-opcao" onclick="responder(this,'errada','A vedação é sobre partilha, não arrecadação.')">A) Não, é terminantemente proibida de arrecadar recursos.</button>
+<button class="q-opcao" onclick="responder(this,'certa','Correto! Pode gerar receita, desde que revestida 100% no seu objetivo institucional.')">B) Sim, desde que a receita seja integralmente revertida para seus fins.</button>
+<button class="q-opcao" onclick="responder(this,'errada','Dividir lucro é crime de desvio de finalidade associativa.')">C) Sim, podendo dividir os lucros entre membros.</button>
+<button class="q-opcao" onclick="responder(this,'errada','Pode realizar comércio para se manter, não precisa viver só de doações.')">D) Não, devendo viver exclusivamente de doações.</button>
+</div>
+<div class="q-feedback"></div>
+</div>
+</div>
+
+<div class="slide pratica">
+<div class="slide-header">
+<div class="slide-num">Questão 07</div>
+<div class="slide-title">Direitos dos Associados</div>
+<div class="title-line"></div>
+</div>
+<div class="questao-box">
+<div class="q-enunciado">Sobre os direitos dos associados em uma Associação, assinale a afirmativa correta:</div>
+<div class="q-opcoes">
+<button class="q-opcao" onclick="responder(this,'errada','A lei permite criar categorias.')">A) Direitos são absolutos e idênticos para todos.</button>
+<button class="q-opcao" onclick="responder(this,'certa','Perfeito. A regra é igualdade, mas o estatuto pode criar classes especiais (Art. 55).')">B) Têm direitos iguais, mas o estatuto pode instituir categorias com vantagens.</button>
+<button class="q-opcao" onclick="responder(this,'errada','A regra é ser intransmissível (intuitu personae).')">C) É sempre transmissível aos herdeiros.</button>
+<button class="q-opcao" onclick="responder(this,'errada','A exclusão exige justa causa e direito de defesa.')">D) Expulsão sumária não necessita de defesa.</button>
+</div>
+<div class="q-feedback"></div>
+</div>
+</div>
+
+<div class="slide pratica">
+<div class="slide-header">
+<div class="slide-num">Questão 08</div>
+<div class="slide-title">Fundações Privadas</div>
+<div class="title-line"></div>
+</div>
+<div class="questao-box">
+<div class="q-enunciado">Qual é a base estrutural de uma Fundação Privada?</div>
+<div class="q-opcoes">
+<button class="q-opcao" onclick="responder(this,'errada','Isso caracteriza sociedade.')">A) Agrupamento de pessoas focadas em economia.</button>
+<button class="q-opcao" onclick="responder(this,'certa','Correto! É uma universalidade de bens afetados a uma finalidade específica.')">B) Um patrimônio afetado a uma finalidade.</button>
+<button class="q-opcao" onclick="responder(this,'errada','Fundação não possui associados ou donos.')">C) Vontade de associados em assembleia.</button>
+<button class="q-opcao" onclick="responder(this,'errada','Sociedades Anônimas têm capital em ações.')">D) Capital dividido em ações na bolsa.</button>
+</div>
+<div class="q-feedback"></div>
+</div>
+</div>
+
+<div class="slide pratica">
+<div class="slide-header">
+<div class="slide-num">Questão 09</div>
+<div class="slide-title">Fins Fundacionais</div>
+<div class="title-line"></div>
+</div>
+<div class="questao-box">
+<div class="q-enunciado">De acordo com o Art. 62 do CC, qual representa um fim VÁLIDO para criar uma Fundação?</div>
+<div class="q-opcoes">
+<button class="q-opcao" onclick="responder(this,'errada','Mineração para lucrar desvirtua a fundação.')">A) Exploração de atividade minerária e lucro.</button>
+<button class="q-opcao" onclick="responder(this,'certa','Perfeito! O art. 62 traz um rol que inclui o meio ambiente e assistência social.')">B) Defesa, preservação e conservação do meio ambiente.</button>
+<button class="q-opcao" onclick="responder(this,'errada','Blindagem patrimonial familiar não é fim altruístico.')">C) Administração de bens familiares para isenção.</button>
+<button class="q-opcao" onclick="responder(this,'errada','Isso tem caráter meramente financeiro.')">D) Fundo de investimentos mútuos.</button>
+</div>
+<div class="q-feedback"></div>
+</div>
+</div>
+
+<div class="slide pratica">
+<div class="slide-header">
+<div class="slide-num">Questão 10</div>
+<div class="slide-title">Velamento (Fiscalização)</div>
+<div class="title-line"></div>
+</div>
+<div class="questao-box">
+<div class="q-enunciado">A quem compete a fiscalização permanente (velamento) das Fundações Privadas?</div>
+<div class="q-opcoes">
+<button class="q-opcao" onclick="responder(this,'errada','TCU fiscaliza entes federais públicos.')">A) Ao Tribunal de Contas da União.</button>
+<button class="q-opcao" onclick="responder(this,'certa','Correto! O velamento das fundações privadas cabe ao Ministério Público Estadual.')">B) Ao Ministério Público do Estado onde situadas.</button>
+<button class="q-opcao" onclick="responder(this,'errada','RFB cuida apenas do aspecto fiscal.')">C) À Receita Federal do Brasil.</button>
+<button class="q-opcao" onclick="responder(this,'errada','O curador constitucional é o MP.')">D) Ao Conselho Nacional de Assistência Social.</button>
+</div>
+<div class="q-feedback"></div>
+</div>
+</div>
+
+<div class="slide pratica">
+<div class="slide-header">
+<div class="slide-num">Questão 11</div>
+<div class="slide-title">Alteração Estatutária</div>
+<div class="title-line"></div>
+</div>
+<div class="questao-box">
+<div class="q-enunciado">Para alterar o estatuto de uma Fundação, a lei exige requisitos, EXCETO:</div>
+<div class="q-opcoes">
+<button class="q-opcao" onclick="responder(this,'certa','Correto! Os herdeiros não mandam na fundação. Logo, a aprovação deles NÃO é exigida.')">A) Aprovação unânime dos herdeiros do instituidor.</button>
+<button class="q-opcao" onclick="responder(this,'errada','É requisito sim (Art. 67, I).')">B) Deliberação por, no mínimo, dois terços (2/3).</button>
+<button class="q-opcao" onclick="responder(this,'errada','É requisito sim (Art. 67, II).')">C) Não subverter o fim da fundação.</button>
+<button class="q-opcao" onclick="responder(this,'errada','É requisito sim (Art. 67, III).')">D) A aprovação do órgão do Ministério Público.</button>
+</div>
+<div class="q-feedback"></div>
+</div>
+</div>
+
+<div class="slide pratica">
+<div class="slide-header">
+<div class="slide-num">Questão 12</div>
+<div class="slide-title">Destino do Patrimônio</div>
+<div class="title-line"></div>
+</div>
+<div class="questao-box">
+<div class="q-enunciado">Se uma Associação for dissolvida, qual será o destino do patrimônio remanescente?</div>
+<div class="q-opcoes">
+<button class="q-opcao" onclick="responder(this,'errada','Partilhar configura lucro disfarçado.')">A) Será dividido entre os associados.</button>
+<button class="q-opcao" onclick="responder(this,'errada','Isso só ocorre subsidiariamente, na falta de outra opção.')">B) Revertido obrigatoriamente para a União Federal.</button>
+<button class="q-opcao" onclick="responder(this,'certa','Correto! O Art. 61 destina os bens para outra entidade sem fins lucrativos afim.')">C) Destinado a uma entidade de fins não econômicos afim.</button>
+<button class="q-opcao" onclick="responder(this,'errada','Enriquecimento ilícito da diretoria.')">D) Doado aos ex-dirigentes.</button>
+</div>
+<div class="q-feedback"></div>
+</div>
+</div>
+
+<div class="slide pratica">
+<div class="slide-header">
+<div class="slide-num">Questão 13</div>
+<div class="slide-title">Extinção de Fundação</div>
+<div class="title-line"></div>
+</div>
+<div class="questao-box">
+<div class="q-enunciado">Se a finalidade de uma Fundação se tornar ilícita ou impossível, o que ocorre?</div>
+<div class="q-opcoes">
+<button class="q-opcao" onclick="responder(this,'errada','A afetação patrimonial é irrevogável.')">A) Retornam aos herdeiros do instituidor.</button>
+<button class="q-opcao" onclick="responder(this,'certa','Correto! O Art. 69 prevê a extinção e incorporação do acervo a outra fundação congênere.')">B) O MP promove a extinção, incorporando-se o patrimônio a fundação semelhante.</button>
+<button class="q-opcao" onclick="responder(this,'errada','Entidade civil não vira estatal compulsoriamente.')">C) Convertida em sociedade empresária do Estado.</button>
+<button class="q-opcao" onclick="responder(this,'errada','Os administradores não têm direito aos bens.')">D) Administradores dividem o patrimônio.</button>
+</div>
+<div class="q-feedback"></div>
+</div>
+</div>
+
+<div class="slide pratica">
+<div class="slide-header">
+<div class="slide-num">Questão 14</div>
+<div class="slide-title">Autonomia Patrimonial</div>
+<div class="title-line"></div>
+</div>
+<div class="questao-box">
+<div class="q-enunciado">O que significa a 'autonomia patrimonial' da Pessoa Jurídica?</div>
+<div class="q-opcoes">
+<button class="q-opcao" onclick="responder(this,'errada','A empresa é acionada sem precisar pedir ao sócio.')">A) Não ser processada sem autorização dos sócios.</button>
+<button class="q-opcao" onclick="responder(this,'errada','A separação impede exatamente essa confusão inicial.')">B) Que os bens dos sócios respondem solidariamente sempre.</button>
+<button class="q-opcao" onclick="responder(this,'certa','Exato! O patrimônio e as dívidas da empresa são dela, não do sócio (separação).')">C) Que o patrimônio da PJ não se confunde com o patrimônio de seus sócios.</button>
+<button class="q-opcao" onclick="responder(this,'errada','Imunidade depende da finalidade constitucional.')">D) Imunidade a tributos estaduais.</button>
+</div>
+<div class="q-feedback"></div>
+</div>
+</div>
+
+<div class="slide pratica">
+<div class="slide-header">
+<div class="slide-num">Questão 15</div>
+<div class="slide-title">Direitos da Personalidade</div>
+<div class="title-line"></div>
+</div>
+<div class="questao-box">
+<div class="q-enunciado">Aplica-se às Pessoas Jurídicas a proteção aos Direitos da Personalidade?</div>
+<div class="q-opcoes">
+<button class="q-opcao" onclick="responder(this,'errada','A lei os estende à empresa naquilo que couber.')">A) Não, são exclusivos do ser humano.</button>
+<button class="q-opcao" onclick="responder(this,'certa','Correto! Art. 52 do CC. A PJ tem proteção à honra objetiva, nome e imagem.')">B) Sim, aplica-se às PJs, no que couber.</button>
+<button class="q-opcao" onclick="responder(this,'errada','Marcas são propriedade industrial, mas a proteção da personalidade vai além disso.')">C) Sim, mas restrito a marcas e patentes.</button>
+<button class="q-opcao" onclick="responder(this,'errada','Ela sofre dano na honra objetiva.')">D) Não, pois a PJ não tem capacidade de sofrer dano.</button>
+</div>
+<div class="q-feedback"></div>
+</div>
+</div>
+
+<div class="slide pratica">
+<div class="slide-header">
+<div class="slide-num">Questão 16</div>
+<div class="slide-title">Dano Moral (Súm. 227 STJ)</div>
+<div class="title-line"></div>
+</div>
+<div class="questao-box">
+<div class="q-enunciado">Segundo o STJ, a Pessoa Jurídica pode sofrer dano moral?</div>
+<div class="q-opcoes">
+<button class="q-opcao" onclick="responder(this,'errada','Independe dos administradores.')">A) Sim, desde que o sócio sofra abalo provado.</button>
+<button class="q-opcao" onclick="responder(this,'errada','A jurisprudência sumulada nega essa visão.')">B) Não, a compensação é exclusiva ao sofrimento humano.</button>
+<button class="q-opcao" onclick="responder(this,'certa','Correto! A Súmula 227 estipula que ofensa à honra objetiva (bom nome) gera o dano.')">C) Sim, quando há ofensa à sua honra objetiva.</button>
+<button class="q-opcao" onclick="responder(this,'errada','Empresárias também podem.')">D) Apenas PJs sem fins lucrativos.</button>
+</div>
+<div class="q-feedback"></div>
+</div>
+</div>
+
+<div class="slide pratica">
+<div class="slide-header">
+<div class="slide-num">Questão 17</div>
+<div class="slide-title">Conceito de Desconsideração</div>
+<div class="title-line"></div>
+</div>
+<div class="questao-box">
+<div class="q-enunciado">O que significa o instituto da 'Desconsideração da Personalidade Jurídica'?</div>
+<div class="q-opcoes">
+<button class="q-opcao" onclick="responder(this,'errada','Isso é despersonificação/extinção.')">A) A extinção definitiva da pessoa jurídica e baixa.</button>
+<button class="q-opcao" onclick="responder(this,'certa','Perfeito. Levanta-se o escudo temporariamente para penhorar bens dos sócios.')">B) O afastamento temporário da autonomia para atingir bens dos sócios em casos de fraude.</button>
+<button class="q-opcao" onclick="responder(this,'errada','Não há perdão, mas expansão de garantia.')">C) Perdão judicial de dívidas da empresa.</button>
+<button class="q-opcao" onclick="responder(this,'errada','Isso não existe juridicamente nesse contexto.')">D) Transformação de Associação em Sociedade.</button>
+</div>
+<div class="q-feedback"></div>
+</div>
+</div>
+
+<div class="slide pratica">
+<div class="slide-header">
+<div class="slide-num">Questão 18</div>
+<div class="slide-title">Teoria Maior (Art. 50 CC)</div>
+<div class="title-line"></div>
+</div>
+<div class="questao-box">
+<div class="q-enunciado">A 'Teoria Maior' (Art. 50 do Código Civil) exige quais requisitos para ser aplicada?</div>
+<div class="q-opcoes">
+<button class="q-opcao" onclick="responder(this,'errada','Insolvência atrai a Teoria Menor.')">A) Apenas a insolvência da pessoa jurídica.</button>
+<button class="q-opcao" onclick="responder(this,'errada','Encerramento irregular não basta para a lei civil.')">B) O encerramento irregular das atividades.</button>
+<button class="q-opcao" onclick="responder(this,'certa','Correto. A Teoria Maior é rígida e exige prova do Abuso (Desvio ou Confusão).')">C) O abuso da personalidade jurídica (desvio de fim ou confusão patrimonial).</button>
+<button class="q-opcao" onclick="responder(this,'errada','Atraso é inadimplemento, não fraude.')">D) O atraso superior a 90 dias no pagamento.</button>
+</div>
+<div class="q-feedback"></div>
+</div>
+</div>
+
+<div class="slide pratica">
+<div class="slide-header">
+<div class="slide-num">Questão 19</div>
+<div class="slide-title">Desvio de Finalidade</div>
+<div class="title-line"></div>
+</div>
+<div class="questao-box">
+<div class="q-enunciado">O que a lei define como 'Desvio de Finalidade' (Art. 50, §1º)?</div>
+<div class="q-opcoes">
+<button class="q-opcao" onclick="responder(this,'errada','Isso é irregularidade cadastral.')">A) Alterar o ramo sem comunicar a Junta.</button>
+<button class="q-opcao" onclick="responder(this,'certa','Correto. Atuação dolosa com propósito de lesar credores ou para atos ilícitos.')">B) Utilização da PJ com propósito de lesar credores e para atos ilícitos.</button>
+<button class="q-opcao" onclick="responder(this,'errada','Pagar contas é Confusão Patrimonial, não desvio.')">C) Pagar contas pessoais do sócio com dinheiro da PJ.</button>
+<button class="q-opcao" onclick="responder(this,'errada','Não pagar tributo é inadimplência.')">D) Não recolher tributos por 2 anos.</button>
+</div>
+<div class="q-feedback"></div>
+</div>
+</div>
+
+<div class="slide pratica">
+<div class="slide-header">
+<div class="slide-num">Questão 20</div>
+<div class="slide-title">Confusão Patrimonial</div>
+<div class="title-line"></div>
+</div>
+<div class="questao-box">
+<div class="q-enunciado">O que caracteriza a 'Confusão Patrimonial' para fins de desconsideração?</div>
+<div class="q-opcoes">
+<button class="q-opcao" onclick="responder(this,'errada','Venda de quotas entre parentes é lícita.')">A) Transferência de quotas entre parentes.</button>
+<button class="q-opcao" onclick="responder(this,'certa','Perfeito. A falta de separação fática de contas bancárias e bens entre sócio e empresa.')">B) Ausência de separação de fato entre os patrimônios (pagamento de contas recíprocas).</button>
+<button class="q-opcao" onclick="responder(this,'errada','Regime de casamento não causa confusão contábil.')">C) Casamento de sócios sob comunhão universal.</button>
+<button class="q-opcao" onclick="responder(this,'errada','A Sociedade Unipessoal (SLU) é lícita.')">D) Ter apenas um único sócio fundador.</button>
+</div>
+<div class="q-feedback"></div>
+</div>
+</div>
+<div class="slide pratica">
+<div class="slide-header">
+<div class="slide-num">Questão 21</div>
+<div class="slide-title">Alcance da Medida</div>
+<div class="title-line"></div>
+</div>
+<div class="questao-box">
+<div class="q-enunciado">Na desconsideração do CC (Teoria Maior), os bens de QUAIS sócios poderão ser atingidos?</div>
+<div class="q-opcoes">
+<button class="q-opcao" onclick="responder(this,'errada','A responsabilidade não recai sobre sócios inocentes.')">A) De todos os sócios, independentemente de culpa.</button>
+<button class="q-opcao" onclick="responder(this,'certa','Correto! O véu levanta apenas para quem praticou ou se beneficiou do abuso (Art. 50).')">B) Apenas dos sócios ou administradores beneficiados direta ou indiretamente pelo abuso.</button>
+<button class="q-opcao" onclick="responder(this,'errada','Não há presunção de culpa pelo fato de ser majoritário.')">C) Apenas do sócio majoritário, presumindo a culpa.</button>
+<button class="q-opcao" onclick="responder(this,'errada','Minoridade acionária não isenta nem presume culpa.')">D) Apenas dos minoritários que assinaram o contrato.</button>
+</div>
+<div class="q-feedback"></div>
+</div>
+</div>
+
+<div class="slide pratica">
+<div class="slide-header">
+<div class="slide-num">Questão 22</div>
+<div class="slide-title">Desconsideração Inversa</div>
+<div class="title-line"></div>
+</div>
+<div class="questao-box">
+<div class="q-enunciado">No Direito brasileiro, no que consiste a chamada 'Desconsideração Inversa'?</div>
+<div class="q-opcoes">
+<button class="q-opcao" onclick="responder(this,'errada','Credor não responde por dívida.')">A) Responsabilização dos credores pela dívida da empresa.</button>
+<button class="q-opcao" onclick="responder(this,'certa','Perfeito. Atinge-se a empresa para pagar a dívida do sócio que escondeu bens nela.')">B) Afastamento da autonomia para responsabilizar a PJ por obrigações do sócio que ocultou bens nela.</button>
+<button class="q-opcao" onclick="responder(this,'errada','Isso seria anulação retroativa.')">C) Anulação do registro da PJ retroativamente.</button>
+<button class="q-opcao" onclick="responder(this,'errada','Não tem relação com penhora de faturamento futuro.')">D) Pagamento das dívidas com lucros futuros presumidos.</button>
+</div>
+<div class="q-feedback"></div>
+</div>
+</div>
+
+<div class="slide pratica">
+<div class="slide-header">
+<div class="slide-num">Questão 23</div>
+<div class="slide-title">Teoria Menor</div>
+<div class="title-line"></div>
+</div>
+<div class="questao-box">
+<div class="q-enunciado">A 'Teoria Menor' não exige prova de fraude (basta a PJ não ter dinheiro). Onde ela é adotada?</div>
+<div class="q-opcoes">
+<button class="q-opcao" onclick="responder(this,'errada','O Direito Penal exige dolo explícito.')">A) No Direito Penal (crimes de estelionato).</button>
+<button class="q-opcao" onclick="responder(this,'errada','No Tributário o CTN exige infração à lei (apróx. Teoria Maior).')">B) No Direito Tributário.</button>
+<button class="q-opcao" onclick="responder(this,'certa','Exato! O CDC e a Lei Ambiental aplicam a Teoria Menor para proteger vulneráveis.')">C) No Direito do Consumidor (CDC) e Direito Ambiental.</button>
+<button class="q-opcao" onclick="responder(this,'errada','Aplica-se em direito interno (Brasil).')">D) Apenas no Direito Internacional Privado.</button>
+</div>
+<div class="q-feedback"></div>
+</div>
+</div>
+
+<div class="slide pratica">
+<div class="slide-header">
+<div class="slide-num">Questão 24</div>
+<div class="slide-title">Atuação Judicial</div>
+<div class="title-line"></div>
+</div>
+<div class="questao-box">
+<div class="q-enunciado">O Juiz Cível pode determinar a desconsideração 'de ofício' (sem ninguém pedir)?</div>
+<div class="q-opcoes">
+<button class="q-opcao" onclick="responder(this,'errada','O princípio da inércia proíbe ação de ofício aqui.')">A) Sim, caso perceba a fraude escancarada.</button>
+<button class="q-opcao" onclick="responder(this,'certa','Correto. O Art. 50 do CC exige expresso requerimento da parte ou do MP.')">B) Não, exige que haja expresso requerimento da parte ou do MP.</button>
+<button class="q-opcao" onclick="responder(this,'errada','Valor da causa não altera a obrigatoriedade do pedido.')">C) Sim, nas causas de Juizados Especiais.</button>
+<button class="q-opcao" onclick="responder(this,'errada','Junta Comercial não é parte no processo de execução.')">D) Não, depende de requerimento da Junta Comercial.</button>
+</div>
+<div class="q-feedback"></div>
+</div>
+</div>
+
+<div class="slide pratica">
+<div class="slide-header">
+<div class="slide-num">Questão 25</div>
+<div class="slide-title">O Procedimento no CPC</div>
+<div class="title-line"></div>
+</div>
+<div class="questao-box">
+<div class="q-enunciado">Como a legislação processual (CPC/15) trata o pedido de desconsideração?</div>
+<div class="q-opcoes">
+<button class="q-opcao" onclick="responder(this,'errada','Foi feito para evitar uma ação nova e longa.')">A) Como uma ação autônoma em outra Vara.</button>
+<button class="q-opcao" onclick="responder(this,'certa','Perfeito. É um Incidente processual que garante a citação do sócio para defesa (contraditório).')">B) Como Incidente de Intervenção de Terceiros (com direito ao contraditório).</button>
+<button class="q-opcao" onclick="responder(this,'errada','Tirar bens sem defesa viola a Constituição.')">C) Como um ato sem direito de defesa prévia.</button>
+<button class="q-opcao" onclick="responder(this,'errada','Trata-se de seara patrimonial cível, não penal.')">D) Como uma denúncia criminal sumária ao MP.</button>
+</div>
+<div class="q-feedback"></div>
+</div>
+</div>
+
+<div class="slide pratica">
+<div class="slide-header">
+<div class="slide-num">Questão 26</div>
+<div class="slide-title">Efeitos Formais</div>
+<div class="title-line"></div>
+</div>
+<div class="questao-box">
+<div class="q-enunciado">A desconsideração da personalidade jurídica resulta na extinção (baixa) da empresa?</div>
+<div class="q-opcoes">
+<button class="q-opcao" onclick="responder(this,'errada','A extinção é a despersonificação, não a desconsideração.')">A) Sim, a empresa perde seu CNPJ.</button>
+<button class="q-opcao" onclick="responder(this,'certa','Correto. A autonomia é afastada apenas para AQUELA dívida. A empresa continua a existir formalmente.')">B) Não. Ocorre o afastamento episódico; a PJ continua a existir formalmente.</button>
+<button class="q-opcao" onclick="responder(this,'errada','A empresa nunca foi extinta.')">C) Sim, mas os sócios podem reabri-la.</button>
+<button class="q-opcao" onclick="responder(this,'errada','Sanção em licitação é efeito administrativo, não civil.')">D) Não, mas fica proibida de licitar no governo.</button>
+</div>
+<div class="q-feedback"></div>
+</div>
+</div>
+
+<div class="slide pratica">
+<div class="slide-header">
+<div class="slide-num">Questão 27</div>
+<div class="slide-title">Grupo Econômico</div>
+<div class="title-line"></div>
+</div>
+<div class="questao-box">
+<div class="q-enunciado">A mera existência de um Grupo Econômico (empresas interligadas) autoriza automaticamente a desconsideração no Direito Civil?</div>
+<div class="q-opcoes">
+<button class="q-opcao" onclick="responder(this,'errada','Solidariedade absoluta por grupo é regra trabalhista, não cível.')">A) Sim, a responsabilidade solidária é absoluta.</button>
+<button class="q-opcao" onclick="responder(this,'certa','Correto. O § 4º do art. 50 exige a prova de abuso (desvio/confusão) mesmo entre empresas do grupo.')">B) Não, exige-se a prova de abuso (desvio ou confusão) entre as empresas.</button>
+<button class="q-opcao" onclick="responder(this,'errada','Mesmo endereço é mero indício, não basta.')">C) Sim, se tiverem o mesmo endereço físico.</button>
+<button class="q-opcao" onclick="responder(this,'errada','Não são imunes; sofrem se houver fraude.')">D) Não, grupos econômicos são imunes.</button>
+</div>
+<div class="q-feedback"></div>
+</div>
+</div>
+
+<div class="slide pratica">
+<div class="slide-header">
+<div class="slide-num">Questão 28</div>
+<div class="slide-title">Sociedades em Comum</div>
+<div class="title-line"></div>
+</div>
+<div class="questao-box">
+<div class="q-enunciado">O que são as 'Sociedades em Comum' ou irregulares no Direito Civil?</div>
+<div class="q-opcoes">
+<button class="q-opcao" onclick="responder(this,'errada','Atuar online não torna a empresa irregular.')">A) Empresas estrangeiras que atuam online.</button>
+<button class="q-opcao" onclick="responder(this,'errada','Esse é o conceito material de Associação.')">B) PJs sem fins lucrativos de assistência.</button>
+<button class="q-opcao" onclick="responder(this,'certa','Exato. A atividade econômica existe no mundo real, mas o contrato nunca foi levado a registro no Estado.')">C) Grupos que exercem comércio MAS nunca registraram o ato constitutivo.</button>
+<button class="q-opcao" onclick="responder(this,'errada','Cooperativas possuem registro e formalidades.')">D) Cooperativas de produtores rurais.</button>
+</div>
+<div class="q-feedback"></div>
+</div>
+</div>
+
+<div class="slide pratica">
+<div class="slide-header">
+<div class="slide-num">Questão 29</div>
+<div class="slide-title">A Responsabilidade na Irregularidade</div>
+<div class="title-line"></div>
+</div>
+<div class="questao-box">
+<div class="q-enunciado">Qual a consequência principal para os sócios que operam uma 'Sociedade em Comum'?</div>
+<div class="q-opcoes">
+<button class="q-opcao" onclick="responder(this,'errada','Não há benefício fiscal na irregularidade.')">A) Isenção total de impostos.</button>
+<button class="q-opcao" onclick="responder(this,'certa','Perfeito. Como a empresa não tem personalidade civil, os bens pessoais do dono garantem tudo (ilimitada).')">B) Respondem solidária e ilimitadamente pelas obrigações da empresa informal.</button>
+<button class="q-opcao" onclick="responder(this,'errada','Responsabilidade LTDA é benefício do registro.')">C) Estão protegidos pela responsabilidade limitada.</button>
+<button class="q-opcao" onclick="responder(this,'errada','O Estado não avaliza sonegadores/informais.')">D) O Estado assume suas dívidas trabalhistas.</button>
+</div>
+<div class="q-feedback"></div>
+</div>
+</div>
+
+<div class="slide pratica">
+<div class="slide-header">
+<div class="slide-num">Questão 30</div>
+<div class="slide-title">PJs Públicas</div>
+<div class="title-line"></div>
+</div>
+<div class="questao-box">
+<div class="q-enunciado">Qual destas é classificada como PJ de Direito Público Interno (Art. 41 do CC)?</div>
+<div class="q-opcoes">
+<button class="q-opcao" onclick="responder(this,'errada','A ONU é de Direito Público Externo.')">A) Organização das Nações Unidas (ONU).</button>
+<button class="q-opcao" onclick="responder(this,'certa','Correto. O bloco clássico da Administração Direta e Indireta (excluídas as estatais lucrativas).')">B) Autarquias e Municípios.</button>
+<button class="q-opcao" onclick="responder(this,'errada','Empresas Públicas seguem o Direito Privado.')">C) Empresas Públicas (Correios, Caixa).</button>
+<button class="q-opcao" onclick="responder(this,'errada','Sindicatos são associações privadas.')">D) Sindicatos Patronais.</button>
+</div>
+<div class="q-feedback"></div>
+</div>
+</div>
+
+<div class="slide pratica">
+<div class="slide-header">
+<div class="slide-num">Questão 31</div>
+<div class="slide-title">Fases da Extinção</div>
+<div class="title-line"></div>
+</div>
+<div class="questao-box">
+<div class="q-enunciado">A extinção regular da PJ requer fases (Art. 51). Qual a ordem correta?</div>
+<div class="q-opcoes">
+<button class="q-opcao" onclick="responder(this,'errada','Primeiro se decide fechar (Dissolução).')">A) Liquidação -> Dissolução -> Cancelamento.</button>
+<button class="q-opcao" onclick="responder(this,'errada','A baixa (cancelamento) é o último passo.')">B) Cancelamento -> Dissolução -> Liquidação.</button>
+<button class="q-opcao" onclick="responder(this,'certa','Exato! 1º) Decide terminar (Dissolve). 2º) Paga dívidas (Liquida). 3º) Apaga o CNPJ (Cancela).')">C) Dissolução -> Liquidação -> Cancelamento da Inscrição (Extinção).</button>
+<button class="q-opcao" onclick="responder(this,'errada','Falência é caso de quebra, não extinção comum.')">D) Falência -> Intervenção Federal -> Baixa.</button>
+</div>
+<div class="q-feedback"></div>
+</div>
+</div>
+
+<div class="slide pratica">
+<div class="slide-header">
+<div class="slide-num">Questão 32</div>
+<div class="slide-title">Personalidade na Liquidação</div>
+<div class="title-line"></div>
+</div>
+<div class="questao-box">
+<div class="q-enunciado">Durante a 'Liquidação' (pagamento das dívidas finais), o que ocorre com a PJ?</div>
+<div class="q-opcoes">
+<button class="q-opcao" onclick="responder(this,'errada','Se cessasse, ela não poderia atuar em juízo.')">A) A personalidade jurídica cessa imediatamente.</button>
+<button class="q-opcao" onclick="responder(this,'certa','Correto. A empresa precisa existir para fechar as contas. Seu nome deve constar \'em liquidação\'.')">B) Subsiste a personalidade jurídica para os fins de liquidação, até que se conclua.</button>
+<button class="q-opcao" onclick="responder(this,'errada','Personalidade não é transferível.')">C) A personalidade é transferida para o juiz.</button>
+<button class="q-opcao" onclick="responder(this,'errada','Não pode operar novos contratos na liquidação.')">D) Obrigada a captar novos clientes.</button>
+</div>
+<div class="q-feedback"></div>
+</div>
+</div>
+
+<div class="slide pratica">
+<div class="slide-header">
+<div class="slide-num">Questão 33</div>
+<div class="slide-title">Domicílio da PJ (Estatuto Omisso)</div>
+<div class="title-line"></div>
+</div>
+<div class="questao-box">
+<div class="q-enunciado">Se o estatuto for omisso, qual será o domicílio da PJ de direito privado (Art. 75, IV)?</div>
+<div class="q-opcoes">
+<button class="q-opcao" onclick="responder(this,'errada','CNPJ indica a Receita, não o endereço real civil.')">A) A capital do Estado do CNPJ inicial.</button>
+<button class="q-opcao" onclick="responder(this,'certa','Exatamente. O critério legal é a sede da administração (cabeça pensante).')">B) O lugar onde funcionarem as diretorias e administrações.</button>
+<button class="q-opcao" onclick="responder(this,'errada','Sócios e empresa não misturam domicílios.')">C) Domicílio residencial do acionista principal.</button>
+<button class="q-opcao" onclick="responder(this,'errada','DF é da União.')">D) Sempre o Distrito Federal.</button>
+</div>
+<div class="q-feedback"></div>
+</div>
+</div>
+
+<div class="slide pratica">
+<div class="slide-header">
+<div class="slide-num">Questão 34</div>
+<div class="slide-title">Múltiplas Filiais</div>
+<div class="title-line"></div>
+</div>
+<div class="questao-box">
+<div class="q-enunciado">Havendo filiais em lugares diferentes, qual deles será o domicílio da PJ?</div>
+<div class="q-opcoes">
+<button class="q-opcao" onclick="responder(this,'errada','Protegeria apenas a matriz.')">A) Apenas a Matriz central terá validade.</button>
+<button class="q-opcao" onclick="responder(this,'certa','Correto. A descentralização facilita quem negocia com a filial (Art. 75, §1º).')">B) O lugar de cada filial será o domicílio para os atos nela praticados.</button>
+<button class="q-opcao" onclick="responder(this,'errada','A filial não atrai foros globais da matriz.')">C) A filial responde por dívidas globais da matriz.</button>
+<button class="q-opcao" onclick="responder(this,'errada','Privilégio inexistente.')">D) Nenhum, foro é Brasília.</button>
+</div>
+<div class="q-feedback"></div>
+</div>
+</div>
+
+<div class="slide pratica">
+<div class="slide-header">
+<div class="slide-num">Questão 35</div>
+<div class="slide-title">Teoria do Órgão</div>
+<div class="title-line"></div>
+</div>
+<div class="questao-box">
+<div class="q-enunciado">De acordo com o CC (Art. 47), a PJ responde civilmente pelos atos de seus administradores?</div>
+<div class="q-opcoes">
+<button class="q-opcao" onclick="responder(this,'errada','A atuação é institucional, a empresa arca.')">A) Não, o administrador responde sempre sozinho.</button>
+<button class="q-opcao" onclick="responder(this,'certa','Correto! Se o gestor atua nos limites do contrato (Teoria do Órgão), a PJ assume a obrigação.')">B) Sim, obrigam a PJ os atos exercidos nos limites de seus poderes.</button>
+<button class="q-opcao" onclick="responder(this,'errada','A empresa pode se eximir de atos claramente ultra vires (fora do estatuto).')">C) Sim, responde mesmo por atos cometidos fora dos limites.</button>
+<button class="q-opcao" onclick="responder(this,'errada','É regra geral a todas as PJs.')">D) Apenas S/A respondem pela diretoria.</button>
+</div>
+<div class="q-feedback"></div>
+</div>
+</div>
+
+<div class="slide pratica">
+<div class="slide-header">
+<div class="slide-num">Questão 36</div>
+<div class="slide-title">Fundação Autárquica</div>
+<div class="title-line"></div>
+</div>
+<div class="questao-box">
+<div class="q-enunciado">Qual é a base legal exigida para a criação de uma PJ de Direito Público?</div>
+<div class="q-opcoes">
+<button class="q-opcao" onclick="responder(this,'errada','Junta é para ente privado empresarial.')">A) Contrato social registrado na Junta.</button>
+<button class="q-opcao" onclick="responder(this,'errada','Testamento gera fundação privada.')">B) Testamento deixado por milionário.</button>
+<button class="q-opcao" onclick="responder(this,'certa','Perfeito. Devido à Legalidade, um ente público só nasce da vontade do Parlamento (Lei Específica).')">C) Lei específica que a crie ou autorize sua instituição.</button>
+<button class="q-opcao" onclick="responder(this,'errada','Decreto fere a Separação de Poderes.')">D) Decreto do Prefeito, sem lei.</button>
+</div>
+<div class="q-feedback"></div>
+</div>
+</div>
+
+<div class="slide pratica">
+<div class="slide-header">
+<div class="slide-num">Questão 37</div>
+<div class="slide-title">Estrutura Adequada</div>
+<div class="title-line"></div>
+</div>
+<div class="questao-box">
+<div class="q-enunciado">Empresários querem criar uma PJ para compra/venda de mercado e divisão de lucros. Qual estrutura usar?</div>
+<div class="q-opcoes">
+<button class="q-opcao" onclick="responder(this,'errada','Não pode buscar lucro.')">A) Fundação Privada.</button>
+<button class="q-opcao" onclick="responder(this,'errada','Foco na fé, não no mercado.')">B) Organização Religiosa.</button>
+<button class="q-opcao" onclick="responder(this,'errada','Associação proíbe partilha de lucros.')">C) Associação Comercial.</button>
+<button class="q-opcao" onclick="responder(this,'certa','Exato! Sociedades são feitas para agrupar capital, atuar no mercado e ratear lucros.')">D) Sociedade Empresária.</button>
+</div>
+<div class="q-feedback"></div>
+</div>
+</div>
+
+<div class="slide pratica">
+<div class="slide-header">
+<div class="slide-num">Questão 38</div>
+<div class="slide-title">Revogação da EIRELI</div>
+<div class="title-line"></div>
+</div>
+<div class="questao-box">
+<div class="q-enunciado">Com a Lei de Liberdade Econômica, o que ocorreu com as EIRELIs?</div>
+<div class="q-opcoes">
+<button class="q-opcao" onclick="responder(this,'errada','Existem S/A, Simples, etc.')">A) Tornaram-se a única forma do país.</button>
+<button class="q-opcao" onclick="responder(this,'certa','Correto. A EIRELI morreu e nasceu a Sociedade Limitada Unipessoal (SLU), bem mais fácil de abrir.')">B) Foram substituídas pela Sociedade Limitada Unipessoal (SLU).</button>
+<button class="q-opcao" onclick="responder(this,'errada','EIRELI pedia 100 salários. SLU não exige valor mínimo.')">C) Exigem capital de 1.000 salários mínimos.</button>
+<button class="q-opcao" onclick="responder(this,'errada','Tinham fim lucrativo, incompatível com Associação.')">D) Transformadas compulsoriamente em Associações.</button>
+</div>
+<div class="q-feedback"></div>
+</div>
+</div>
+
+<div class="slide pratica">
+<div class="slide-header">
+<div class="slide-num">Questão 39</div>
+<div class="slide-title">Domicílio de Estado Estrangeiro</div>
+<div class="title-line"></div>
+</div>
+<div class="questao-box">
+<div class="q-enunciado">No CC, os Estados estrangeiros acionados no Brasil responderão em qual local?</div>
+<div class="q-opcoes">
+<button class="q-opcao" onclick="responder(this,'errada','Itamaraty atua diplomaticamente, não judicialmente para intimações civis.')">A) No Ministério das Relações Exteriores.</button>
+<button class="q-opcao" onclick="responder(this,'certa','Correto. Para demandas na jurisdição nacional contra nações externas, a capital é o foro civil competente (Art. 75, I).')">B) No Distrito Federal, ou no foro especificado em tratado.</button>
+<button class="q-opcao" onclick="responder(this,'errada','Embaixadas não são Varas Judiciais.')">C) Nas Embaixadas, sendo vedada ação externa.</button>
+<button class="q-opcao" onclick="responder(this,'errada','A fronteira não atrai jurisdição universal.')">D) Em qualquer comarca fronteiriça.</button>
+</div>
+<div class="q-feedback"></div>
+</div>
+</div>
+
+<div class="slide pratica">
+<div class="slide-header">
+<div class="slide-num">Questão 40</div>
+<div class="slide-title">Dívida de Associação</div>
+<div class="title-line"></div>
+</div>
+<div class="questao-box">
+<div class="q-enunciado">Uma Associação tomou R$ 100 mil, gastou tudo e quebrou. O credor pode cobrar os associados?</div>
+<div class="q-opcoes">
+<button class="q-opcao" onclick="responder(this,'errada','O clube/ONG responde por si próprio.')">A) Sim, responsabilidade solidária ilimitada pelo clube.</button>
+<button class="q-opcao" onclick="responder(this,'errada','A associação TEM personalidade jurídica.')">B) Não, pois a Associação é ente despersonalizado.</button>
+<button class="q-opcao" onclick="responder(this,'certa','Gabarito! O muro da autonomia patrimonial protege o associado (salvo casos drásticos de desconsideração).')">C) Não, associados não respondem pelas obrigações da Associação.</button>
+<button class="q-opcao" onclick="responder(this,'errada','Diretoria só paga se houve fraude (abuso) clara.')">D) Sim, mas limitado a cobrar a diretoria e conselho.</button>
+</div>
+<div class="q-feedback"></div>
+</div>
+</div>
+
+<div class="slide capa">
+<div class="capa-inner">
+<div class="capa-title">Gabarito Finalizado!</div>
+<div class="capa-sub">Teoria Geral da Pessoa Jurídica</div>
+<div class="badge">MAGSUL - Prof. Adriano Március 2026</div>
+</div>
+</div>
+
+<div id="nav">
+<button class="nav-btn" onclick="prevSlide()">‹</button>
+<span id="slide-counter">1 / 42</span>
+<button class="nav-btn" onclick="nextSlide()">›</button>
+</div>
+
+<script>
+let current = 0;
+const slidesList = document.querySelectorAll(".slide");
+const totalSlides = slidesList.length;
+const counter = document.getElementById("slide-counter");
+const progressBar = document.getElementById("progress-bar");
+
+function showSlide(i) {
+    slidesList.forEach(s => s.classList.remove("active"));
+    slidesList[i].classList.add("active");
+    current = i;
+    counter.textContent = (current + 1) + " / " + totalSlides;
+    progressBar.style.width = ((current + 1) / totalSlides * 100) + "%";
+}
+
+function nextSlide() { if (current < totalSlides - 1) showSlide(current + 1); }
+function prevSlide() { if (current > 0) showSlide(current - 1); }
+
+function responder(btn, tipo, feedback) {
+    const box = btn.closest('.questao-box');
+    if (box.dataset.respondido) return;
+    box.dataset.respondido = "1";
+    btn.classList.add(tipo);
+    const fbDiv = box.querySelector('.q-feedback');
+    fbDiv.textContent = feedback;
+    fbDiv.className = 'q-feedback ' + tipo;
+    fbDiv.style.display = 'block';
+}
+
+document.addEventListener("keydown", e => {
+    switch(e.key){
+        case "ArrowRight": case "PageDown": case " ": nextSlide(); break;
+        case "ArrowLeft": case "PageUp": prevSlide(); break;
+    }
+});
+
+const cur = document.getElementById("cursor");
+document.addEventListener("mousemove", e => {
+    cur.style.left = e.clientX - 7 + "px";
+    cur.style.top = e.clientY - 7 + "px";
+});
+document.addEventListener("mousedown", () => cur.classList.add("big"));
+document.addEventListener("mouseup", () => cur.classList.remove("big"));
+
+window.onload = () => showSlide(0);
+</script>
+</body>
+</html>

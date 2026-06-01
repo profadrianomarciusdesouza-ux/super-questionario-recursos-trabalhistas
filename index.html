@@ -1,854 +1,996 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-<meta charset="UTF-8">
-<title>Direito Civil: Pessoa Jurídica - Prof. Adriano Március de Souza</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=DM+Mono&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
-<style>
-:root {
---azul: #1a3a6e; --azul2: #2563eb; --azul3: #3b82f6; --ouro: #c9a84c; --ouro2: #f0c96a;
---bg: #0d1b2a; --bg2: #112240; --card: rgba(255,255,255,0.05); --card2: rgba(255,255,255,0.09);
---txt: #e8edf5; --txt2: #9db4cc; --verde: #22c55e; --verd2: #16a34a; --verm: #ef4444; --verm2: #dc2626; --amarelo: #fbbf24;
-}
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--txt); height: 100vh; overflow: hidden; cursor: none; }
-#cursor { width: 14px; height: 14px; border: 2px solid var(--ouro); border-radius: 50%; position: fixed; top: 0; left: 0; pointer-events: none; z-index: 9999; transition: transform .1s ease; mix-blend-mode: difference; }
-#cursor.big { transform: scale(3); opacity: .5; }
-#progress-bar { position: fixed; top: 0; left: 0; height: 3px; background: linear-gradient(90deg, var(--ouro), var(--azul3)); transition: width .4s ease; z-index: 100; width: 0%; }
-.slide { display: none; position: absolute; inset: 0; flex-direction: column; justify-content: center; align-items: center; padding: 60px 80px; animation: slideIn .45s cubic-bezier(.22,1,.36,1); }
-.slide.active { display: flex; }
-@keyframes slideIn { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: translateY(0); } }
-.slide.capa { background: linear-gradient(145deg, #0a1628 0%, #112240 50%, #0d1b2a 100%); }
-.slide.teoria { background: var(--bg); }
-.slide.pratica { background: linear-gradient(145deg, #0a1a0e, #0d1b2a); }
-.slide.alerta { background: linear-gradient(145deg, #1a0e0a, #0d1b2a); }
-.capa-inner { display: flex; flex-direction: column; align-items: center; gap: 18px; position: relative; z-index: 1; }
-.badge { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 4px; color: var(--ouro); text-transform: uppercase; border: 1px solid rgba(201,168,76,.4); padding: 6px 18px; border-radius: 40px; }
-.capa-title { font-family: 'Playfair Display', serif; font-size: clamp(36px, 5vw, 60px); font-weight: 900; line-height: 1.1; text-align: center; background: linear-gradient(135deg, #ffffff 30%, var(--ouro2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-.capa-sub { font-size: 16px; color: var(--txt2); letter-spacing: 5px; }
-.author { font-size: 15px; color: var(--ouro); font-weight: 600; margin-top: 4px; }
-.slide-header { position: relative; z-index: 1; text-align: center; margin-bottom: 24px; width: 100%; }
-.slide-num { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 3px; color: var(--ouro); text-transform: uppercase; margin-bottom: 8px; }
-.slide-title { font-family: 'Playfair Display', serif; font-size: clamp(22px, 3vw, 34px); font-weight: 700; color: #fff; line-height: 1.2; }
-.title-line { width: 60px; height: 3px; background: linear-gradient(90deg, var(--ouro), var(--azul3)); margin: 10px auto 0; border-radius: 2px; }
-.card { background: var(--card); border: 1px solid rgba(255,255,255,.1); border-radius: 16px; padding: 24px 28px; position: relative; z-index: 1; backdrop-filter: blur(8px); width: 100%; max-width: 820px; }
-.card-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; width: 100%; max-width: 820px; position: relative; z-index: 1; }
-.card h3 { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 2px; color: var(--ouro); text-transform: uppercase; margin-bottom: 10px; }
-.card ul { list-style: none; }
-.card ul li { padding: 6px 0 6px 28px; position: relative; border-bottom: 1px solid rgba(255,255,255,.05); font-size: 14px; color: var(--txt); }
-.card ul li::before { content: '>'; position: absolute; left: 8px; color: var(--ouro); font-size: 18px; }
-.destaque { background: rgba(201,168,76,.15); border-left: 3px solid var(--ouro); padding: 2px 8px; color: var(--ouro2); font-weight: 600; }
-.questao-box { background: rgba(37,99,235,.08); border: 1px solid rgba(37,99,235,.25); border-radius: 16px; padding: 22px 26px; width: 100%; max-width: 820px; position: relative; z-index: 1; }
-.q-enunciado { font-size: 15px; line-height: 1.65; color: var(--txt); margin-bottom: 14px; }
-.q-opcoes { display: flex; flex-direction: column; gap: 8px; }
-.q-opcao { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 10px 16px; cursor: pointer; font-size: 14px; color: var(--txt2); transition: all 0.2s ease; text-align: left; font-family: inherit; }
-.q-opcao:hover { background: rgba(255,255,255,0.1); border-color: var(--azul3); color: #fff; }
-.q-opcao.certa { background: rgba(34,197,94,0.15); border-color: var(--verde); color: var(--verde); }
-.q-opcao.errada { background: rgba(239,68,68,0.12); border-color: var(--verm); color: var(--verm); }
-.q-feedback { margin-top: 12px; padding: 12px 16px; border-radius: 10px; font-size: 14px; display: none; }
-.q-feedback.certa { background: rgba(34,197,94,0.12); color: #86efac; display: block; }
-.q-feedback.errada { background: rgba(239,68,68,0.10); color: #fca5a5; display: block; }
-.alerta-box { background: rgba(251,191,36,0.07); border: 1px solid rgba(251,191,36,0.3); border-left: 4px solid var(--amarelo); border-radius: 12px; padding: 18px 22px; width: 100%; max-width: 820px; margin-top: 15px; }
-.tabela { width: 100%; border-collapse: collapse; margin-top: 10px; color: var(--txt); }
-.tabela th { background: rgba(201,168,76,0.15); color: var(--ouro2); font-size: 11px; padding: 10px; text-align: left; text-transform: uppercase; border-bottom: 1px solid var(--ouro); }
-.tabela td { padding: 10px; font-size: 13px; border-bottom: 1px solid rgba(255,255,255,0.05); }
-#nav { position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 12px; z-index: 200; background: rgba(13,27,42,0.8); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.1); border-radius: 50px; padding: 10px 20px; }
-.nav-btn { background: none; border: 1px solid rgba(255,255,255,0.2); color: var(--txt2); border-radius: 50%; width: 34px; height: 34px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; font-size: 18px; }
-.nav-btn:hover { background: var(--ouro); color: #000; border-color: var(--ouro); }
-#slide-counter { font-family: 'DM Mono', monospace; font-size: 12px; color: var(--txt2); min-width: 80px; text-align: center; }
-</style>
+    <meta charset="UTF-8">
+    <title>Megasimulado de Recursos Trabalhistas - Prof. Adriano Március</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono&family=DM+Sans:wght@400;700&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {--azul: #1a3a6e; --azul2: #2563eb; --azul3: #3b82f6; --ouro: #c9a84c; --ouro2: #f0c96a; --bg: #0d1b2a; --txt: #e8edf5; --txt2: #9db4cc; --verde: #22c55e; --verm: #ef4444; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--txt); height: 100vh; overflow: hidden; cursor: none; }
+        
+        #cursor { width: 14px; height: 14px; border: 2px solid var(--ouro); border-radius: 50%; position: fixed; top: 0; left: 0; pointer-events: none; z-index: 9999; transition: transform .1s ease; mix-blend-mode: difference; }
+        #cursor.big { transform: scale(3); opacity: .5; }
+        #progress-bar { position: fixed; top: 0; left: 0; height: 3px; background: linear-gradient(90deg, var(--ouro), var(--azul3)); transition: width .4s ease; z-index: 100; width: 0%; }
+        
+        .slide { display: none; position: absolute; inset: 0; flex-direction: column; justify-content: center; align-items: center; padding: 35px 60px; animation: slideIn .45s cubic-bezier(.22,1,.36,1); }
+        .slide.active { display: flex; }
+        @keyframes slideIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .slide.capa { background: linear-gradient(145deg, #0a1628 0%, #112240 50%, #0d1b2a 100%); }
+        .slide.pratica { background: linear-gradient(145deg, #0a1a0e, #0d1b2a); }
+        
+        .badge { font-family: 'DM Mono', monospace; font-size: 14.4px; letter-spacing: 3px; color: var(--ouro); text-transform: uppercase; border: 1px solid rgba(201,168,76,.4); padding: 6px 18px; border-radius: 40px; margin-bottom: 18px; }
+        .capa-title { font-family: 'Playfair Display', serif; font-size: clamp(33px, 5vw, 55px); font-weight: 900; text-align: center; background: linear-gradient(135deg, #ffffff 30%, var(--ouro2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; line-height: 1.1; margin-bottom: 12px;}
+        .author { font-size: 19.2px; color: var(--ouro); font-weight: 600; margin-top: 12px; }
+        
+        .slide-header {text-align: center; margin-bottom: 24px; width: 100%; max-width: 1000px; }
+        .slide-title { font-family: 'Playfair Display', serif; font-size: clamp(24px, 4vw, 36px); font-weight: 700; color: #fff; }
+        
+        .questao-box { background: rgba(37,99,235,.08); border: 1px solid rgba(37,99,235,.25); border-radius: 16px; padding: 25px; width: 100%; max-width: 950px; max-height: 75vh; overflow-y: auto;}
+        .q-enunciado { font-size: 21.6px; font-weight: 600; margin-bottom: 20px; color: #fff; line-height: 1.5; }
+        .q-opcao { display: block; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 14px 18px; cursor: pointer; font-size: 18px; width: 100%; text-align: left; margin-top: 12px; color: var(--txt2); transition: 0.2s; }
+        .q-opcao:hover { border-color: var(--azul3); color: #fff; background: rgba(255,255,255,0.08); }
+        .q-opcao.certa { border-color: var(--verde); color: var(--verde); background: rgba(34,197,94,0.1); pointer-events: none; }
+        .q-opcao.errada { border-color: var(--verm); color: var(--verm); background: rgba(239,68,68,0.1); pointer-events: none; }
+        .q-feedback { margin-top: 15px; padding: 12px; border-radius: 8px; font-size: 16.8px; font-weight: bold; display: none; line-height: 1.4;}
+        
+        #nav { position: fixed; bottom: 15px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 10px; z-index: 200; background: rgba(13,27,42,0.9); padding: 8px 15px; border-radius: 50px; border: 1px solid rgba(255,255,255,0.1); }
+        .nav-btn { background: none; border: 1px solid rgba(255,255,255,0.2); color: #fff; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; transition: 0.2s; }
+        .nav-btn:hover { background: rgba(255,255,255,0.1); }
+        #slide-counter { font-family: 'DM Mono', monospace; font-size: 14.4px; min-width: 80px; text-align: center; }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: rgba(0,0,0,0.1); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb { background: var(--ouro); border-radius: 10px; }
+    </style>
 </head>
 <body>
-<div id="cursor"></div>
-<div id="progress-bar"></div>
+    <div id="cursor"></div>
+    <div id="progress-bar"></div>
 
-<div class="slide capa active">
-<div class="capa-inner">
-<div class="badge">Direito Civil Aula Acadêmica</div>
-<div class="capa-title">Pessoa Jurídica:<br>Estrutura e Desconsideração</div>
-<div class="capa-sub">Avaliação e fixação de conteúdo (40 Questões).</div>
-<div class="author">Prof. Adriano Március de Souza</div>
-</div>
-</div>
+    <div class="slide capa active">
+        <div class="badge">MEGASIMULADO COMPLETO (80 QUESTÕES)</div>
+        <div class="capa-title">Recursos Trabalhistas:<br>Treinamento de Alto Rendimento</div>
+        <div class="author">Prof. Adriano Március de Souza</div>
+        <p style="margin-top: 20px; color: var(--txt2);">Identifique o recurso aplicável e as regras pelas decisões atacadas.</p>
+    </div>
 
+    <div class="slide pratica">
+        <div class="slide-header"><div class="slide-title">Questão 1</div></div>
+        <div class="questao-box">
+            <p class="q-enunciado">O Juiz da Vara do Trabalho profere sentença definitiva de mérito julgando procedentes os pedidos da exordial. Qual é o recurso cabível para atacar essa decisão no Processo do Trabalho?</p>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. A Apelação é recurso cível. Na Justiça do Trabalho o nome técnico é outro.')">A) Apelação.</button>
+            <button class="q-opcao" onclick="responder(this, 'certa', 'Correto! Da sentença proferida pelo Juiz da Vara do Trabalho cabe Recurso Ordinário (Art. 895, I, CLT).')">B) Recurso Ordinário.</button>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. Recurso de Revista ataca decisões de segundo grau, não de primeiro.')">C) Recurso de Revista.</button>
+            <div class="q-feedback"></div>
+        </div>
+    </div>
+
+    <div class="slide pratica">
+        <div class="slide-header"><div class="slide-title">Questão 2</div></div>
+        <div class="questao-box">
+            <p class="q-enunciado">Qual é a regra geral unificada para a contagem do prazo da maioria dos recursos trabalhistas (RO, AP, RR, AI) estabelecida pela CLT?</p>
+            <button class="q-opcao" onclick="responder(this, 'certa', 'Perfeito! A regra geral é de 8 dias úteis, conforme o art. 893 e a Lei 13.467/2017 que instituiu a contagem apenas em dias úteis.')">A) 8 dias úteis.</button>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. Prazos cíveis comuns costumam ser de 15 dias, mas a CLT adota 8 dias na fase recursal como regra.')">B) 15 dias úteis.</button>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. Os dias corridos deixaram de existir para os prazos processuais com a Reforma Trabalhista.')">C) 8 dias corridos.</button>
+            <div class="q-feedback"></div>
+        </div>
+    </div>
+
+    <div class="slide pratica">
+        <div class="slide-header"><div class="slide-title">Questão 3</div></div>
+        <div class="questao-box">
+            <p class="q-enunciado">No Recurso Ordinário, a parte reclamada repete ipsis litteris (copia e cola) os argumentos da contestação, sem atacar diretamente os fundamentos que o juiz usou na sentença para condená-la. Segundo a Súmula 422 do TST, o que ocorre?</p>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. O tribunal não aceita razões desconexas da sentença.')">A) O recurso é conhecido normalmente por aplicação do princípio da simplicidade.</button>
+            <button class="q-opcao" onclick="responder(this, 'certa', 'Correto! Faltou o princípio da dialeticidade. O recurso não será conhecido, pois a parte deve impugnar especificamente os fundamentos da decisão recorrida (Súm. 422, TST).')">B) O recurso não será conhecido por ausência de dialeticidade (impugnação específica).</button>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. Deserção refere-se a falha financeira (custas/depósito), não processual argumentativa.')">C) O recurso sofre deserção automática por falha processual.</button>
+            <div class="q-feedback"></div>
+        </div>
+    </div>
+
+    <div class="slide pratica">
+        <div class="slide-header"><div class="slide-title">Questão 4</div></div>
+        <div class="questao-box">
+            <p class="q-enunciado">A empresa interpõe Recurso de Revista no TST pedindo que os Ministros reavaliem o depoimento da testemunha e refaçam a valoração das provas que atestaram o vínculo de emprego. Com base na Súmula 126 do TST, qual deve ser a decisão?</p>
+            <button class="q-opcao" onclick="responder(this, 'certa', 'Exato! Súmula 126: Incabível Recurso de Revista para reexame de fatos e provas. O TST só julga teses jurídicas.')">A) Não conhecimento do recurso, pois é vedado o reexame de fatos e provas em sede extraordinária.</button>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. O TST não reexamina provas em nenhuma hipótese de RR.')">B) Conhecimento do recurso, pois a ofensa à lei depende da leitura da prova.</button>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. O TST não atua como terceira instância de instrução para ouvir testemunhas.')">C) Anulação do acórdão com oitiva imediata das testemunhas no plenário do TST.</button>
+            <div class="q-feedback"></div>
+        </div>
+    </div>
+
+    <div class="slide pratica">
+        <div class="slide-header"><div class="slide-title">Questão 5</div></div>
+        <div class="questao-box">
+            <p class="q-enunciado">Uma decisão proferida pelo Juiz do Trabalho ocorre na fase de cumprimento de sentença (execução). O executado deseja recorrer desta decisão. Qual o recurso específico desta fase procedimental?</p>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. RO ataca sentença cognitiva (fase de conhecimento).')">A) Recurso Ordinário.</button>
+            <button class="q-opcao" onclick="responder(this, 'certa', 'Correto! Da decisão do juiz na fase de execução, cabe Agravo de Petição, nos termos do art. 897, a, da CLT.')">B) Agravo de Petição.</button>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. O AI destranca recursos, não ataca decisão de mérito em execução.')">C) Agravo de Instrumento.</button>
+            <div class="q-feedback"></div>
+        </div>
+    </div>
+
+    <div class="slide pratica">
+        <div class="slide-header"><div class="slide-title">Questão 6</div></div>
+        <div class="questao-box">
+            <p class="q-enunciado">O juiz denega seguimento a um Recurso Ordinário (tranca o recurso na origem) alegando intempestividade, mas a parte afirma que estava no prazo. Qual o recurso para "destrancar" o RO e forçar a subida ao tribunal?</p>
+            <button class="q-opcao" onclick="responder(this, 'certa', 'Exato! O Agravo de Instrumento trabalhista tem a função exclusiva de destrancar recurso que teve seu seguimento denegado no juízo de admissibilidade a quo (Art. 897, b, CLT).')">A) Agravo de Instrumento.</button>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. O Agravo de Petição é recurso da fase de execução e não serve para destrancar RO.')">B) Agravo de Petição.</button>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. Correição parcial é para erros de procedimento ou tumulto, existindo recurso próprio (AI), ela não é cabível.')">C) Correição Parcial.</button>
+            <div class="q-feedback"></div>
+        </div>
+    </div>
+
+    <div class="slide pratica">
+        <div class="slide-header"><div class="slide-title">Questão 7</div></div>
+        <div class="questao-box">
+            <p class="q-enunciado">Ao protocolar o Agravo de Instrumento para destrancar seu recurso principal, a empresa precisará efetuar recolhimento de depósito recursal específico. Qual a proporção exigida pela CLT para o AI?</p>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. O AI não exige o dobro do valor, isso seria penalização excessiva.')">A) 200% do valor do recurso principal.</button>
+            <button class="q-opcao" onclick="responder(this, 'certa', 'Perfeito! O valor do depósito do Agravo de Instrumento corresponderá a 50% do valor do depósito do recurso ao qual se pretende destrancar (Art. 899, §7º).')">B) 50% do valor correspondente ao recurso que se deseja destrancar.</button>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. O AI possui previsão específica de depósito no processo trabalhista, diferentemente do cível.')">C) O Agravo de Instrumento é totalmente isento de preparo em qualquer caso.</button>
+            <div class="q-feedback"></div>
+        </div>
+    </div>
+
+    <div class="slide pratica">
+        <div class="slide-header"><div class="slide-title">Questão 8</div></div>
+        <div class="questao-box">
+            <p class="q-enunciado">Nas ações sob Rito Sumaríssimo, os recursos e as decisões têm trâmite simplificado. Qual afirmativa representa uma regra peculiar do julgamento em 2ª instância para esse rito?</p>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. O tribunal ainda pode reformar decisões, a simplicidade não blinda a sentença contra análises de mérito.')">A) O recurso ordinário sumaríssimo é julgado por decisão monocrática irrecorrível.</button>
+            <button class="q-opcao" onclick="responder(this, 'certa', 'Correto! O parecer do Ministério Público do Trabalho, no sumaríssimo, não é escrito obrigatoriamente; o representante do MPT emite manifestação oral na própria sessão, se necessário.')">B) Dispensa-se parecer escrito do Ministério Público do Trabalho, que se manifestará oralmente em sessão.</button>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. O revisor é dispensado no RO sumaríssimo, não obrigatório.')">C) A presença de revisor no Tribunal é obrigatória sob pena de nulidade.</button>
+            <div class="q-feedback"></div>
+        </div>
+    </div>
+
+    <div class="slide pratica">
+        <div class="slide-header"><div class="slide-title">Questão 9</div></div>
+        <div class="questao-box">
+            <p class="q-enunciado">A sentença de primeiro grau foi publicada, mas o advogado nota que o juiz não decidiu sobre o pedido de "adicional noturno", sendo omisso quanto a esta verba específica. Qual o recurso correto para suprir a omissão e o seu prazo?</p>
+            <button class="q-opcao" onclick="responder(this, 'certa', 'Correto! Os Embargos de Declaração servem para sanar omissão, obscuridade, contradição ou erro material, no prazo estrito de 5 dias úteis (Art. 897-A, CLT).')">A) Embargos de Declaração no prazo de 5 dias.</button>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. O RO ataca a sentença como um todo para o tribunal; a omissão pontual deve ser corrigida primeiro pelo próprio juiz (ED).')">B) Recurso Ordinário no prazo de 8 dias.</button>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. Correição parcial é via administrativa-disciplinar para tumulto processual, não para julgar pedidos omitidos.')">C) Correição Parcial no prazo de 8 dias.</button>
+            <div class="q-feedback"></div>
+        </div>
+    </div>
+
+    <div class="slide pratica">
+        <div class="slide-header"><div class="slide-title">Questão 10</div></div>
+        <div class="questao-box">
+            <p class="q-enunciado">Ao interpor Embargos de Declaração com intuito de sanar uma contradição da sentença, a parte sabe que o protocolo desta medida produz um efeito muito importante sobre os demais recursos processuais. Que efeito é esse?</p>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. Suspender o prazo faria com que apenas o saldo dos dias restasse (ex: usei 4, sobram 4). Não é isso que ocorre.')">A) Suspende o prazo para a interposição de outros recursos.</button>
+            <button class="q-opcao" onclick="responder(this, 'certa', 'Exato! Os Embargos tempestivos e regulares INTERROMPEM o prazo recursal, o que significa que o prazo para os demais recursos "zera" e voltará a contar integralmente de 8 dias após a intimação da decisão dos embargos (Art. 897-A, §3º).')">B) Interrompe o prazo para a interposição de outros recursos por qualquer das partes.</button>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. O prazo para RO não sofre preclusão; ele é interrompido e renovado.')">C) Causa preclusão consumativa para apresentação posterior de Recurso Ordinário.</button>
+            <div class="q-feedback"></div>
+        </div>
+    </div>
+
+    <div class="slide pratica">
+        <div class="slide-header"><div class="slide-title">Questão 11</div></div>
+        <div class="questao-box">
+            <p class="q-enunciado">Em sede de Embargos de Declaração, o juiz percebe que ao sanar a omissão, ele alterará completamente o resultado da condenação para a empresa (efeito infringente/modificativo). O que a lei OBRIGA o juiz a fazer antes de proferir a nova decisão?</p>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. O juiz de primeira instância não precisa consultar o TRT para sanar omissões em sua própria sentença.')">A) Remeter os embargos imediatamente ao TRT para homologação prévia.</button>
+            <button class="q-opcao" onclick="responder(this, 'certa', 'Perfeito! É indispensável intimar a parte contrária para se manifestar sobre os embargos no prazo de 5 dias, sob pena de nulidade por cerceamento de defesa (OJ 142 SDI-1).')">B) Intimar a parte contrária (embargado) para manifestação no prazo de 5 dias.</button>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. Efeito modificativo não atrai custas triplas em nenhuma norma consolidada.')">C) Aplicar custas processuais em triplo sobre o novo valor modificado.</button>
+            <div class="q-feedback"></div>
+        </div>
+    </div>
+
+    <div class="slide pratica">
+        <div class="slide-header"><div class="slide-title">Questão 12</div></div>
+        <div class="questao-box">
+            <p class="q-enunciado">O Reclamado interpõe recurso e a condenação foi fixada em R$ 10.000,00. Sabe-se que ele é a parte vencida. Quanto ele deverá pagar de Custas Processuais como requisito extrínseco para interpor o RO (conforme art. 789 da CLT)?</p>
+            <button class="q-opcao" onclick="responder(this, 'certa', 'Correto! As custas na Justiça do Trabalho são de 2% (dois por cento) sobre o valor da condenação para a parte vencida, observados os pisos e tetos legais.')">A) 2% sobre o valor da condenação.</button>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. 5% não é alíquota de custas na JT.')">B) 5% sobre o valor pleiteado na inicial.</button>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. As custas são proporcionais ao valor condenado, não um valor fixo de um salário mínimo.')">C) O valor equivalente a 1 salário mínimo vigente.</button>
+            <div class="q-feedback"></div>
+        </div>
+    </div>
+
+    <div class="slide pratica">
+        <div class="slide-header"><div class="slide-title">Questão 13</div></div>
+        <div class="questao-box">
+            <p class="q-enunciado">As custas de 2% cobradas pela Justiça do Trabalho possuem um limite MÁXIMO imposto pelo art. 789 da CLT. Qual alternativa reflete o teto exato dessas custas?</p>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. A CLT não limita as custas a 10 salários mínimos.')">A) 10 vezes o salário mínimo vigente.</button>
+            <button class="q-opcao" onclick="responder(this, 'certa', 'Correto! O limite máximo para o pagamento de custas é o equivalente a 4 vezes o teto dos benefícios do Regime Geral de Previdência Social (INSS).')">B) Quatro vezes o limite máximo dos benefícios do Regime Geral de Previdência Social (RGPS).</button>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. A limitação não está no depósito do recurso de revista, mas sim no teto da previdência social.')">C) O exato valor da tabela de depósito do Recurso de Revista do ano corrente.</button>
+            <div class="q-feedback"></div>
+        </div>
+    </div>
+
+    <div class="slide pratica">
+        <div class="slide-header"><div class="slide-title">Questão 14</div></div>
+        <div class="questao-box">
+            <p class="q-enunciado">O Depósito Recursal, pago pelas empresas condenadas em verbas de natureza pecuniária na JT, possui uma natureza jurídica específica. Ele NÃO é uma taxa processual. Qual sua verdadeira natureza?</p>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. Custas judiciais remuneram os serviços do Estado. O depósito não vai para o Tribunal.')">A) Natureza de custas judiciais remuneratórias dos serviços estatais.</button>
+            <button class="q-opcao" onclick="responder(this, 'certa', 'Exato! O Depósito Recursal (Art. 899, CLT) tem natureza jurídica de GARANTIA DO JUÍZO, servindo para assegurar, total ou parcialmente, o pagamento futuro da execução em favor do trabalhador.')">B) Natureza de garantia do juízo para eventual e futura execução pecuniária.</button>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. Não tem caráter punitivo antecipado (como as multas); serve para resguardar o crédito.')">C) Natureza de penalidade por recorrer (multa litigiosa).</button>
+            <div class="q-feedback"></div>
+        </div>
+    </div>
+
+    <div class="slide pratica">
+        <div class="slide-header"><div class="slide-title">Questão 15</div></div>
+        <div class="questao-box">
+            <p class="q-enunciado">Uma empresa que teve sua falência decretada pelo juízo cível foi condenada no processo do trabalho e deseja interpor recurso. Segundo as regras de preparo (Súmula 86 do TST / Lei 13.467), ela precisa recolher depósito e custas?</p>
+            <button class="q-opcao" onclick="responder(this, 'certa', 'Correto! A MASSA FALIDA (falência decretada) é ISENTA do recolhimento das custas processuais e também do depósito recursal.')">A) Não, a massa falida é isenta do pagamento de custas e de depósito recursal.</button>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. O pagamento parcial (50%) aplica-se a microempresas/empresas pequeno porte/recuperação judicial, e não à massa falida que é integralmente isenta.')">B) Sim, ela deve recolher 50% dos valores na forma da lei.</button>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. A CLT e as súmulas isentam a massa falida por completo para proteger o juízo universal da falência.')">C) A massa falida paga integralmente todos os preparos sob pena de deserção.</button>
+            <div class="q-feedback"></div>
+        </div>
+    </div>
+
+    <div class="slide pratica">
+        <div class="slide-header"><div class="slide-title">Questão 16</div></div>
+        <div class="questao-box">
+            <p class="q-enunciado">E quanto à empresa que se encontra em Recuperação Judicial (e não em falência)? Ela pretende apresentar Recurso Ordinário. Como fica a regra do seu preparo recursal após a Reforma Trabalhista (Art. 899, §10)?</p>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. Essa é a regra das entidades sem fins lucrativos (filantrópicas), que também se aplica, mas ela não isenta custas.')">A) Ela é isenta de custas, mas deve pagar o depósito pela metade.</button>
+            <button class="q-opcao" onclick="responder(this, 'certa', 'Perfeito! As empresas em RECUPERAÇÃO JUDICIAL são isentas apenas do DEPÓSITO RECURSAL. Elas CONTINUAM obrigadas a recolher as Custas Processuais de 2%.')">B) Ela é isenta apenas do Depósito Recursal, mas deve efetuar normalmente o recolhimento das Custas Processuais.</button>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. Isenção total de depósito e custas é para Massa Falida e Fazenda Pública.')">C) Ela é isenta tanto do Depósito Recursal quanto das Custas Processuais.</button>
+            <div class="q-feedback"></div>
+        </div>
+    </div>
+
+    <div class="slide pratica">
+        <div class="slide-header"><div class="slide-title">Questão 17</div></div>
+        <div class="questao-box">
+            <p class="q-enunciado">Entidades filantrópicas (sem fins lucrativos) também ganharam benefício processual após 2017. Para recorrer e levar seu recurso de uma condenação pecuniária ao TRT, o que a CLT lhes concede (Art. 899, §10)?</p>
+            <button class="q-opcao" onclick="responder(this, 'certa', 'Exato! As entidades filantrópicas são totalmente ISENTAS do depósito recursal (mas pagam custas).')">A) Isenção total do pagamento do depósito recursal.</button>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. O pagamento pela metade (§9) é para entidades sem fins lucrativos gerais que não sejam filantrópicas (se comprovar a filantropia legal, a isenção é total no §10).')">B) Redução do depósito recursal e custas para 50% do valor legal.</button>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. Elas são dispensadas do depósito, não necessitando de aval solidário de fiador nestes termos.')">C) Prazo em dobro, mas pagamento integral com aval de instituição financeira.</button>
+            <div class="q-feedback"></div>
+        </div>
+    </div>
+
+    <div class="slide pratica">
+        <div class="slide-header"><div class="slide-title">Questão 18</div></div>
+        <div class="questao-box">
+            <p class="q-enunciado">Um empregador doméstico é condenado pela Vara do Trabalho. Para recorrer via Recurso Ordinário, qual é a benesse legal que ele possui quanto ao recolhimento do Depósito Recursal (Art. 899, §9º)?</p>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. A isenção total é para massa falida, recuperação judicial, filantrópicas e beneficiários da justiça gratuita.')">A) Isenção total do depósito, pois trata-se de pessoa física.</button>
+            <button class="q-opcao" onclick="responder(this, 'certa', 'Perfeito! O valor do depósito recursal será REDUZIDO PELA METADE (50%) para entidades sem fins lucrativos, empregadores domésticos, microempreendedores individuais, microempresas e EPPs.')">B) O valor do depósito recursal será reduzido pela metade (50%).</button>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. O pagamento parcelado não é modalidade de redução admitida pelo TST no momento da interposição, que exige o montante pronto no prazo do recurso.')">C) Pode parcelar o valor do depósito recursal em até 3 prestações ao longo do andamento do recurso.</button>
+            <div class="q-feedback"></div>
+        </div>
+    </div>
+
+    <div class="slide pratica">
+        <div class="slide-header"><div class="slide-title">Questão 19</div></div>
+        <div class="questao-box">
+            <p class="q-enunciado">Ao analisar um Recurso de Revista, a CLT criou recentemente um filtro onde o TST verifica se o recurso oferece "indicadores de relevância econômica, política, social ou jurídica". Que filtro preliminar é esse?</p>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. A repercussão geral é o filtro exclusivo do Recurso Extraordinário ao STF.')">A) Repercussão Geral.</button>
+            <button class="q-opcao" onclick="responder(this, 'certa', 'Correto! Trata-se do instituto da TRANSCENDÊNCIA (Art. 896-A da CLT), que seleciona apenas recursos de revista que realmente importem para o Direito e a Sociedade.')">B) Transcendência do recurso de revista.</button>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. Súmula Vinculante é do STF e vincula o sistema, não é o nome do "filtro de seleção" no TST.')">C) Súmula Vinculante de relevância e urgência.</button>
+            <div class="q-feedback"></div>
+        </div>
+    </div>
+
+    <div class="slide pratica">
+        <div class="slide-header"><div class="slide-title">Questão 20</div></div>
+        <div class="questao-box">
+            <p class="q-enunciado">A Fazenda Pública Municipal (Município) foi condenada subsidiariamente. Se o Município desejar apresentar Recurso Ordinário, qual a vantagem que ele possui em relação aos prazos recursais no Processo do Trabalho (DL 779/69)?</p>
+            <button class="q-opcao" onclick="responder(this, 'certa', 'Perfeito! Os entes da Fazenda Pública (União, Estados, DF, Municípios, Autarquias e Fundações Públicas) possuem PRAZO EM DOBRO para recorrer e apresentar razões/contrarrazões.')">A) Possui prazo em dobro para todas as manifestações recursais.</button>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. O processo civil tinha quádruplo para contestar e dobro para recorrer outrora, mas hoje, no CPC e na JT, a regra é prazo em dobro para todos os atos.')">B) Possui prazo em quádruplo para recorrer e em dobro para contestar.</button>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. O prazo em quádruplo não subsiste para recursos no Processo do Trabalho ou CPC atual para a Fazenda.')">C) Possui prazo simples (8 dias), pois a Justiça do Trabalho aboliu privilégios no rito processual.</button>
+            <div class="q-feedback"></div>
+        </div>
+    </div>
 <div class="slide pratica">
-<div class="slide-header">
-<div class="slide-num">Questão 01</div>
-<div class="slide-title">Teorias da PJ</div>
-<div class="title-line"></div>
-</div>
-<div class="questao-box">
-<div class="q-enunciado">Qual é a teoria adotada pelo Código Civil brasileiro para explicar a natureza jurídica da Pessoa Jurídica?</div>
-<div class="q-opcoes">
-<button class="q-opcao" onclick="responder(this,'errada','A ficção legal de Savigny não foi adotada, pois nega a realidade sociológica da PJ.')">A) Teoria da Ficção Legal de Savigny.</button>
-<button class="q-opcao" onclick="responder(this,'certa','Correto! O CC adota a Teoria da Realidade Técnica, reconhecendo a PJ como realidade sociológica.')">B) Teoria da Realidade Objetiva ou Técnica.</button>
-<button class="q-opcao" onclick="responder(this,'errada','Teoria de Hauriou tem foco em Direito Administrativo.')">C) Teoria da Instituição de Hauriou.</button>
-<button class="q-opcao" onclick="responder(this,'errada','Explica fundações, mas não todas as PJs.')">D) Teoria do Patrimônio de Afetação de Brinz.</button>
-</div>
-<div class="q-feedback"></div>
-</div>
-</div>
+        <div class="slide-header"><div class="slide-title">Questão 21</div></div>
+        <div class="questao-box">
+            <p class="q-enunciado">A CLT admite a interposição de "Recurso Adesivo" (Súmula 283 TST). Se o autor se contentou com a sentença (vencimento recíproco) e a ré interpõe Recurso Ordinário, o autor pode entrar com RO Adesivo. Qual o prazo para isso?</p>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. O recurso adesivo é parasita e nasce junto da ciência do recurso principal.')">A) Prazo de 5 dias após o trânsito em julgado do recurso principal.</button>
+            <button class="q-opcao" onclick="responder(this, 'certa', 'Exato! O recurso adesivo é interposto no mesmo prazo que a parte tem para apresentar as CONTRARRAZÕES ao recurso principal da parte contrária (8 dias úteis).')">B) No prazo de 8 dias, que é o mesmo prazo para apresentar contrarrazões ao recurso principal interposto pela parte contrária.</button>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. Não existe prazo de 15 dias corridos na fase recursal trabalhista comum.')">C) Prazo sucessivo de 15 dias corridos, contados da distribuição no TRT.</button>
+            <div class="q-feedback"></div>
+        </div>
+    </div>
 
+    <div class="slide pratica">
+        <div class="slide-header"><div class="slide-title">Questão 22</div></div>
+        <div class="questao-box">
+            <p class="q-enunciado">Quando o Tribunal Superior do Trabalho julga Embargos (SDI-1) que têm o intuito de unificar a jurisprudência interna da Corte, qual é a principal matéria avaliada nesse recurso específico (Art. 894 da CLT)?</p>
+            <button class="q-opcao" onclick="responder(this, 'certa', 'Correto! Os Embargos no TST avaliam a DIVERGÊNCIA jurisprudencial entre Turmas do TST, entre Turma e SDI, ou contrariedade a Súmula do TST / STF.')">A) Divergência jurisprudencial interna de teses entre órgãos colegiados do próprio TST (ou Súmulas/OJs).</button>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. Ofensa literal à Constituição e Lei Federal formam as premissas do Recurso de Revista, não dos Embargos de Divergência na SDI-1.')">B) Reexame de violação literal a artigo isolado da CLT que a Turma não quis ler.</button>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. A SDI não funciona como tribunal de fatos ou produção de novas provas documentais.')">C) Análise exclusiva de erro procedimental que resulte na produção de provas novas na fase recursal.</button>
+            <div class="q-feedback"></div>
+        </div>
+    </div>
+
+    <div class="slide pratica">
+        <div class="slide-header"><div class="slide-title">Questão 23</div></div>
+        <div class="questao-box">
+            <p class="q-enunciado">Segundo a Súmula 333 do TST, não caberá Recurso de Revista (nem embargos de divergência) se a decisão recorrida estiver em consonância com quê?</p>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. Sentenças de juízes de primeiro grau não trancam o topo da jurisprudência do TST.')">A) Com a sentença primária proferida pela Vara de origem.</button>
+            <button class="q-opcao" onclick="responder(this, 'certa', 'Perfeito! Não cabem recursos extraordinários trabalhistas se o TRT proferiu decisão que já está em perfeita conformidade com iterativa, notória e atual jurisprudência (Súmulas e OJs) do TST.')">B) Com a jurisprudência iterativa, notória e atual (Súmulas/OJs) do Tribunal Superior do Trabalho.</button>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. Parecer do MPT não cria barreira obstativa processual de Súmula 333 (que exige súmula/jurisprudência pacificada da Corte).')">C) Com o parecer final emitido pelo Ministério Público do Trabalho no caso concreto.</button>
+            <div class="q-feedback"></div>
+        </div>
+    </div>
+
+    <div class="slide pratica">
+        <div class="slide-header"><div class="slide-title">Questão 24</div></div>
+        <div class="questao-box">
+            <p class="q-enunciado">Qual é o termo técnico para o instituto em que o Tribunal Regional deve expressamente adotar uma tese sobre a matéria no seu acórdão, sob pena de a matéria não poder ser levada ao TST no Recurso de Revista (Súmula 297)?</p>
+            <button class="q-opcao" onclick="responder(this, 'certa', 'Exato! Esse é o PREQUESTIONAMENTO. Sem ele (sem debate prévio do TRT), a questão não sobe para o TST.')">A) Prequestionamento.</button>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. Sucumbência é o fato de perder o pedido e ser devedor/arcar com custas.')">B) Sucumbência recíproca.</button>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. Transcendência é outro filtro, focado na relevância social/econômica, não na adoção da tese no acórdão regional propriamente dita.')">C) Transcendência.</button>
+            <div class="q-feedback"></div>
+        </div>
+    </div>
+
+    <div class="slide pratica">
+        <div class="slide-header"><div class="slide-title">Questão 25</div></div>
+        <div class="questao-box">
+            <p class="q-enunciado">Após 2017 (Reforma), o depósito recursal (que é garantia do juízo) ganhou uma alternativa de substituição em dinheiro vivo na conta bancária. O que a empresa pode usar e com qual condição (Art. 899, §11)?</p>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. Veículos sofrem depreciação e sua nomeação na execução não equivale ao depósito recursal pecuniário pronto.')">A) Pode substituir pela entrega das chaves de um veículo de valor equivalente, registrado no DETRAN.</button>
+            <button class="q-opcao" onclick="responder(this, 'certa', 'Perfeito! O valor pecuniário do depósito recursal poderá ser substituído por fiança bancária ou SEGURO GARANTIA JUDICIAL (exigindo-se, pelas normas, acréscimo de 30%).')">B) Pode substituir por fiança bancária ou seguro garantia judicial.</button>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. Debêntures (títulos privados) não são autorizados para substituição autônoma do depósito sem penhora normal do juízo de execução.')">C) Pode substituir por debêntures nominativas da própria empresa.</button>
+            <div class="q-feedback"></div>
+        </div>
+    </div>
+
+    <div class="slide pratica">
+        <div class="slide-header"><div class="slide-title">Questão 26</div></div>
+        <div class="questao-box">
+            <p class="q-enunciado">A empresa pode pedir Justiça Gratuita na JT para não recolher preparo (Súmula 463). Mas ao contrário do trabalhador (onde muitas vezes basta a declaração assinada sob as penas da lei), o que o TST exige IMPRESCINDIVELMENTE da Pessoa Jurídica?</p>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. Uma simples certidão da junta não prova balanço patrimonial e crise contábil.')">A) Certidão negativa da Junta Comercial.</button>
+            <button class="q-opcao" onclick="responder(this, 'certa', 'Exato! A Súmula 463 exige da Pessoa Jurídica a PROVA CABAL e INEQUÍVOCA de sua impossibilidade de arcar com as despesas processuais (balanços, bloqueios, etc).')">B) Demonstração cabal (prova robusta e objetiva) da insuficiência econômica e impossibilidade financeira.</button>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. O simples atestado assinado por contador privado não vincula o juízo sem os documentos fiscais em anexo provando insolvência real.')">C) Mera declaração de um contador juramentado assinada em cartório, sendo dispensadas outras provas.</button>
+            <div class="q-feedback"></div>
+        </div>
+    </div>
+
+    <div class="slide pratica">
+        <div class="slide-header"><div class="slide-title">Questão 27</div></div>
+        <div class="questao-box">
+            <p class="q-enunciado">No Processo Civil (CPC), existe a regra de que se litisconsortes tiverem procuradores diferentes (de escritórios distintos), eles ganham prazo em dobro para manifestações. Essa regra se aplica subsidiariamente ao Processo do Trabalho?</p>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. A JT é célere e não permite a dilação de prazo por esse motivo em processos físicos ou eletrônicos de praxe.')">A) Sim, aplicável de forma integral por força da subsidiariedade legal automática do CPC no Art. 769 da CLT.</button>
+            <button class="q-opcao" onclick="responder(this, 'certa', 'Correto! NÃO SE APLICA. Segundo a Orientação Jurisprudencial nº 310 da SDI-1 do TST, é inaplicável ao Processo do Trabalho a norma cível do prazo em dobro para litisconsortes com procuradores distintos.')">B) Não se aplica. A OJ 310 da SDI-1 afasta essa benesse por incompatibilidade com a celeridade do rito trabalhista.</button>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. Aplica-se em dobro apenas à Fazenda e Ministério Público, litisconsortes privados seguem com 8 dias.')">C) Aplica-se apenas se os advogados provarem residir em cidades diferentes das Varas onde o processo corre.</button>
+            <div class="q-feedback"></div>
+        </div>
+    </div>
+
+    <div class="slide pratica">
+        <div class="slide-header"><div class="slide-title">Questão 28</div></div>
+        <div class="questao-box">
+            <p class="q-enunciado">O Reclamado interpõe Agravo de Petição. Para que seu recurso de execução seja conhecido, o art. 897, §1º da CLT exige um ato processual sob pena de não seguimento (trancamento). Qual exigência é essa?</p>
+            <button class="q-opcao" onclick="responder(this, 'certa', 'Perfeito! Exige-se que o executado delimite JUSTIFICADAMENTE AS MATÉRIAS E OS VALORES impugnados. Sem isso, o agravo de petição nem é conhecido (para que o valor não controvertido possa ser executado logo).')">A) A delimitação, justificada, das matérias e dos valores impugnados, permitindo a execução imediata da parte incontroversa.</button>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. O pagamento de mais custas no ato do protocolo de AP não é exigido nesse formato, e a multa de prequestionamento é incabível aqui.')">B) O pagamento sumário de multa de 10% pelo protelamento inerente à fase de penhora.</button>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. O recolhimento de um novo depósito é desnecessário se o juízo já foi 100% garantido com a penhora ou depósito originário integral do valor em execução.')">C) O recolhimento de um terceiro depósito recursal no teto máximo anual do TST.</button>
+            <div class="q-feedback"></div>
+        </div>
+    </div>
+
+    <div class="slide pratica">
+        <div class="slide-header"><div class="slide-title">Questão 29</div></div>
+        <div class="questao-box">
+            <p class="q-enunciado">Qual é o recurso que a parte maneja, nos tribunais, contra uma "Decisão Monocrática" proferida pelo Relator (por exemplo, quando o relator denega monocraticamente seguimento a recurso), a fim de levar a causa para o colegiado (Turma)?</p>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. O recurso ordinário não ataca decisão de Desembargador Relator no Tribunal.')">A) Recurso Ordinário em Agravo.</button>
+            <button class="q-opcao" onclick="responder(this, 'certa', 'Exato! Contra decisões proferidas por Relator (ou Presidente) monocraticamente, cabe AGRAVO INTERNO (também conhecido regimentalmente como Agravo), com prazo unificado de 8 dias (Art. 1.021 CPC c/c CLT).')">B) Agravo Interno (ou Agravo Regimental).</button>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. Correição é proferida pelo Corregedor para atos atentatórios a boa ordem, mas não substitui agravo colegiado.')">C) Correição Ordinária ao Presidente da Turma.</button>
+            <div class="q-feedback"></div>
+        </div>
+    </div>
+
+    <div class="slide pratica">
+        <div class="slide-header"><div class="slide-title">Questão 30</div></div>
+        <div class="questao-box">
+            <p class="q-enunciado">Sobre o cômputo dos prazos recursais no Processo Trabalhista e o recesso do Poder Judiciário. A CLT impõe expressamente no Art. 775-A que o curso dos prazos fique SUSPENSO em determinado período de recesso/férias de final de ano. Qual é o período exato?</p>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. Dez dias apenas na CLT antiga não reflete o recesso adotado uniformemente no CPC/CLT atual.')">A) Entre os dias 24 de dezembro e 2 de janeiro.</button>
+            <button class="q-opcao" onclick="responder(this, 'certa', 'Correto! Suspendem-se os prazos processuais (inclusive recursais) entre os dias 20 DE DEZEMBRO E 20 DE JANEIRO, inclusive.')">B) Entre os dias 20 de dezembro e 20 de janeiro, inclusive.</button>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. O período inicia dia 20/12 e vai até o dia 20 do primeiro mês, não 31/01.')">C) Entre os dias 15 de dezembro e 31 de janeiro, inclusive.</button>
+            <div class="q-feedback"></div>
+        </div>
+    </div>
+
+    <div class="slide pratica">
+        <div class="slide-header"><div class="slide-title">Questão 31</div></div>
+        <div class="questao-box">
+            <p class="q-enunciado">No Tribunal Superior do Trabalho, uma Turma prolata acórdão que vai de encontro ao texto explícito e direto de um inciso da Constituição Federal. Esgotados os recursos no TST e demonstrada a repercussão geral, qual recurso a empresa impetrará para levar o caso para o STF?</p>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. Recurso Especial é interposto perante o Superior Tribunal de Justiça (STJ) - que não lida com matéria trabalhista comum nem questões puramente constitucionais.')">A) Recurso Especial (REsp).</button>
+            <button class="q-opcao" onclick="responder(this, 'certa', 'Perfeito! É o Recurso Extraordinário (RE), nos termos do art. 102, III, da Constituição, interposto num prazo de 15 dias para o Supremo Tribunal Federal.')">B) Recurso Extraordinário (RE).</button>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. O RR é a via de acesso do TRT para o TST, e não do TST para o STF.')">C) Recurso de Revista Constitucional.</button>
+            <div class="q-feedback"></div>
+        </div>
+    </div>
+
+    <div class="slide pratica">
+        <div class="slide-header"><div class="slide-title">Questão 32</div></div>
+        <div class="questao-box">
+            <p class="q-enunciado">Muitas vezes advogados tentam impetrar Mandado de Segurança como se fosse recurso, contra uma decisão da qual ainda caiba um recurso próprio no Processo do Trabalho. Isso é possível?</p>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. Se cabe recurso, o MS é terminantemente proibido para substituir tal medida na ordem regular.')">A) Sim, desde que haja claro receio de prejuízo irreparável financeiro para a parte sucumbente.</button>
+            <button class="q-opcao" onclick="responder(this, 'certa', 'Exato! Não cabe. Súmula 267 STF / OJ 92 SDI-2: Não cabe Mandado de Segurança contra decisão judicial passível de recurso ou correição. A parte deve usar o meio próprio e pedir efeito suspensivo liminar na medida cautelar.')">B) Não. É incabível Mandado de Segurança contra ato judicial passível de recurso ou correição (Súmula 267 STF).</button>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. O MS não se sujeita à anuência do juiz que proferiu o ato atacado, de qualquer modo.')">C) Sim, se o juiz concordar na audiência em liberar o impetrante.</button>
+            <div class="q-feedback"></div>
+        </div>
+    </div>
+
+    <div class="slide pratica">
+        <div class="slide-header"><div class="slide-title">Questão 33</div></div>
+        <div class="questao-box">
+            <p class="q-enunciado">Diferentemente do CPC antigo (onde havia Agravo de Instrumento para várias situações), como a CLT enxerga, como regra absoluta, a recorribilidade de "decisões interlocutórias" (ex: juiz que rejeita contradita de testemunha ou indefere uma prova)?</p>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. Não existe "agravo retido" no processo do trabalho na forma escrita isolada como no antigo processo civil. Existe apenas o protesto genérico e impugnação do mérito ao fim.')">A) São atacadas imediatamente por meio de Agravo Retido interposto em até 5 dias na vara.</button>
+            <button class="q-opcao" onclick="responder(this, 'certa', 'Perfeito! No Processo do Trabalho (Art. 893, §1º), as decisões interlocutórias são, como regra, IRRECORRÍVEIS DE IMEDIATO. A parte deve registrar seu protesto e recorrer apenas quando sair a sentença final (através do RO).')">B) São irrecorríveis de imediato. O inconformismo deve ser objeto do recurso contra a decisão definitiva (sentença). </button>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. MS não se presta a reformar erro de rito interlocutório corriqueiro.')">C) São atacadas via Mandado de Segurança oral em audiência que paralisa todo o rito.</button>
+            <div class="q-feedback"></div>
+        </div>
+    </div>
+
+    <div class="slide pratica">
+        <div class="slide-header"><div class="slide-title">Questão 34</div></div>
+        <div class="questao-box">
+            <p class="q-enunciado">Apesar da irrecorribilidade imediata das interlocutórias ser a regra geral, a Súmula 214 do TST traz raras exceções onde se permite Recurso Ordinário imediato no TRT. Qual seria uma dessas exceções clássicas?</p>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. Acolher exceção e mandar para comarca do mesmo TRT não cabe recurso (o tribunal revisor no futuro seria o mesmo).')">A) A decisão que acolhe a exceção de incompetência territorial, com a remessa dos autos para Vara do TRT da MESMA região.</button>
+            <button class="q-opcao" onclick="responder(this, 'certa', 'Correto! A Súmula 214, "c" admite RO imediato da decisão de TRT que acolhe exceção de incompetência territorial, com remessa dos autos para Tribunal Regional DISTINTO daquele a que se vincula o juízo excepcionado (pois inviabilizaria o recurso para o mesmo tribunal depois).')">B) A decisão de Juiz que acolhe a exceção de incompetência territorial, com remessa dos autos para Vara de Tribunal Regional DISTINTO.</button>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. Indeferimento de prova pericial é 100% irrecorrível de imediato, devendo constar apenas protestos.')">C) A decisão que indefere veementemente a produção de uma prova pericial considerada crucial pela parte reclamada.</button>
+            <div class="q-feedback"></div>
+        </div>
+    </div>
+
+    <div class="slide pratica">
+        <div class="slide-header"><div class="slide-title">Questão 35</div></div>
+        <div class="questao-box">
+            <p class="q-enunciado">O advogado calculou as custas ou o depósito recursal errado, pagando a menos (um valor INSUFICIENTE). Por exemplo, depositou R$ 9.000 quando deveria ser R$ 9.100. Pela jurisprudência mansa (OJ 140 SDI-1 e CPC), seu recurso é jogado fora (deserção automática) no primeiro momento?</p>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. Antes de decretar a morte processual (deserção), a lei hoje protege o equívoco contábil.')">A) Sim, ele é trancado sem pena de reversão no juízo de admissibilidade inicial.</button>
+            <button class="q-opcao" onclick="responder(this, 'certa', 'Exato! O juiz concederá OBRIGATORIAMENTE um prazo de 5 (cinco) dias para a parte COMPLEMENTAR o valor insuficiente. Apenas se não pagar a diferença, ocorrerá a deserção.')">B) Não. O juízo deverá intimar a parte para complementar o recolhimento das custas ou do depósito no prazo de 5 dias úteis, sob pena de deserção processual.</button>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. A conversão do recurso em diligência contábil não o julga; ele volta ao rito da OJ 140 que estipula exatos 5 dias.')">C) Não, o recurso segue e a diferença é incluída à força na execução final.</button>
+            <div class="q-feedback"></div>
+        </div>
+    </div>
+
+    <div class="slide pratica">
+        <div class="slide-header"><div class="slide-title">Questão 36</div></div>
+        <div class="questao-box">
+            <p class="q-enunciado">Qual é o efeito legal primário que os recursos trabalhistas produzem segundo o artigo 899 da CLT? Eles suspendem a ação e deixam o vencedor a ver navios, ou devolvem a matéria mantendo a execução viva (ainda que provisória)?</p>
+            <button class="q-opcao" onclick="responder(this, 'certa', 'Perfeito! Na Justiça do Trabalho (Art. 899), a regra é de que os recursos tenham efeito MERAMENTE DEVOLUTIVO, autorizando-se a imediata "execução provisória" da sentença até a penhora (se houver RO tramitando, por exemplo).')">A) Possuem efeito meramente devolutivo, admitindo a execução provisória do julgado até os embargos/penhora.</button>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. A regra no Processo do Trabalho NÃO é o duplo efeito como outrora era blindado no Processo Civil.')">B) Possuem duplo efeito automático: devolutivo e suspensivo amplo, barrando atos da vara.</button>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. Extintivo é de instâncias, que retira o poder, mas não tem vínculo com o efeito de andamento da marcha processual.')">C) Possuem efeito extintivo do rito processual cognitivo, parando o andamento na Secretaria.</button>
+            <div class="q-feedback"></div>
+        </div>
+    </div>
+
+    <div class="slide pratica">
+        <div class="slide-header"><div class="slide-title">Questão 37</div></div>
+        <div class="questao-box">
+            <p class="q-enunciado">A Ação Rescisória não é recurso, é Ação Autônoma, mas ataca decisões. Qual o prazo fatal de decadência para se propor uma Ação Rescisória visando quebrar uma decisão com trânsito em julgado na Justiça do Trabalho?</p>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. Um ano não é o prazo adotado pela legislação processual pátria para quebrar o julgado de mérito.')">A) 1 ano a partir da prolação da sentença na Vara do Trabalho.</button>
+            <button class="q-opcao" onclick="responder(this, 'certa', 'Correto! O prazo decadencial para ajuizamento da Ação Rescisória é de exatos 2 (dois) anos, contados a partir do TRÂNSITO EM JULGADO da última decisão de mérito proferida no caso (Art. 975 CPC / Súm. 100 TST).')">B) 2 anos, contados do trânsito em julgado da última decisão proferida na causa.</button>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. Cinco anos é a prescrição material trabalhista para ação de cobrança, não a decadência da ação anulatória/rescisória processual.')">C) 5 anos, por força do limite prescricional estabelecido no Artigo 7º da CF/88.</button>
+            <div class="q-feedback"></div>
+        </div>
+    </div>
+
+    <div class="slide pratica">
+        <div class="slide-header"><div class="slide-title">Questão 38</div></div>
+        <div class="questao-box">
+            <p class="q-enunciado">Os Sindicatos patronal e obreiro ingressam com um Dissídio Coletivo no TRT, pois as negociações da nova convenção fracassaram. O TRT instaura e decide o dissídio, mas o sindicato patronal discorda. Como a ação começou no próprio TRT, qual recurso se usa para atacar este "Acórdão originário"?</p>
+            <button class="q-opcao" onclick="responder(this, 'certa', 'Exato! Ações de competência originária dos TRTs (como Dissídios Coletivos e Ações Rescisórias), a decisão ataca-se por RECURSO ORDINÁRIO diretamente para o Tribunal Superior do Trabalho (TST).')">A) Recurso Ordinário para a respectiva Seção Especializada (SDC) do TST.</button>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. Recurso de Revista serve para reformar RO de rito individual em recurso; aqui o TRT decidiu AÇÃO DE PRIMEIRO GRAU (originária dele).')">B) Recurso de Revista, pois foi um acórdão proferido por Tribunal Regional do Trabalho.</button>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. Correição geral não tem o escopo de modificar tese de dissídio coletivo de greve ou instrumento normativo.')">C) Reclamação Constitucional ao STF direto por desrespeito de poder normativo.</button>
+            <div class="q-feedback"></div>
+        </div>
+    </div>
+
+    <div class="slide pratica">
+        <div class="slide-header"><div class="slide-title">Questão 39</div></div>
+        <div class="questao-box">
+            <p class="q-enunciado">Se a parte opuser Embargos de Declaração infundados apenas com o intuito de atrasar o andamento e ganhar tempo (manifestamente protelatórios), o juiz tem poder para punir esse abuso? Com o quê?</p>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. Indenização tarifada por danos morais não se aplica em fase de abuso recursal dessa forma.')">A) Uma condenação indenizatória por danos morais fixada em 10 salários mínimos.')</button>
+            <button class="q-opcao" onclick="responder(this, 'certa', 'Correto! Sim, o juiz condenará a parte a pagar uma MULTA de até 2% (dois por cento) sobre o valor atualizado da causa, e se houver reiteração, a multa eleva-se para até 10% (Art. 1.026 do CPC).')">B) Sim. Condenação ao pagamento de multa de até 2% sobre o valor atualizado da causa pelo manifesto protelamento.</button>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. A cassação do registro do advogado na OAB foge totalmente da alçada do magistrado trabalhista.')">C) Sim, requisição imediata de cassação da inscrição processual na OAB do advogado que os assinou.</button>
+            <div class="q-feedback"></div>
+        </div>
+    </div>
+
+    <div class="slide pratica">
+        <div class="slide-header"><div class="slide-title">Questão 40</div></div>
+        <div class="questao-box">
+            <p class="q-enunciado">A empresa ingressa com RO. Posteriormente, percebe que as custas recursais e a demora do processo lhes causarão prejuízos adicionais se a execução chegar provisória. Eles elaboram uma petição informando a desistência unilateral do Recurso. O juiz pode aceitar a desistência do recurso já entregue e não julgado?</p>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. A anuência da parte contrária não é exigida para desistir de recursos, pois trata-se de um ato unilateral da própria parte (ato de disposição do direito de recorrer).')">A) Sim, desde que o empregado/reclamante seja intimado e assine concordando expressamente com a atitude.</button>
+            <button class="q-opcao" onclick="responder(this, 'certa', 'Exato! O recorrente (quem ingressou) pode desistir do recurso a qualquer tempo, INDEPENDENTEMENTE DA ANUÊNCIA (concordância) DA PARTE CONTRÁRIA (Art. 998, CPC/CLT). O que trancará seu andamento e acarretará trânsito em julgado se não houver adesivo respectivo.')">B) Sim, o recorrente pode desistir do seu recurso sem necessitar da concordância da parte contrária (recorrida).</button>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. O protocolo não acorrenta a parte para manter a interposição em julgado, podendo o ato dispor dele.')">C) Não, recursos regularmente protocolizados são direitos indisponíveis até julgamento monocrático.</button>
+            <div class="q-feedback"></div>
+        </div>
+    </div>
 <div class="slide pratica">
-<div class="slide-header">
-<div class="slide-num">Questão 02</div>
-<div class="slide-title">Início da Personalidade</div>
-<div class="title-line"></div>
-</div>
-<div class="questao-box">
-<div class="q-enunciado">Em que momento se dá o início da existência legal das Pessoas Jurídicas de direito privado?</div>
-<div class="q-opcoes">
-<button class="q-opcao" onclick="responder(this,'errada','O contrato assinado obriga os sócios, mas não cria a PJ perante terceiros.')">A) Com a assinatura do contrato social.</button>
-<button class="q-opcao" onclick="responder(this,'certa','Correto! O art. 45 do CC exige a inscrição do ato constitutivo no respectivo registro.')">B) Com a inscrição do ato constitutivo no respectivo registro.</button>
-<button class="q-opcao" onclick="responder(this,'errada','CNPJ é um cadastro fiscal, não o registro civil/mercantil.')">C) Com a obtenção do CNPJ na Receita Federal.</button>
-<button class="q-opcao" onclick="responder(this,'errada','Atuar de fato sem registro forma sociedade irregular.')">D) Com o início fático das atividades econômicas.</button>
-</div>
-<div class="q-feedback"></div>
-</div>
-</div>
+        <div class="slide-header"><div class="slide-title">Questão 41</div></div>
+        <div class="questao-box">
+            <p class="q-enunciado">Após a apresentação dos cálculos pela Contadoria, o juiz homologa os valores e o devedor apresenta Impugnação à Sentença de Liquidação. O Juiz do Trabalho rejeita a impugnação. Inconformado com essa decisão na fase de execução, qual recurso o devedor deve interpor?</p>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. Recurso Ordinário é incabível na fase de execução.')">A) Recurso Ordinário.</button>
+            <button class="q-opcao" onclick="responder(this, 'certa', 'Correto! Da decisão do Juiz do Trabalho proferida na fase de execução (como a que julga impugnação à liquidação ou embargos à execução), o recurso cabível é o Agravo de Petição (Art. 897, a, CLT).')">B) Agravo de Petição.</button>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. Agravo de Instrumento apenas destranca recurso denegado.')">C) Agravo de Instrumento.</button>
+            <div class="q-feedback"></div>
+        </div>
+    </div>
 
+    <div class="slide pratica">
+        <div class="slide-header"><div class="slide-title">Questão 42</div></div>
+        <div class="questao-box">
+            <p class="q-enunciado">Na fase de execução, em vez de interpor o recurso correto contra a decisão dos Embargos à Execução, o advogado, por equívoco, protocola um "Recurso Ordinário". O TRT pode aplicar o princípio da fungibilidade e receber o recurso como se fosse o correto?</p>
+            <button class="q-opcao" onclick="responder(this, 'certa', 'Correto! O erro é considerado grosseiro. A jurisprudência não admite fungibilidade entre Recurso Ordinário e Agravo de Petição, pois há expressa previsão legal na CLT separando a fase de conhecimento da fase de execução.')">A) Não, pois a troca entre esses recursos constitui erro grosseiro, não havendo dúvida objetiva.</button>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. A CLT separa claramente os recursos de conhecimento e execução, configurando erro grosseiro.')">B) Sim, o princípio da fungibilidade é sempre aplicado no Processo do Trabalho para proteger a parte.</button>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. O prazo de ambos é de 8 dias, mas a natureza da peça inviabiliza a fungibilidade por ser erro grosseiro.')">C) Sim, desde que protocolado no prazo de 8 dias.</button>
+            <div class="q-feedback"></div>
+        </div>
+    </div>
+
+    <div class="slide pratica">
+        <div class="slide-header"><div class="slide-title">Questão 43</div></div>
+        <div class="questao-box">
+            <p class="q-enunciado">Nas causas sujeitas ao procedimento sumaríssimo, o apelo interposto contra a sentença do Juiz do Trabalho possui uma tramitação muito mais célere no TRT. Qual é a regra específica aplicável a este recurso quanto ao revisor e ao Ministério Público?</p>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. O MPT não é dispensado, mas sua manifestação é apenas oral se assim desejar.')">A) É dispensado tanto o revisor quanto o relator, e o MPT não pode se manifestar.</button>
+            <button class="q-opcao" onclick="responder(this, 'certa', 'Exato! No rito sumaríssimo, o Recurso Ordinário é imediatamente distribuído, dispensa-se a figura do revisor, e o MPT não emite parecer escrito prévio, manifestando-se apenas oralmente em sessão, se entender necessário (Art. 895, §1º, CLT).')">B) É dispensado o revisor e o Ministério Público do Trabalho manifesta-se oralmente em sessão de julgamento.</button>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. No rito ordinário que exige revisor, não no sumaríssimo.')">C) O relator deve enviar o processo para o revisor em 48 horas, e o MPT tem 8 dias para parecer escrito.</button>
+            <div class="q-feedback"></div>
+        </div>
+    </div>
+
+    <div class="slide pratica">
+        <div class="slide-header"><div class="slide-title">Questão 44</div></div>
+        <div class="questao-box">
+            <p class="q-enunciado">A parte opôs embargos de declaração alegando contradição na sentença. O juiz percebe que, ao sanar a contradição, o resultado da sentença será alterado em prejuízo da parte contrária (efeito modificativo). O que o juiz deve fazer OBRIGATORIAMENTE antes de julgar?</p>
+            <button class="q-opcao" onclick="responder(this, 'certa', 'Perfeito! É obrigatória a intimação da parte contrária para se manifestar em 5 dias, sob pena de nulidade por cerceamento de defesa (OJ 142 da SDI-1 e Art. 897-A, §2º, CLT).')">A) Intimar a parte contrária para manifestação no prazo de 5 dias.</button>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. O juiz não pode simplesmente anular e proferir outra; deve intimar a outra parte no incidente dos embargos.')">B) Anular a própria sentença de ofício e marcar nova audiência.</button>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. Os embargos de declaração podem ter efeito modificativo (infringente), desde que haja intimação prévia.')">C) Rejeitar os embargos, pois embargos de declaração jamais podem alterar o mérito da decisão.</button>
+            <div class="q-feedback"></div>
+        </div>
+    </div>
+
+    <div class="slide pratica">
+        <div class="slide-header"><div class="slide-title">Questão 45</div></div>
+        <div class="questao-box">
+            <p class="q-enunciado">Sobre a regra geral dos efeitos em que são recebidos os recursos no Processo do Trabalho, marque a alternativa que reflete o regramento do Artigo 899 da CLT:</p>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. No Processo Civil a regra era o duplo efeito (hoje matizada), mas na JT a regra é apenas o efeito devolutivo.')">A) São recebidos, como regra, no duplo efeito: devolutivo e suspensivo.</button>
+            <button class="q-opcao" onclick="responder(this, 'certa', 'Exato! A regra de ouro (Art. 899 da CLT) é que os recursos trabalhistas têm efeito MERAMENTE DEVOLUTIVO, permitindo a execução provisória até a penhora.')">B) São recebidos, como regra, apenas no efeito devolutivo, permitindo a execução provisória.</button>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. Eles possuem efeito devolutivo; efeito translativo refere-se às matérias de ordem pública.')">C) São recebidos com efeito translativo absoluto em todas as instâncias.</button>
+            <div class="q-feedback"></div>
+        </div>
+    </div>
+
+    <div class="slide pratica">
+        <div class="slide-header"><div class="slide-title">Questão 46</div></div>
+        <div class="questao-box">
+            <p class="q-enunciado">Se a regra na Justiça do Trabalho é que o recurso principal (como o Recurso Ordinário) não tem efeito suspensivo automático, o que o advogado da empresa deve protocolar para conseguir barrar uma execução provisória que possa causar dano irreparável?</p>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. O Mandado de Segurança não é a via adequada se existe medida própria (Súmula 267 STF / Súmula 414 TST).')">A) Um Mandado de Segurança com pedido liminar dirigido ao Tribunal Superior do Trabalho.</button>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. Agravo Regimental ataca decisão de relator, não confere efeito suspensivo a recurso principal.')">B) Um Agravo Regimental com pedido de efeito translativo.</button>
+            <button class="q-opcao" onclick="responder(this, 'certa', 'Correto! Conforme a Súmula 414 do TST, a parte deve requerer a concessão de tutela provisória (cautelar) incidental diretamente ao relator do recurso.')">C) Um requerimento de tutela provisória formulado na própria petição recursal ou em petição autônoma dirigida ao relator.</button>
+            <div class="q-feedback"></div>
+        </div>
+    </div>
+
+    <div class="slide pratica">
+        <div class="slide-header"><div class="slide-title">Questão 47</div></div>
+        <div class="questao-box">
+            <p class="q-enunciado">Um recurso na Justiça do Trabalho exige o recolhimento de Custas Processuais como requisito extrínseco (preparo). Quem, via de regra, recolhe as custas e qual o percentual estabelecido pela CLT (Art. 789)?</p>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. As custas são calculadas sobre a condenação para quem perdeu, a alíquota não é 5%.')">A) O autor e o réu dividem as custas de 5% sobre o valor da causa.</button>
+            <button class="q-opcao" onclick="responder(this, 'certa', 'Perfeito! As custas são pagas pela parte VENCIDA (sucumbente), à base de 2% sobre o valor da condenação (se houver), respeitado o teto máximo legal.')">B) A parte vencida recolhe o valor correspondente a 2% sobre o valor da condenação.</button>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. 1% é a multa mínima de embargos protelatórios, não a alíquota de custas.')">C) O reclamante sucumbente paga 1% sobre o valor da causa obrigatoriamente, sem isenção.</button>
+            <div class="q-feedback"></div>
+        </div>
+    </div>
+
+    <div class="slide pratica">
+        <div class="slide-header"><div class="slide-title">Questão 48</div></div>
+        <div class="questao-box">
+            <p class="q-enunciado">No Supremo Tribunal Federal, o Ministro Relator nega seguimento a um Recurso Extraordinário interposto contra acórdão do TST, fundamentando que a ofensa à Constituição não é direta. Qual é o ÚNICO recurso cabível para levar o caso para a Turma do STF?</p>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. O Agravo de Instrumento serve para destrancar recurso no tribunal inferior, não ataca decisão monocrática de Ministro no próprio STF.')">A) Agravo de Instrumento (em RE).</button>
+            <button class="q-opcao" onclick="responder(this, 'certa', 'Exato! Contra qualquer decisão monocrática de relator (mesmo no STF), o recurso para forçar a análise do Colegiado é o Agravo Interno (Art. 1.021 CPC).')">B) Agravo Interno.</button>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. Embargos de divergência ocorrem apenas em raras exceções e não atacam decisão que nega seguimento monocraticamente.')">C) Embargos por Divergência.</button>
+            <div class="q-feedback"></div>
+        </div>
+    </div>
+
+    <div class="slide pratica">
+        <div class="slide-header"><div class="slide-title">Questão 49</div></div>
+        <div class="questao-box">
+            <p class="q-enunciado">A reclamada deseja interpor Agravo de Petição, mas não possui dinheiro em conta nem bens para penhorar no momento. Ela ingressa com o recurso alegando violação à ampla defesa. O que acontecerá com o Agravo?</p>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. Será recebido, mas não isentado da garantia. O processo do trabalho não flexibiliza a garantia neste caso sem seguro ou fiança.')">A) Será conhecido, mas a execução definitiva seguirá normalmente.</button>
+            <button class="q-opcao" onclick="responder(this, 'certa', 'Correto! Ele NÃO será conhecido. A garantia integral do juízo (depósito, penhora, seguro ou fiança) é pressuposto de admissibilidade indispensável na fase de execução (Súmula 128 TST).')">B) Não será conhecido, pois a garantia do juízo é pressuposto de admissibilidade do recurso na execução.</button>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. A CLT exige a delimitação de valores E a garantia do juízo.')">C) Será conhecido desde que haja a delimitação das matérias, dispensando a garantia.</button>
+            <div class="q-feedback"></div>
+        </div>
+    </div>
+
+    <div class="slide pratica">
+        <div class="slide-header"><div class="slide-title">Questão 50</div></div>
+        <div class="questao-box">
+            <p class="q-enunciado">Um apelo excepcional é interposto para tentar mudar a decisão de um TRT proferida em julgamento de um Agravo de Petição. Para que o TST aceite analisar esse recurso em plena fase de execução, o que o advogado deve demonstrar obrigatoriamente?</p>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. A divergência com outro TRT só autoriza recurso de revista na fase de conhecimento.')">A) Divergência jurisprudencial notória com outro TRT.</button>
+            <button class="q-opcao" onclick="responder(this, 'certa', 'Exato! O Recurso de Revista na fase de execução (Art. 896, §2º) só é admitido se houver demonstração inequívoca de ofensa DIRETA e LITERAL a preceito da Constituição Federal.')">B) Ofensa direta e literal à Constituição Federal.</button>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. O prequestionamento é necessário, mas a CLT exige mais do que isso; exige violação constitucional, não de lei federal comum.')">C) Prequestionamento explícito de violação a qualquer artigo da CLT.</button>
+            <div class="q-feedback"></div>
+        </div>
+    </div>
+
+    <div class="slide pratica">
+        <div class="slide-header"><div class="slide-title">Questão 51</div></div>
+        <div class="questao-box">
+            <p class="q-enunciado">No Processo do Trabalho, o "Depósito Recursal" (Art. 899, CLT) pago pelos empregadores possui uma natureza jurídica bem definida pelos tribunais superiores. Qual é essa natureza?</p>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. Custas processuais pagam o serviço do Estado. O depósito recursal tem outra finalidade.')">A) Natureza de taxa de prestação de serviços jurisdicionais (custas).</button>
+            <button class="q-opcao" onclick="responder(this, 'certa', 'Correto! O depósito recursal tem natureza jurídica de GARANTIA DO JUÍZO para futura execução, e não de taxa processual.')">B) Natureza jurídica de garantia do juízo.</button>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. Não se trata de multa prévia punitiva.')">C) Natureza de penalidade por recorrer de decisão judicial.</button>
+            <div class="q-feedback"></div>
+        </div>
+    </div>
+
+    <div class="slide pratica">
+        <div class="slide-header"><div class="slide-title">Questão 52</div></div>
+        <div class="questao-box">
+            <p class="q-enunciado">O Tribunal Pleno do TST edita uma Súmula pacificada. Um Ministro, em julgamento individual (monocrático), profere decisão que contraria abertamente essa Súmula do próprio tribunal. A parte interpõe o recurso cabível e a Turma do TST julga a matéria mantendo a decisão contra a Súmula. O que cabe agora?</p>
+            <button class="q-opcao" onclick="responder(this, 'certa', 'Perfeito! Se a Turma julgou de forma contrária a Súmula do TST, cabem Embargos por Divergência para a SDI-1 (Art. 894, II, CLT).')">A) Embargos por Divergência para a Subseção I Especializada em Dissídios Individuais.</button>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. O Agravo Interno já foi (ou deveria ter sido) usado para levar a decisão monocrática para a Turma. Da Turma, cabem Embargos.')">B) Agravo Interno ao Presidente do Tribunal.</button>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. O Recurso Extraordinário exige ofensa constitucional, não apenas ofensa a Súmula do TST.')">C) Recurso Extraordinário diretamente por afronta à Súmula.</button>
+            <div class="q-feedback"></div>
+        </div>
+    </div>
+
+    <div class="slide pratica">
+        <div class="slide-header"><div class="slide-title">Questão 53</div></div>
+        <div class="questao-box">
+            <p class="q-enunciado">O juiz de 1º grau nega seguimento (tranca) ao Recurso Ordinário patronal pelo não recolhimento das custas. A empresa interpõe o recurso para destrancar. Ao interpor este recurso, quanto a empresa deve recolher a título de depósito recursal?</p>
+            <button class="q-opcao" onclick="responder(this, 'certa', 'Excelente! Ao interpor o Agravo de Instrumento, a regra (Art. 899, §7º) exige o recolhimento de 50% do valor do depósito do recurso que se pretende destrancar.')">A) Deve recolher 50% do valor correspondente ao depósito do Recurso Ordinário trancado.</button>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. O AI possui preparo próprio na Justiça do Trabalho.')">B) O Agravo de Instrumento é totalmente isento de preparo.</button>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. O valor é de 50%, não integral, e o limite é a metade do teto do recurso trancado.')">C) Deve recolher 100% do teto máximo dos recursos no TST.</button>
+            <div class="q-feedback"></div>
+        </div>
+    </div>
+
+    <div class="slide pratica">
+        <div class="slide-header"><div class="slide-title">Questão 54</div></div>
+        <div class="questao-box">
+            <p class="q-enunciado">O Acórdão do TRT julgou determinada matéria, mas a parte entende que a tese precisa estar "prequestionada" para subir ao TST. Ela opõe Embargos de Declaração. O TRT, contudo, recusa-se a emitir tese sobre o tema, julgando os embargos improcedentes. O que acontece com o prequestionamento?</p>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. Não se impetra Mandado de Segurança contra acórdão para forçar prequestionamento.')">A) O recurso superior não será admitido e a parte deve impetrar Mandado de Segurança.</button>
+            <button class="q-opcao" onclick="responder(this, 'certa', 'Perfeito! É o chamado Prequestionamento Ficto. A simples oposição dos Embargos de Declaração, mesmo que rejeitados, já atende ao prequestionamento (Súmula 297, III, TST e Art. 1.025 CPC).')">B) Considera-se prequestionada a matéria de forma ficta, viabilizando a análise pelo tribunal superior.</button>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. Não se exige que a parte "aceite" a omissão; a lei já supre essa recusa do tribunal.')">C) A parte deve arguir nulidade no TST para que o processo volte e o TRT julgue novamente a matéria obrigatoriamente.</button>
+            <div class="q-feedback"></div>
+        </div>
+    </div>
+
+    <div class="slide pratica">
+        <div class="slide-header"><div class="slide-title">Questão 55</div></div>
+        <div class="questao-box">
+            <p class="q-enunciado">Em qual das hipóteses abaixo é INCABÍVEL a interposição de Recurso Adesivo no Processo do Trabalho (Súmula 283 do TST)?</p>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. Cabe Recurso Ordinário Adesivo no prazo de contrarrazões do RO principal.')">A) Na fase de conhecimento, contra a sentença, de forma adesiva ao Recurso Ordinário.</button>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. O TST admite expressamente o Agravo de Petição Adesivo na execução.')">B) Na fase de execução, de forma adesiva ao Agravo de Petição.</button>
+            <button class="q-opcao" onclick="responder(this, 'certa', 'Exato! A Súmula 283 do TST diz que o recurso adesivo é cabível no RO, AP, RR e Embargos ao TST. NÃO é cabível, entretanto, no Agravo de Instrumento (pois ele visa destrancar, não discutir o mérito originário cruzado).')">C) Na interposição de Agravo de Instrumento para destrancar recurso da parte contrária.</button>
+            <div class="q-feedback"></div>
+        </div>
+    </div>
+
+    <div class="slide pratica">
+        <div class="slide-header"><div class="slide-title">Questão 56</div></div>
+        <div class="questao-box">
+            <p class="q-enunciado">Uma autarquia federal é condenada subsidiariamente ao pagamento de verbas trabalhistas de um empregado terceirizado. O ente público deseja interpor o apelo pertinente. Sobre os prazos e preparo da Fazenda Pública, qual é a regra?</p>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. A Fazenda não paga custas na Justiça do Trabalho.')">A) Tem prazo simples e recolhe custas com 50% de desconto.</button>
+            <button class="q-opcao" onclick="responder(this, 'certa', 'Correto! A Fazenda Pública (União, Estados, Municípios e suas autarquias/fundações) possui prazo EM DOBRO para recorrer e é ISENTA de custas processuais e do depósito recursal (Art. 790-A e 899, CLT).')">B) Possui prazo em dobro para recorrer e é totalmente isenta do recolhimento de custas e depósito recursal.</button>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. A isenção é total, não precisa fazer depósito simbólico.')">C) Tem prazo em quádruplo para recorrer, devendo pagar apenas o depósito recursal para garantir a execução.</button>
+            <div class="q-feedback"></div>
+        </div>
+    </div>
+
+    <div class="slide pratica">
+        <div class="slide-header"><div class="slide-title">Questão 57</div></div>
+        <div class="questao-box">
+            <p class="q-enunciado">No âmbito do TST, os Embargos por Divergência (SDI-1) servem para unificar a jurisprudência. Se a parte embargante apontar divergência entre uma decisão da Turma do TST e uma Súmula do STJ (Superior Tribunal de Justiça), o que o TST fará?</p>
+            <button class="q-opcao" onclick="responder(this, 'certa', 'Exato! O TST não conhecerá dos embargos. A CLT (Art. 894) é cristalina: os embargos por divergência exigem divergência interna no TST (Turmas vs. Turmas, Turmas vs. SDI) ou contrariedade a Súmula do próprio TST/Súmula Vinculante do STF.')">A) Não conhecerá dos embargos, pois a divergência precisa ser com Súmula do próprio TST, Súmula Vinculante do STF ou entre órgãos colegiados do TST.</button>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. A Justiça do Trabalho não atrela sua admissibilidade de divergência a súmulas do STJ em embargos.')">B) Conhecerá do recurso, pois o STJ é corte superior e suas súmulas são de observância obrigatória em dissídios individuais.</button>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. O tribunal não remete processos "automaticamente" para outro tribunal dessa forma.')">C) Remeterá os autos ao STJ para julgar o conflito de competência.</button>
+            <div class="q-feedback"></div>
+        </div>
+    </div>
+
+    <div class="slide pratica">
+        <div class="slide-header"><div class="slide-title">Questão 58</div></div>
+        <div class="questao-box">
+            <p class="q-enunciado">O Acórdão do TRT está fundamentado em duas razões independentes. A primeira é de ordem processual e a segunda de mérito, e ambas sozinhas são suficientes para manter a derrota do reclamante. O advogado recorre para o TST, mas só ataca a razão de mérito, ignorando o fundamento processual. O que acontecerá?</p>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. O TST não aplicará fungibilidade por falha nas razões recursais.')">A) O recurso será recebido com efeito devolutivo restrito pela fungibilidade.</button>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. O relator não julga metade da causa, pois o fundamento que restou (não atacado) já mantém a decisão inteira intacta.')">B) O relator apreciará a matéria de mérito, anulando o acórdão apenas naquela parte.</button>
+            <button class="q-opcao" onclick="responder(this, 'certa', 'Correto! É a regra da Súmula 422 do TST / Súmula 283 STF. Se a decisão tem mais de um fundamento autônomo e o recurso não ataca todos eles, ele não é conhecido (falta de dialeticidade recursal).')">C) O recurso não será conhecido por ausência de impugnação específica a todos os fundamentos suficientes da decisão (falta de dialeticidade).</button>
+            <div class="q-feedback"></div>
+        </div>
+    </div>
+
+    <div class="slide pratica">
+        <div class="slide-header"><div class="slide-title">Questão 59</div></div>
+        <div class="questao-box">
+            <p class="q-enunciado">Se a empresa perdeu o prazo para recorrer da decisão, ocorreu o trânsito em julgado. Contudo, o advogado tenta uma manobra: opõe Embargos de Declaração fora do prazo de 5 dias e, quando são rejeitados (intempestivos), tenta usar o "efeito interruptivo" para apresentar outro recurso. O prazo foi interrompido?</p>
+            <button class="q-opcao" onclick="responder(this, 'certa', 'Correto! Os Embargos de Declaração intempestivos, irregulares ou incabíveis NÃO INTERROMPEM o prazo para a interposição de outros recursos.')">A) Não. Embargos de Declaração intempestivos não interrompem o prazo recursal.</button>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. Somente embargos tempestivos possuem o efeito interruptivo.')">B) Sim. A simples protocolização de embargos sempre zera a contagem do prazo, mesmo que fora do prazo legal.</button>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. Suspender é congelar e voltar a contar de onde parou; na JT o efeito (quando regular) é interruptivo (zera a conta). Intempestivos não causam efeito algum.')">C) O prazo não é interrompido, mas apenas suspenso, voltando a correr pelo que restava.</button>
+            <div class="q-feedback"></div>
+        </div>
+    </div>
+
+    <div class="slide pratica">
+        <div class="slide-header"><div class="slide-title">Questão 60</div></div>
+        <div class="questao-box">
+            <p class="q-enunciado">A Consolidação das Leis do Trabalho exige que o recurso para o TST comprove a divergência entre TRTs. O advogado, para provar essa divergência, copia e cola na petição o link (URL) da página inicial do TRT de origem. Isso é suficiente para o TST aceitar o apelo?</p>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. O tribunal não faz pesquisa ativa para ajudar a parte na admissibilidade recursal excepcional.')">A) Sim, pois vivemos na era do processo eletrônico e o relator pode clicar no link para pesquisar o acórdão.</button>
+            <button class="q-opcao" onclick="responder(this, 'certa', 'Perfeito! O TST exige a transcrição do trecho divergente, a citação da fonte oficial (Súmula 337 do TST) e o cotejo analítico (comparação detalhada). A mera indicação de um link genérico invalida o preenchimento do pressuposto.')">B) Não. A comprovação de divergência jurisprudencial exige a citação da fonte oficial de publicação ou repositório autorizado, além da transcrição e cotejo analítico dos acórdãos (Súmula 337 TST).</button>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. Citar o CNJ não substitui a exigência da Súmula 337 do TST.')">C) Sim, desde que o link seja do Banco Nacional de Precedentes do CNJ.</button>
+            <div class="q-feedback"></div>
+        </div>
+    </div>
 <div class="slide pratica">
-<div class="slide-header">
-<div class="slide-num">Questão 03</div>
-<div class="slide-title">Entes Despersonalizados</div>
-<div class="title-line"></div>
-</div>
-<div class="questao-box">
-<div class="q-enunciado">Qual dos entes abaixo NÃO é considerado Pessoa Jurídica pelo CC, sendo tratado como ente despersonalizado?</div>
-<div class="q-opcoes">
-<button class="q-opcao" onclick="responder(this,'errada','Partido político é PJ de direito privado.')">A) Partido Político.</button>
-<button class="q-opcao" onclick="responder(this,'errada','Fundação privada é PJ.')">B) Fundação Privada.</button>
-<button class="q-opcao" onclick="responder(this,'certa','Correto! Condomínio, massa falida e espólio possuem capacidade judiciária, mas não personalidade.')">C) Condomínio Edilício.</button>
-<button class="q-opcao" onclick="responder(this,'errada','Organização religiosa é expressamente PJ.')">D) Organização Religiosa.</button>
-</div>
-<div class="q-feedback"></div>
-</div>
-</div>
+        <div class="slide-header"><div class="slide-title">Questão 61</div></div>
+        <div class="questao-box">
+            <p class="q-enunciado">Em um processo que tramitou pelo rito sumaríssimo, o TRT proferiu acórdão desfavorável à empresa. Ela deseja tentar levar a matéria ao TST. Quais são os ÚNICOS fundamentos legais que autorizam a admissibilidade desse apelo excepcional neste rito?</p>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. Divergência jurisprudencial comum entre TRTs não autoriza o trânsito no rito sumaríssimo.')">A) Divergência jurisprudencial com outro TRT e ofensa literal à CLT.</button>
+            <button class="q-opcao" onclick="responder(this, 'certa', 'Correto! No Rito Sumaríssimo (Art. 896, §9º, CLT), o Recurso de Revista SÓ cabe por contrariedade a Súmula do TST, Súmula Vinculante do STF ou violação direta à Constituição Federal.')">B) Contrariedade a Súmula da jurisprudência uniforme do TST, Súmula Vinculante do STF ou violação direta da Constituição Federal.</button>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. A CLT exige mais do que a mera transcendência econômica para conhecer do recurso no sumaríssimo.')">C) Ofensa à CLT, desde que demonstrada a transcendência econômica da causa.</button>
+            <div class="q-feedback"></div>
+        </div>
+    </div>
 
-<div class="slide pratica">
-<div class="slide-header">
-<div class="slide-num">Questão 04</div>
-<div class="slide-title">Estatais</div>
-<div class="title-line"></div>
-</div>
-<div class="questao-box">
-<div class="q-enunciado">Como Empresas Públicas e Sociedades de Economia Mista são classificadas quanto à sua natureza jurídica?</div>
-<div class="q-opcoes">
-<button class="q-opcao" onclick="responder(this,'errada','Embora da administração, exploram economia.')">A) Pessoas Jurídicas de Direito Público Interno.</button>
-<button class="q-opcao" onclick="responder(this,'certa','Exato! Regime de Direito Privado (Art. 173 CF).')">B) Pessoas Jurídicas de Direito Privado.</button>
-<button class="q-opcao" onclick="responder(this,'errada','Elas possuem personalidade própria.')">C) Entes despersonalizados da Administração.</button>
-<button class="q-opcao" onclick="responder(this,'errada','Direito Externo é para Estados estrangeiros.')">D) Pessoas Jurídicas de Direito Público Externo.</button>
-</div>
-<div class="q-feedback"></div>
-</div>
-</div>
+    <div class="slide pratica">
+        <div class="slide-header"><div class="slide-title">Questão 62</div></div>
+        <div class="questao-box">
+            <p class="q-enunciado">A empresa opôs Embargos de Declaração, mas o juiz do trabalho entendeu que a medida foi utilizada de forma abusiva e com intuito manifestamente protelatório. Qual é a penalidade processual que o magistrado pode aplicar na primeira vez em que isso ocorre?</p>
+            <button class="q-opcao" onclick="responder(this, 'certa', 'Exato! O juiz condenará o embargante a pagar multa não excedente a 2% (dois por cento) sobre o valor atualizado da causa, em favor do embargado (Art. 1.026, §2º, CPC).')">A) Multa não excedente a 2% sobre o valor atualizado da causa.</button>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. A multa de até 10% é aplicada apenas na hipótese de REITERAÇÃO de embargos protelatórios (§3º do 1026).')">B) Multa de até 10% sobre o valor da condenação.</button>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. Os embargos não geram deserção automática para recursos futuros.')">C) Perda automática do direito de interpor Recurso Ordinário.</button>
+            <div class="q-feedback"></div>
+        </div>
+    </div>
 
-<div class="slide pratica">
-<div class="slide-header">
-<div class="slide-num">Questão 05</div>
-<div class="slide-title">Conceito de Associação</div>
-<div class="title-line"></div>
-</div>
-<div class="questao-box">
-<div class="q-enunciado">Como a doutrina e a lei definem o conceito estrutural das Associações (Art. 53 do CC)?</div>
-<div class="q-opcoes">
-<button class="q-opcao" onclick="responder(this,'certa','Correto! São uniões de pessoas voltadas a fins ideais, proibida a partilha de lucros.')">A) União de pessoas que se organizam para fins não econômicos.</button>
-<button class="q-opcao" onclick="responder(this,'errada','Isso caracteriza Fundações.')">B) Afetação de um patrimônio para fim social.</button>
-<button class="q-opcao" onclick="responder(this,'errada','Isso define a Sociedade (que visa lucro).')">C) União de pessoas para partilhar lucros.</button>
-<button class="q-opcao" onclick="responder(this,'errada','Isso descreve a Autarquia.')">D) Instituição criada por lei para função de Estado.</button>
-</div>
-<div class="q-feedback"></div>
-</div>
-</div>
+    <div class="slide pratica">
+        <div class="slide-header"><div class="slide-title">Questão 63</div></div>
+        <div class="questao-box">
+            <p class="q-enunciado">A regra basilar do Processo do Trabalho é a irrecorribilidade imediata das decisões interlocutórias. Contudo, a Súmula 214 do TST estabelece raras exceções onde cabe recurso imediato. Assinale uma dessas exceções:</p>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. O indeferimento de prova pericial gera apenas protesto em ata, aguardando o recurso final.')">A) Decisão do juiz de primeiro grau que indefere a produção de prova pericial de insalubridade.</button>
+            <button class="q-opcao" onclick="responder(this, 'certa', 'Correto! Cabe recurso imediato de decisão de Tribunal Regional do Trabalho contrária a Súmula ou Orientação Jurisprudencial do TST (Súmula 214, a).')">B) Decisão de Tribunal Regional do Trabalho contrária a Súmula ou Orientação Jurisprudencial do TST.</button>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. Antecipação de tutela na sentença desafia RO; antes da sentença desafia Mandado de Segurança (Súm. 414), mas não recurso de imediato.')">C) Decisão que defere a antecipação de tutela no meio da fase de instrução.</button>
+            <div class="q-feedback"></div>
+        </div>
+    </div>
 
-<div class="slide pratica">
-<div class="slide-header">
-<div class="slide-num">Questão 06</div>
-<div class="slide-title">Atividade Econômica</div>
-<div class="title-line"></div>
-</div>
-<div class="questao-box">
-<div class="q-enunciado">Uma Associação pode realizar atividades que gerem receita ou lucro (como vender ingressos)?</div>
-<div class="q-opcoes">
-<button class="q-opcao" onclick="responder(this,'errada','A vedação é sobre partilha, não arrecadação.')">A) Não, é terminantemente proibida de arrecadar recursos.</button>
-<button class="q-opcao" onclick="responder(this,'certa','Correto! Pode gerar receita, desde que revestida 100% no seu objetivo institucional.')">B) Sim, desde que a receita seja integralmente revertida para seus fins.</button>
-<button class="q-opcao" onclick="responder(this,'errada','Dividir lucro é crime de desvio de finalidade associativa.')">C) Sim, podendo dividir os lucros entre membros.</button>
-<button class="q-opcao" onclick="responder(this,'errada','Pode realizar comércio para se manter, não precisa viver só de doações.')">D) Não, devendo viver exclusivamente de doações.</button>
-</div>
-<div class="q-feedback"></div>
-</div>
-</div>
+    <div class="slide pratica">
+        <div class="slide-header"><div class="slide-title">Questão 64</div></div>
+        <div class="questao-box">
+            <p class="q-enunciado">Ao interpor seu Recurso Ordinário, a reclamada comete um equívoco no momento de gerar a guia e recolhe as custas em valor INSUFICIENTE (faltou uma fração de R$ 15,00). De acordo com o CPC e a OJ 140 da SDI-1 do TST, qual o procedimento correto do Relator?</p>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. A ausência de valor é um erro sanável antes de aplicar a deserção final.')">A) Decretar a deserção imediatamente e negar seguimento ao recurso.</button>
+            <button class="q-opcao" onclick="responder(this, 'certa', 'Perfeito! Em caso de recolhimento INSUFICIENTE das custas ou do depósito recursal, o Relator deve intimar a parte para complementar o valor no prazo de 5 (cinco) dias, sob pena de deserção.')">B) Intimar a parte para complementar o valor no prazo de 5 dias úteis, sob pena de deserção.</button>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. O princípio da insignificância não se aplica ao preparo recursal trabalhista (Súmula 245 TST exige comprovação integral).')">C) Aplicar o princípio da insignificância processual e conhecer do recurso.</button>
+            <div class="q-feedback"></div>
+        </div>
+    </div>
 
-<div class="slide pratica">
-<div class="slide-header">
-<div class="slide-num">Questão 07</div>
-<div class="slide-title">Direitos dos Associados</div>
-<div class="title-line"></div>
-</div>
-<div class="questao-box">
-<div class="q-enunciado">Sobre os direitos dos associados em uma Associação, assinale a afirmativa correta:</div>
-<div class="q-opcoes">
-<button class="q-opcao" onclick="responder(this,'errada','A lei permite criar categorias.')">A) Direitos são absolutos e idênticos para todos.</button>
-<button class="q-opcao" onclick="responder(this,'certa','Perfeito. A regra é igualdade, mas o estatuto pode criar classes especiais (Art. 55).')">B) Têm direitos iguais, mas o estatuto pode instituir categorias com vantagens.</button>
-<button class="q-opcao" onclick="responder(this,'errada','A regra é ser intransmissível (intuitu personae).')">C) É sempre transmissível aos herdeiros.</button>
-<button class="q-opcao" onclick="responder(this,'errada','A exclusão exige justa causa e direito de defesa.')">D) Expulsão sumária não necessita de defesa.</button>
-</div>
-<div class="q-feedback"></div>
-</div>
-</div>
+    <div class="slide pratica">
+        <div class="slide-header"><div class="slide-title">Questão 65</div></div>
+        <div class="questao-box">
+            <p class="q-enunciado">Com a Reforma Trabalhista (Lei 13.467/2017), o empregador obteve uma alternativa legal e expressa para não precisar desembolsar dinheiro em espécie na conta vinculada ao realizar o Depósito Recursal. Pelo que ele pode substituir esse depósito (Art. 899, § 11)?</p>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. Títulos da dívida ou notas promissórias não substituem o depósito recursal.')">A) Títulos da Dívida Agrária ou duplicatas com aceite.</button>
+            <button class="q-opcao" onclick="responder(this, 'certa', 'Exato! O depósito recursal poderá ser substituído por fiança bancária ou seguro garantia judicial, mediante acréscimo legal de 30% conforme regramento do TST/CPC.')">B) Fiança bancária ou seguro garantia judicial.</button>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. A mera indicação de penhora sobre o imóvel da sede não equivale ao depósito recursal exigido pela CLT.')">C) Nomeação à penhora do imóvel onde funciona a sede da empresa.</button>
+            <div class="q-feedback"></div>
+        </div>
+    </div>
 
-<div class="slide pratica">
-<div class="slide-header">
-<div class="slide-num">Questão 08</div>
-<div class="slide-title">Fundações Privadas</div>
-<div class="title-line"></div>
-</div>
-<div class="questao-box">
-<div class="q-enunciado">Qual é a base estrutural de uma Fundação Privada?</div>
-<div class="q-opcoes">
-<button class="q-opcao" onclick="responder(this,'errada','Isso caracteriza sociedade.')">A) Agrupamento de pessoas focadas em economia.</button>
-<button class="q-opcao" onclick="responder(this,'certa','Correto! É uma universalidade de bens afetados a uma finalidade específica.')">B) Um patrimônio afetado a uma finalidade.</button>
-<button class="q-opcao" onclick="responder(this,'errada','Fundação não possui associados ou donos.')">C) Vontade de associados em assembleia.</button>
-<button class="q-opcao" onclick="responder(this,'errada','Sociedades Anônimas têm capital em ações.')">D) Capital dividido em ações na bolsa.</button>
-</div>
-<div class="q-feedback"></div>
-</div>
-</div>
+    <div class="slide pratica">
+        <div class="slide-header"><div class="slide-title">Questão 66</div></div>
+        <div class="questao-box">
+            <p class="q-enunciado">O Acórdão do TRT foi publicado no Diário de Justiça do dia 19 de dezembro (terça-feira). A empresa precisa interpor recurso. No entanto, considerando as regras das "férias forenses/recesso" (Art. 775-A da CLT), o que ocorrerá com o prazo recursal deste advogado?</p>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. O recesso paralisa os prazos, não exige prática de ato emergencial sem tutela.')">A) Deve recorrer em até 8 dias normais, pois prazos na Justiça do Trabalho são ininterruptos.</button>
+            <button class="q-opcao" onclick="responder(this, 'certa', 'Correto! Fica SUSPENSO o curso do prazo processual nos dias compreendidos entre 20 de dezembro e 20 de janeiro, inclusive. O prazo volta a correr do ponto em que parou após esse período.')">B) O prazo recursal fica suspenso entre 20 de dezembro e 20 de janeiro, inclusive.</button>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. A suspensão congela o prazo e ele continua de onde parou. A interrupção o zeraria, o que não é o caso.')">C) O prazo sofre interrupção e voltará a contar integralmente do zero a partir de 21 de janeiro.</button>
+            <div class="q-feedback"></div>
+        </div>
+    </div>
 
-<div class="slide pratica">
-<div class="slide-header">
-<div class="slide-num">Questão 09</div>
-<div class="slide-title">Fins Fundacionais</div>
-<div class="title-line"></div>
-</div>
-<div class="questao-box">
-<div class="q-enunciado">De acordo com o Art. 62 do CC, qual representa um fim VÁLIDO para criar uma Fundação?</div>
-<div class="q-opcoes">
-<button class="q-opcao" onclick="responder(this,'errada','Mineração para lucrar desvirtua a fundação.')">A) Exploração de atividade minerária e lucro.</button>
-<button class="q-opcao" onclick="responder(this,'certa','Perfeito! O art. 62 traz um rol que inclui o meio ambiente e assistência social.')">B) Defesa, preservação e conservação do meio ambiente.</button>
-<button class="q-opcao" onclick="responder(this,'errada','Blindagem patrimonial familiar não é fim altruístico.')">C) Administração de bens familiares para isenção.</button>
-<button class="q-opcao" onclick="responder(this,'errada','Isso tem caráter meramente financeiro.')">D) Fundo de investimentos mútuos.</button>
-</div>
-<div class="q-feedback"></div>
-</div>
-</div>
+    <div class="slide pratica">
+        <div class="slide-header"><div class="slide-title">Questão 67</div></div>
+        <div class="questao-box">
+            <p class="q-enunciado">Uma Pessoa Jurídica (empresa) entra com Recurso Ordinário, mas pede os benefícios da justiça gratuita afirmando passar por graves dificuldades financeiras, com o objetivo de ser isenta de custas e do depósito recursal. Pela jurisprudência (Súmula 463 do TST), o que se exige da empresa?</p>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. Para pessoa natural/física a simples declaração basta. Para pessoa jurídica, não.')">A) Apenas a apresentação de declaração de hipossuficiência firmada pelo representante legal.</button>
+            <button class="q-opcao" onclick="responder(this, 'certa', 'Perfeito! No caso de pessoa jurídica, não basta a mera declaração. É imprescindível a DEMONSTRAÇÃO CABAL de impossibilidade de arcar com as despesas do processo (Súmula 463, II).')">B) É imprescindível a demonstração cabal, de forma objetiva, da impossibilidade de arcar com as despesas do processo.</button>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. É possível sim conceder justiça gratuita à PJ, desde que comprove a miserabilidade jurídica.')">C) Pessoas jurídicas com fins lucrativos jamais têm direito à justiça gratuita na Justiça do Trabalho.</button>
+            <div class="q-feedback"></div>
+        </div>
+    </div>
 
-<div class="slide pratica">
-<div class="slide-header">
-<div class="slide-num">Questão 10</div>
-<div class="slide-title">Velamento (Fiscalização)</div>
-<div class="title-line"></div>
-</div>
-<div class="questao-box">
-<div class="q-enunciado">A quem compete a fiscalização permanente (velamento) das Fundações Privadas?</div>
-<div class="q-opcoes">
-<button class="q-opcao" onclick="responder(this,'errada','TCU fiscaliza entes federais públicos.')">A) Ao Tribunal de Contas da União.</button>
-<button class="q-opcao" onclick="responder(this,'certa','Correto! O velamento das fundações privadas cabe ao Ministério Público Estadual.')">B) Ao Ministério Público do Estado onde situadas.</button>
-<button class="q-opcao" onclick="responder(this,'errada','RFB cuida apenas do aspecto fiscal.')">C) À Receita Federal do Brasil.</button>
-<button class="q-opcao" onclick="responder(this,'errada','O curador constitucional é o MP.')">D) Ao Conselho Nacional de Assistência Social.</button>
-</div>
-<div class="q-feedback"></div>
-</div>
-</div>
+    <div class="slide pratica">
+        <div class="slide-header"><div class="slide-title">Questão 68</div></div>
+        <div class="questao-box">
+            <p class="q-enunciado">O Sindicato dos Trabalhadores ajuizou Dissídio Coletivo de Greve, cujo julgamento inicial é de competência originária do TRT. O tribunal fixou cláusulas com as quais o Sindicato Patronal não concorda. Qual é o recurso cabível desta decisão do TRT e para qual órgão ele será dirigido?</p>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. Recurso de Revista é de natureza extraordinária para dissídios individuais julgados em 2º grau.')">A) Recurso de Revista para a Turma do TST.</button>
+            <button class="q-opcao" onclick="responder(this, 'certa', 'Exato! Como o Dissídio Coletivo é Ação Originária no TRT, a decisão desafia Recurso Ordinário, que será julgado pela Seção Especializada em Dissídios Coletivos (SDC) do TST (Art. 895, II, CLT).')">B) Recurso Ordinário para a Seção Especializada em Dissídios Coletivos (SDC) do TST.</button>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. A SBDI-1 julga embargos e dissídios individuais originários, não os dissídios coletivos de competência da SDC.')">C) Recurso Ordinário para a Subseção I Especializada em Dissídios Individuais (SBDI-1).</button>
+            <div class="q-feedback"></div>
+        </div>
+    </div>
 
-<div class="slide pratica">
-<div class="slide-header">
-<div class="slide-num">Questão 11</div>
-<div class="slide-title">Alteração Estatutária</div>
-<div class="title-line"></div>
-</div>
-<div class="questao-box">
-<div class="q-enunciado">Para alterar o estatuto de uma Fundação, a lei exige requisitos, EXCETO:</div>
-<div class="q-opcoes">
-<button class="q-opcao" onclick="responder(this,'certa','Correto! Os herdeiros não mandam na fundação. Logo, a aprovação deles NÃO é exigida.')">A) Aprovação unânime dos herdeiros do instituidor.</button>
-<button class="q-opcao" onclick="responder(this,'errada','É requisito sim (Art. 67, I).')">B) Deliberação por, no mínimo, dois terços (2/3).</button>
-<button class="q-opcao" onclick="responder(this,'errada','É requisito sim (Art. 67, II).')">C) Não subverter o fim da fundação.</button>
-<button class="q-opcao" onclick="responder(this,'errada','É requisito sim (Art. 67, III).')">D) A aprovação do órgão do Ministério Público.</button>
-</div>
-<div class="q-feedback"></div>
-</div>
-</div>
+    <div class="slide pratica">
+        <div class="slide-header"><div class="slide-title">Questão 69</div></div>
+        <div class="questao-box">
+            <p class="q-enunciado">O banco reclamado perdeu a causa e foi condenado a pagar uma vultosa quantia de indenização ao ex-gerente, avaliada em milhões. Ao preparar o apelo, o advogado precisa calcular as Custas Processuais (2%). No entanto, o Artigo 789 da CLT impõe um teto (limite máximo) para o valor das custas. Que teto é esse?</p>
+            <button class="q-opcao" onclick="responder(this, 'certa', 'Correto! As custas (2%) não podem ultrapassar o valor equivalente a QUATRO VEZES o limite máximo dos benefícios do Regime Geral de Previdência Social (RGPS/INSS).')">A) Quatro vezes o limite máximo dos benefícios do Regime Geral de Previdência Social (INSS).</button>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. A limitação não é baseada em quantidade de salários mínimos (essa era uma regra antiga).')">B) 50 vezes o salário mínimo vigente no país.</button>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. O depósito recursal tem valores tabulados anualmente, mas as CUSTAS processuais limitam-se a quatro vezes o teto do INSS.')">C) O mesmo limite estabelecido anualmente pelo TST para o Depósito Recursal do Recurso de Revista.</button>
+            <div class="q-feedback"></div>
+        </div>
+    </div>
 
-<div class="slide pratica">
-<div class="slide-header">
-<div class="slide-num">Questão 12</div>
-<div class="slide-title">Destino do Patrimônio</div>
-<div class="title-line"></div>
-</div>
-<div class="questao-box">
-<div class="q-enunciado">Se uma Associação for dissolvida, qual será o destino do patrimônio remanescente?</div>
-<div class="q-opcoes">
-<button class="q-opcao" onclick="responder(this,'errada','Partilhar configura lucro disfarçado.')">A) Será dividido entre os associados.</button>
-<button class="q-opcao" onclick="responder(this,'errada','Isso só ocorre subsidiariamente, na falta de outra opção.')">B) Revertido obrigatoriamente para a União Federal.</button>
-<button class="q-opcao" onclick="responder(this,'certa','Correto! O Art. 61 destina os bens para outra entidade sem fins lucrativos afim.')">C) Destinado a uma entidade de fins não econômicos afim.</button>
-<button class="q-opcao" onclick="responder(this,'errada','Enriquecimento ilícito da diretoria.')">D) Doado aos ex-dirigentes.</button>
-</div>
-<div class="q-feedback"></div>
-</div>
-</div>
+    <div class="slide pratica">
+        <div class="slide-header"><div class="slide-title">Questão 70</div></div>
+        <div class="questao-box">
+            <p class="q-enunciado">A sentença de primeiro grau julgou totalmente improcedente um pedido e condenou o trabalhador ao pagamento de custas processuais. O reclamante NÃO possui o benefício da justiça gratuita e interpõe Recurso Ordinário, porém, efetua APENAS a metade do valor das custas e não complementa no prazo da OJ 140. O que ocorre?</p>
+            <button class="q-opcao" onclick="responder(this, 'certa', 'Exato! Se o recolhimento das custas processuais foi insuficiente e não houve complementação dentro do prazo concedido pelo Relator, o recurso incorre em DESERÇÃO e seu seguimento será denegado.')">A) O recurso não será conhecido por deserção.</button>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. Trabalhador vencido e não beneficiário de justiça gratuita paga as custas. Se pagar menor, é deserção.')">B) O recurso será recebido apenas no efeito devolutivo mitigado.</button>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. O valor incontroverso é regra para o Agravo de Petição do devedor, não tem relação com o pagamento a menor das custas.')">C) Será recebido apenas para discutir a matéria em que se alcançou o valor incontroverso.</button>
+            <div class="q-feedback"></div>
+        </div>
+    </div>
 
-<div class="slide pratica">
-<div class="slide-header">
-<div class="slide-num">Questão 13</div>
-<div class="slide-title">Extinção de Fundação</div>
-<div class="title-line"></div>
-</div>
-<div class="questao-box">
-<div class="q-enunciado">Se a finalidade de uma Fundação se tornar ilícita ou impossível, o que ocorre?</div>
-<div class="q-opcoes">
-<button class="q-opcao" onclick="responder(this,'errada','A afetação patrimonial é irrevogável.')">A) Retornam aos herdeiros do instituidor.</button>
-<button class="q-opcao" onclick="responder(this,'certa','Correto! O Art. 69 prevê a extinção e incorporação do acervo a outra fundação congênere.')">B) O MP promove a extinção, incorporando-se o patrimônio a fundação semelhante.</button>
-<button class="q-opcao" onclick="responder(this,'errada','Entidade civil não vira estatal compulsoriamente.')">C) Convertida em sociedade empresária do Estado.</button>
-<button class="q-opcao" onclick="responder(this,'errada','Os administradores não têm direito aos bens.')">D) Administradores dividem o patrimônio.</button>
-</div>
-<div class="q-feedback"></div>
-</div>
-</div>
+    <div class="slide pratica">
+        <div class="slide-header"><div class="slide-title">Questão 71</div></div>
+        <div class="questao-box">
+            <p class="q-enunciado">A sentença proferida pelo Juiz do Trabalho tem um erro material grave (escreveu "improcedente" na fundamentação, mas no dispositivo anotou "procedente"). Qual é o recurso cabível para sanar imediatamente este erro formal da sentença e qual o seu prazo?</p>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. Correição parcial é para tumulto processual, não para erro material de sentença.')">A) Correição Parcial, no prazo de 15 dias úteis.</button>
+            <button class="q-opcao" onclick="responder(this, 'certa', 'Correto! Os Embargos de Declaração são o meio adequado para sanar omissão, obscuridade, contradição e também o erro material na decisão judicial. O prazo é de 5 dias úteis (Art. 897-A, CLT).')">B) Embargos de Declaração, no prazo de 5 dias úteis.</button>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. Embora o RO pudesse resolver, ele remeteria o processo ao TRT em 8 dias, retardando a execução desnecessariamente, sendo os ED o meio direto e primário.')">C) Recurso Ordinário com pedido cautelar, no prazo de 8 dias úteis.</button>
+            <div class="q-feedback"></div>
+        </div>
+    </div>
 
-<div class="slide pratica">
-<div class="slide-header">
-<div class="slide-num">Questão 14</div>
-<div class="slide-title">Autonomia Patrimonial</div>
-<div class="title-line"></div>
-</div>
-<div class="questao-box">
-<div class="q-enunciado">O que significa a 'autonomia patrimonial' da Pessoa Jurídica?</div>
-<div class="q-opcoes">
-<button class="q-opcao" onclick="responder(this,'errada','A empresa é acionada sem precisar pedir ao sócio.')">A) Não ser processada sem autorização dos sócios.</button>
-<button class="q-opcao" onclick="responder(this,'errada','A separação impede exatamente essa confusão inicial.')">B) Que os bens dos sócios respondem solidariamente sempre.</button>
-<button class="q-opcao" onclick="responder(this,'certa','Exato! O patrimônio e as dívidas da empresa são dela, não do sócio (separação).')">C) Que o patrimônio da PJ não se confunde com o patrimônio de seus sócios.</button>
-<button class="q-opcao" onclick="responder(this,'errada','Imunidade depende da finalidade constitucional.')">D) Imunidade a tributos estaduais.</button>
-</div>
-<div class="q-feedback"></div>
-</div>
-</div>
+    <div class="slide pratica">
+        <div class="slide-header"><div class="slide-title">Questão 72</div></div>
+        <div class="questao-box">
+            <p class="q-enunciado">No trâmite processual no TST, o relator, em decisão unipessoal (monocrática), decide não conhecer do Agravo de Instrumento em Recurso de Revista por considerar AUSENTE A TRANSCENDÊNCIA da causa (Art. 896-A, § 5º da CLT). Qual medida a parte pode interpor contra essa decisão para a Turma do TST?</p>
+            <button class="q-opcao" onclick="responder(this, 'certa', 'Exato! A Lei 13.467/17 (Reforma Trabalhista) estabeleceu expressamente no Art. 896-A, §5º, que é IRRECORRÍVEL no âmbito do tribunal a decisão monocrática do relator que considerar ausente a transcendência em Agravo de Instrumento no RR.')">A) Nenhuma. Essa decisão é legalmente irrecorrível no âmbito do Tribunal.</button>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. Embora a regra geral para atacar decisão de relator seja o Agravo Interno, a CLT trouxe uma exceção expressa para o caso da transcendência no agravo de instrumento (irrecorribilidade).')">B) Agravo Interno no prazo de 8 dias.</button>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. Embargos pressupõem decisão colegiada de Turma (salvo Súm. 353), e não se aplicam a essa vedação específica.')">C) Embargos por divergência, comprovada a transcendência econômica.</button>
+            <div class="q-feedback"></div>
+        </div>
+    </div>
 
-<div class="slide pratica">
-<div class="slide-header">
-<div class="slide-num">Questão 15</div>
-<div class="slide-title">Direitos da Personalidade</div>
-<div class="title-line"></div>
-</div>
-<div class="questao-box">
-<div class="q-enunciado">Aplica-se às Pessoas Jurídicas a proteção aos Direitos da Personalidade?</div>
-<div class="q-opcoes">
-<button class="q-opcao" onclick="responder(this,'errada','A lei os estende à empresa naquilo que couber.')">A) Não, são exclusivos do ser humano.</button>
-<button class="q-opcao" onclick="responder(this,'certa','Correto! Art. 52 do CC. A PJ tem proteção à honra objetiva, nome e imagem.')">B) Sim, aplica-se às PJs, no que couber.</button>
-<button class="q-opcao" onclick="responder(this,'errada','Marcas são propriedade industrial, mas a proteção da personalidade vai além disso.')">C) Sim, mas restrito a marcas e patentes.</button>
-<button class="q-opcao" onclick="responder(this,'errada','Ela sofre dano na honra objetiva.')">D) Não, pois a PJ não tem capacidade de sofrer dano.</button>
-</div>
-<div class="q-feedback"></div>
-</div>
-</div>
+    <div class="slide pratica">
+        <div class="slide-header"><div class="slide-title">Questão 73</div></div>
+        <div class="questao-box">
+            <p class="q-enunciado">Duas empresas formam grupo econômico e foram condenadas solidariamente. Uma delas recorre tempestivamente e recolhe o valor total do depósito recursal estipulado para a interposição. A segunda empresa (litisconsorte), aproveitando isso, também recorre, sem efetuar um novo depósito. Pela Súmula 128 do TST, isso é permitido?</p>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. A isenção total só se aplica se o juízo for integralmente garantido e a empresa que pagou não pedir sua exclusão.')">A) Sim, pelo simples princípio da solidariedade passiva, todos se isentam.')</button>
+            <button class="q-opcao" onclick="responder(this, 'certa', 'Correto! Súmula 128, III: Havendo condenação solidária de duas ou mais empresas, o depósito recursal efetuado por uma delas APROVEITA as demais, desde que a empresa que efetuou o depósito NÃO pleiteie sua exclusão da lide.')">B) Sim, o depósito de uma aproveita as demais, desde que a empresa que pagou não pleiteie sua exclusão da lide em seu recurso.</button>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. O limite de recursos do TST não exige múltiplos depósitos na mesma condenação solidária nas condições da súmula.')">C) Não. Cada empresa que recorre obriga-se a recolher 100% da sua cota-parte processual individualmente.</button>
+            <div class="q-feedback"></div>
+        </div>
+    </div>
 
-<div class="slide pratica">
-<div class="slide-header">
-<div class="slide-num">Questão 16</div>
-<div class="slide-title">Dano Moral (Súm. 227 STJ)</div>
-<div class="title-line"></div>
-</div>
-<div class="questao-box">
-<div class="q-enunciado">Segundo o STJ, a Pessoa Jurídica pode sofrer dano moral?</div>
-<div class="q-opcoes">
-<button class="q-opcao" onclick="responder(this,'errada','Independe dos administradores.')">A) Sim, desde que o sócio sofra abalo provado.</button>
-<button class="q-opcao" onclick="responder(this,'errada','A jurisprudência sumulada nega essa visão.')">B) Não, a compensação é exclusiva ao sofrimento humano.</button>
-<button class="q-opcao" onclick="responder(this,'certa','Correto! A Súmula 227 estipula que ofensa à honra objetiva (bom nome) gera o dano.')">C) Sim, quando há ofensa à sua honra objetiva.</button>
-<button class="q-opcao" onclick="responder(this,'errada','Empresárias também podem.')">D) Apenas PJs sem fins lucrativos.</button>
-</div>
-<div class="q-feedback"></div>
-</div>
-</div>
+    <div class="slide pratica">
+        <div class="slide-header"><div class="slide-title">Questão 74</div></div>
+        <div class="questao-box">
+            <p class="q-enunciado">Em relação ao prequestionamento necessário para acessar o TST (Recurso de Revista), a parte deve observar a Súmula 297. Como o Tribunal define que a matéria foi "prequestionada" para autorizar o conhecimento do recurso?</p>
+            <button class="q-opcao" onclick="responder(this, 'certa', 'Perfeito! Diz-se prequestionada a matéria ou questão quando na decisão impugnada (acórdão do TRT) haja sido adotada, EXPLICITAMENTE, tese a respeito (Súmula 297, I, TST).')">A) Quando o tribunal de origem houver adotado, explicitamente, tese a respeito da questão em seu acórdão.</button>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. O prequestionamento não basta ter sido falado na petição inicial; o TRIBUNAL tem que emitir tese sobre ele na decisão (ou ficto em embargos).')">B) Basta que o advogado tenha citado o artigo de lei desde a sua petição inicial.</button>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. A violação frontal não exime o prequestionamento (debate prévio) no processo do trabalho.')">C) Sendo violação frontal à Constituição, o prequestionamento é sumariamente dispensado por envolver ordem pública.</button>
+            <div class="q-feedback"></div>
+        </div>
+    </div>
 
-<div class="slide pratica">
-<div class="slide-header">
-<div class="slide-num">Questão 17</div>
-<div class="slide-title">Conceito de Desconsideração</div>
-<div class="title-line"></div>
-</div>
-<div class="questao-box">
-<div class="q-enunciado">O que significa o instituto da 'Desconsideração da Personalidade Jurídica'?</div>
-<div class="q-opcoes">
-<button class="q-opcao" onclick="responder(this,'errada','Isso é despersonificação/extinção.')">A) A extinção definitiva da pessoa jurídica e baixa.</button>
-<button class="q-opcao" onclick="responder(this,'certa','Perfeito. Levanta-se o escudo temporariamente para penhorar bens dos sócios.')">B) O afastamento temporário da autonomia para atingir bens dos sócios em casos de fraude.</button>
-<button class="q-opcao" onclick="responder(this,'errada','Não há perdão, mas expansão de garantia.')">C) Perdão judicial de dívidas da empresa.</button>
-<button class="q-opcao" onclick="responder(this,'errada','Isso não existe juridicamente nesse contexto.')">D) Transformação de Associação em Sociedade.</button>
-</div>
-<div class="q-feedback"></div>
-</div>
-</div>
+    <div class="slide pratica">
+        <div class="slide-header"><div class="slide-title">Questão 75</div></div>
+        <div class="questao-box">
+            <p class="q-enunciado">A Consolidação das Leis do Trabalho garante o direito à sustentação oral da tribuna pelos advogados das partes (10 minutos no TRT/TST). No julgamento de qual das seguintes medidas recursais o advogado TEM DIREITO de produzir sustentação oral na Justiça do Trabalho?</p>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. Regimentalmente, os embargos de declaração não comportam sustentação oral por seu caráter meramente integrativo/saneador.')">A) Embargos de Declaração perante o Juiz de Primeiro Grau ou Turma do TRT.</button>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. A regra no TST/TRT é que não cabe sustentação em Agravo de Instrumento (há exceções raras no TST vinculadas a recursos competentes, mas a regra é não).')">B) Agravo de Instrumento no Tribunal Superior do Trabalho.</button>
+            <button class="q-opcao" onclick="responder(this, 'certa', 'Exato! O julgamento do Recurso Ordinário pelo Tribunal Regional do Trabalho (TRT) sempre possibilita a inscrição para sustentação oral pelas partes (Art. 895 c/c regimentos internos).')">C) Recurso Ordinário no Tribunal Regional do Trabalho (TRT).</button>
+            <div class="q-feedback"></div>
+        </div>
+    </div>
 
-<div class="slide pratica">
-<div class="slide-header">
-<div class="slide-num">Questão 18</div>
-<div class="slide-title">Teoria Maior (Art. 50 CC)</div>
-<div class="title-line"></div>
-</div>
-<div class="questao-box">
-<div class="q-enunciado">A 'Teoria Maior' (Art. 50 do Código Civil) exige quais requisitos para ser aplicada?</div>
-<div class="q-opcoes">
-<button class="q-opcao" onclick="responder(this,'errada','Insolvência atrai a Teoria Menor.')">A) Apenas a insolvência da pessoa jurídica.</button>
-<button class="q-opcao" onclick="responder(this,'errada','Encerramento irregular não basta para a lei civil.')">B) O encerramento irregular das atividades.</button>
-<button class="q-opcao" onclick="responder(this,'certa','Correto. A Teoria Maior é rígida e exige prova do Abuso (Desvio ou Confusão).')">C) O abuso da personalidade jurídica (desvio de fim ou confusão patrimonial).</button>
-<button class="q-opcao" onclick="responder(this,'errada','Atraso é inadimplemento, não fraude.')">D) O atraso superior a 90 dias no pagamento.</button>
-</div>
-<div class="q-feedback"></div>
-</div>
-</div>
+    <div class="slide pratica">
+        <div class="slide-header"><div class="slide-title">Questão 76</div></div>
+        <div class="questao-box">
+            <p class="q-enunciado">O advogado interpõe Recurso Ordinário, e os autos vão conclusos ao próprio Juiz da Vara do Trabalho para fazer o primeiro juízo de admissibilidade. O juiz acha as razões da empresa totalmente descabidas e erradas no mérito. Ele pode negar seguimento ao RO por considerar que a parte não tem razão?</p>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. O juiz de origem não julga mais o mérito, ele só filtra se o recurso é tempestivo, bem pago, etc.')">A) Sim, invocando o princípio da celeridade, bloqueando recursos protelatórios sem razão evidente.</button>
+            <button class="q-opcao" onclick="responder(this, 'certa', 'Correto! Não. O juízo de admissibilidade a quo (na Vara) restringe-se exclusivamente aos pressupostos OBJETIVOS E SUBJETIVOS (extrínsecos e intrínsecos). Análise de mérito é do tribunal ad quem.')">B) Não. O juízo de admissibilidade de origem não pode adentrar no julgamento do mérito recursal, analisando apenas os pressupostos extrínsecos e intrínsecos.</button>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. Custas de litigância não se aplicam apenas por discordância de tese na admissibilidade.')">C) Sim, desde que aplique concomitantemente uma multa por litigância de má-fé.</button>
+            <div class="q-feedback"></div>
+        </div>
+    </div>
 
-<div class="slide pratica">
-<div class="slide-header">
-<div class="slide-num">Questão 19</div>
-<div class="slide-title">Desvio de Finalidade</div>
-<div class="title-line"></div>
-</div>
-<div class="questao-box">
-<div class="q-enunciado">O que a lei define como 'Desvio de Finalidade' (Art. 50, §1º)?</div>
-<div class="q-opcoes">
-<button class="q-opcao" onclick="responder(this,'errada','Isso é irregularidade cadastral.')">A) Alterar o ramo sem comunicar a Junta.</button>
-<button class="q-opcao" onclick="responder(this,'certa','Correto. Atuação dolosa com propósito de lesar credores ou para atos ilícitos.')">B) Utilização da PJ com propósito de lesar credores e para atos ilícitos.</button>
-<button class="q-opcao" onclick="responder(this,'errada','Pagar contas é Confusão Patrimonial, não desvio.')">C) Pagar contas pessoais do sócio com dinheiro da PJ.</button>
-<button class="q-opcao" onclick="responder(this,'errada','Não pagar tributo é inadimplência.')">D) Não recolher tributos por 2 anos.</button>
-</div>
-<div class="q-feedback"></div>
-</div>
-</div>
+    <div class="slide pratica">
+        <div class="slide-header"><div class="slide-title">Questão 77</div></div>
+        <div class="questao-box">
+            <p class="q-enunciado">Um processo não teve interposição de Recurso Ordinário, ocorrendo o trânsito em julgado ainda na Vara do Trabalho. Dois anos depois, o devedor descobre uma prova nova incontestável e ajuíza Ação Rescisória. Quem é o órgão competente para processar e julgar ORIGINARIAMENTE essa Ação Rescisória?</p>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. Varas do Trabalho não possuem competência originária para Ação Rescisória.')">A) A própria Vara do Trabalho (Juiz de 1º Grau) que proferiu a sentença irrecorrida.</button>
+            <button class="q-opcao" onclick="responder(this, 'certa', 'Exato! Independentemente de a sentença ter transitado em julgado na Vara, a competência originária para julgar Ação Rescisória das decisões das Varas é sempre do TRIBUNAL REGIONAL DO TRABALHO - TRT (Art. 678, I, "a", CLT).')">B) O Tribunal Regional do Trabalho (TRT).</button>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. O TST só julga AR de seus próprios acórdãos.')">C) O Tribunal Superior do Trabalho (TST), por tratar-se de ofensa à coisa julgada.</button>
+            <div class="q-feedback"></div>
+        </div>
+    </div>
 
-<div class="slide pratica">
-<div class="slide-header">
-<div class="slide-num">Questão 20</div>
-<div class="slide-title">Confusão Patrimonial</div>
-<div class="title-line"></div>
-</div>
-<div class="questao-box">
-<div class="q-enunciado">O que caracteriza a 'Confusão Patrimonial' para fins de desconsideração?</div>
-<div class="q-opcoes">
-<button class="q-opcao" onclick="responder(this,'errada','Venda de quotas entre parentes é lícita.')">A) Transferência de quotas entre parentes.</button>
-<button class="q-opcao" onclick="responder(this,'certa','Perfeito. A falta de separação fática de contas bancárias e bens entre sócio e empresa.')">B) Ausência de separação de fato entre os patrimônios (pagamento de contas recíprocas).</button>
-<button class="q-opcao" onclick="responder(this,'errada','Regime de casamento não causa confusão contábil.')">C) Casamento de sócios sob comunhão universal.</button>
-<button class="q-opcao" onclick="responder(this,'errada','A Sociedade Unipessoal (SLU) é lícita.')">D) Ter apenas um único sócio fundador.</button>
-</div>
-<div class="q-feedback"></div>
-</div>
-</div>
-<div class="slide pratica">
-<div class="slide-header">
-<div class="slide-num">Questão 21</div>
-<div class="slide-title">Alcance da Medida</div>
-<div class="title-line"></div>
-</div>
-<div class="questao-box">
-<div class="q-enunciado">Na desconsideração do CC (Teoria Maior), os bens de QUAIS sócios poderão ser atingidos?</div>
-<div class="q-opcoes">
-<button class="q-opcao" onclick="responder(this,'errada','A responsabilidade não recai sobre sócios inocentes.')">A) De todos os sócios, independentemente de culpa.</button>
-<button class="q-opcao" onclick="responder(this,'certa','Correto! O véu levanta apenas para quem praticou ou se beneficiou do abuso (Art. 50).')">B) Apenas dos sócios ou administradores beneficiados direta ou indiretamente pelo abuso.</button>
-<button class="q-opcao" onclick="responder(this,'errada','Não há presunção de culpa pelo fato de ser majoritário.')">C) Apenas do sócio majoritário, presumindo a culpa.</button>
-<button class="q-opcao" onclick="responder(this,'errada','Minoridade acionária não isenta nem presume culpa.')">D) Apenas dos minoritários que assinaram o contrato.</button>
-</div>
-<div class="q-feedback"></div>
-</div>
-</div>
+    <div class="slide pratica">
+        <div class="slide-header"><div class="slide-title">Questão 78</div></div>
+        <div class="questao-box">
+            <p class="q-enunciado">O reclamante (empregado) entrou com processo e perdeu em todos os pedidos (improcedência total). O juiz não lhe concedeu os benefícios da justiça gratuita. O trabalhador decide entrar com o recurso cabível ao TRT. Em relação ao Preparo Recursal, o que ele precisará pagar?</p>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. O depósito recursal visa garantir o pagamento de condenações (pecuniárias) e o trabalhador não foi condenado a pagar verbas, logo não faz depósito. Só paga as custas.')">A) Pagará as custas processuais (2% sobre o valor da causa) e o depósito recursal estipulado pelo TST.</button>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. Como perdeu a JG, deve pagar as custas de 2% do valor da causa sob pena de deserção.')">B) Será isento de qualquer pagamento em respeito ao princípio da proteção, bastando declarar pobreza no recurso.</button>
+            <button class="q-opcao" onclick="responder(this, 'certa', 'Perfeito! Ele terá que recolher as Custas Processuais de 2% sobre o valor arbitrado à causa (sob pena de deserção), mas NÃO pagará Depósito Recursal, pois este só serve para garantir a execução contra o devedor da condenação.')">C) Pagará apenas as Custas Processuais, não havendo que se falar em Depósito Recursal para o reclamante.</button>
+            <div class="q-feedback"></div>
+        </div>
+    </div>
 
-<div class="slide pratica">
-<div class="slide-header">
-<div class="slide-num">Questão 22</div>
-<div class="slide-title">Desconsideração Inversa</div>
-<div class="title-line"></div>
-</div>
-<div class="questao-box">
-<div class="q-enunciado">No Direito brasileiro, no que consiste a chamada 'Desconsideração Inversa'?</div>
-<div class="q-opcoes">
-<button class="q-opcao" onclick="responder(this,'errada','Credor não responde por dívida.')">A) Responsabilização dos credores pela dívida da empresa.</button>
-<button class="q-opcao" onclick="responder(this,'certa','Perfeito. Atinge-se a empresa para pagar a dívida do sócio que escondeu bens nela.')">B) Afastamento da autonomia para responsabilizar a PJ por obrigações do sócio que ocultou bens nela.</button>
-<button class="q-opcao" onclick="responder(this,'errada','Isso seria anulação retroativa.')">C) Anulação do registro da PJ retroativamente.</button>
-<button class="q-opcao" onclick="responder(this,'errada','Não tem relação com penhora de faturamento futuro.')">D) Pagamento das dívidas com lucros futuros presumidos.</button>
-</div>
-<div class="q-feedback"></div>
-</div>
-</div>
+    <div class="slide pratica">
+        <div class="slide-header"><div class="slide-title">Questão 79</div></div>
+        <div class="questao-box">
+            <p class="q-enunciado">A empresa interpõe Recurso Ordinário. Dois dias depois, reavalia o custo/benefício e protocola petição informando a desistência do recurso interposto. O autor da ação não ajuizou recurso adesivo e concorda com a sentença. O TRT homologa a desistência?</p>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. A lei processual permite a desistência unilateral de recursos não julgados.')">A) Não, os recursos são irretratáveis após a preclusão consumativa do protocolo.</button>
+            <button class="q-opcao" onclick="responder(this, 'certa', 'Correto! A parte recorrente pode, a qualquer tempo, sem a anuência da parte contrária, desistir do recurso interposto (Art. 998 do CPC, subsidiário à CLT).')">B) Sim. O recorrente pode desistir do recurso a qualquer tempo, sendo desnecessária a anuência do recorrido.</button>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. A anuência da parte contrária não é exigida para a desistência unilateral do recurso principal.')">C) Sim, desde que o autor intimado aceite expressamente o termo de desistência.</button>
+            <div class="q-feedback"></div>
+        </div>
+    </div>
 
-<div class="slide pratica">
-<div class="slide-header">
-<div class="slide-num">Questão 23</div>
-<div class="slide-title">Teoria Menor</div>
-<div class="title-line"></div>
-</div>
-<div class="questao-box">
-<div class="q-enunciado">A 'Teoria Menor' não exige prova de fraude (basta a PJ não ter dinheiro). Onde ela é adotada?</div>
-<div class="q-opcoes">
-<button class="q-opcao" onclick="responder(this,'errada','O Direito Penal exige dolo explícito.')">A) No Direito Penal (crimes de estelionato).</button>
-<button class="q-opcao" onclick="responder(this,'errada','No Tributário o CTN exige infração à lei (apróx. Teoria Maior).')">B) No Direito Tributário.</button>
-<button class="q-opcao" onclick="responder(this,'certa','Exato! O CDC e a Lei Ambiental aplicam a Teoria Menor para proteger vulneráveis.')">C) No Direito do Consumidor (CDC) e Direito Ambiental.</button>
-<button class="q-opcao" onclick="responder(this,'errada','Aplica-se em direito interno (Brasil).')">D) Apenas no Direito Internacional Privado.</button>
-</div>
-<div class="q-feedback"></div>
-</div>
-</div>
+    <div class="slide pratica">
+        <div class="slide-header"><div class="slide-title">Questão 80</div></div>
+        <div class="questao-box">
+            <p class="q-enunciado">Para concluir a sua jornada: Uma decisão de Turma do TST no julgamento de um Recurso de Revista violou nitidamente a literalidade de um dispositivo constitucional. O acórdão não trata de dissídio coletivo, não houve divergência de súmulas no TST. Qual o último e mais elevado recurso do sistema para o STF?</p>
+            <button class="q-opcao" onclick="responder(this, 'certa', 'Exato, Mestre! O sistema se encerra com o Recurso Extraordinário (Art. 102, III, CF), dirigido ao Supremo Tribunal Federal, desde que demonstrada a Repercussão Geral e a ofensa constitucional direta no acórdão do TST.')">A) Recurso Extraordinário (RE).</button>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. Recurso Especial é destinado ao STJ para matérias de Lei Federal em outras justiças comuns. A JT não remete Recurso Especial ao STJ.')">B) Recurso Especial (REsp).</button>
+            <button class="q-opcao" onclick="responder(this, 'errada', 'Incorreto. Ação Cautelar Inominada não é o recurso constitucional que leva a ofensa ao STF.')">C) Ação Cautelar Inominada ao STF.</button>
+            <div class="q-feedback"></div>
+        </div>
+    </div>
 
-<div class="slide pratica">
-<div class="slide-header">
-<div class="slide-num">Questão 24</div>
-<div class="slide-title">Atuação Judicial</div>
-<div class="title-line"></div>
-</div>
-<div class="questao-box">
-<div class="q-enunciado">O Juiz Cível pode determinar a desconsideração 'de ofício' (sem ninguém pedir)?</div>
-<div class="q-opcoes">
-<button class="q-opcao" onclick="responder(this,'errada','O princípio da inércia proíbe ação de ofício aqui.')">A) Sim, caso perceba a fraude escancarada.</button>
-<button class="q-opcao" onclick="responder(this,'certa','Correto. O Art. 50 do CC exige expresso requerimento da parte ou do MP.')">B) Não, exige que haja expresso requerimento da parte ou do MP.</button>
-<button class="q-opcao" onclick="responder(this,'errada','Valor da causa não altera a obrigatoriedade do pedido.')">C) Sim, nas causas de Juizados Especiais.</button>
-<button class="q-opcao" onclick="responder(this,'errada','Junta Comercial não é parte no processo de execução.')">D) Não, depende de requerimento da Junta Comercial.</button>
-</div>
-<div class="q-feedback"></div>
-</div>
-</div>
+    <div class="slide capa">
+        <div class="badge">SIMULADO COMPLETO</div>
+        <div class="capa-title">Parabéns, Professor!</div>
+        <div class="author">Você concluiu as 80 questões do Megasimulado de Recursos Trabalhistas. O Padrão Március está consolidado!</div>
+    </div>
 
-<div class="slide pratica">
-<div class="slide-header">
-<div class="slide-num">Questão 25</div>
-<div class="slide-title">O Procedimento no CPC</div>
-<div class="title-line"></div>
-</div>
-<div class="questao-box">
-<div class="q-enunciado">Como a legislação processual (CPC/15) trata o pedido de desconsideração?</div>
-<div class="q-opcoes">
-<button class="q-opcao" onclick="responder(this,'errada','Foi feito para evitar uma ação nova e longa.')">A) Como uma ação autônoma em outra Vara.</button>
-<button class="q-opcao" onclick="responder(this,'certa','Perfeito. É um Incidente processual que garante a citação do sócio para defesa (contraditório).')">B) Como Incidente de Intervenção de Terceiros (com direito ao contraditório).</button>
-<button class="q-opcao" onclick="responder(this,'errada','Tirar bens sem defesa viola a Constituição.')">C) Como um ato sem direito de defesa prévia.</button>
-<button class="q-opcao" onclick="responder(this,'errada','Trata-se de seara patrimonial cível, não penal.')">D) Como uma denúncia criminal sumária ao MP.</button>
-</div>
-<div class="q-feedback"></div>
-</div>
-</div>
+    <div id="nav">
+        <button class="nav-btn" onclick="prevSlide()" title="Anterior">&lt;</button>
+        <span id="slide-counter">1 / 82</span>
+        <button class="nav-btn" onclick="nextSlide()" title="Próximo">&gt;</button>
+    </div>
 
-<div class="slide pratica">
-<div class="slide-header">
-<div class="slide-num">Questão 26</div>
-<div class="slide-title">Efeitos Formais</div>
-<div class="title-line"></div>
-</div>
-<div class="questao-box">
-<div class="q-enunciado">A desconsideração da personalidade jurídica resulta na extinção (baixa) da empresa?</div>
-<div class="q-opcoes">
-<button class="q-opcao" onclick="responder(this,'errada','A extinção é a despersonificação, não a desconsideração.')">A) Sim, a empresa perde seu CNPJ.</button>
-<button class="q-opcao" onclick="responder(this,'certa','Correto. A autonomia é afastada apenas para AQUELA dívida. A empresa continua a existir formalmente.')">B) Não. Ocorre o afastamento episódico; a PJ continua a existir formalmente.</button>
-<button class="q-opcao" onclick="responder(this,'errada','A empresa nunca foi extinta.')">C) Sim, mas os sócios podem reabri-la.</button>
-<button class="q-opcao" onclick="responder(this,'errada','Sanção em licitação é efeito administrativo, não civil.')">D) Não, mas fica proibida de licitar no governo.</button>
-</div>
-<div class="q-feedback"></div>
-</div>
-</div>
+    <script>
+        const slidesList = document.querySelectorAll(".slide");
+        const totalSlides = slidesList.length;
+        const progressBar = document.getElementById("progress-bar");
+        const counter = document.getElementById("slide-counter");
+        let current = 0;
 
-<div class="slide pratica">
-<div class="slide-header">
-<div class="slide-num">Questão 27</div>
-<div class="slide-title">Grupo Econômico</div>
-<div class="title-line"></div>
-</div>
-<div class="questao-box">
-<div class="q-enunciado">A mera existência de um Grupo Econômico (empresas interligadas) autoriza automaticamente a desconsideração no Direito Civil?</div>
-<div class="q-opcoes">
-<button class="q-opcao" onclick="responder(this,'errada','Solidariedade absoluta por grupo é regra trabalhista, não cível.')">A) Sim, a responsabilidade solidária é absoluta.</button>
-<button class="q-opcao" onclick="responder(this,'certa','Correto. O § 4º do art. 50 exige a prova de abuso (desvio/confusão) mesmo entre empresas do grupo.')">B) Não, exige-se a prova de abuso (desvio ou confusão) entre as empresas.</button>
-<button class="q-opcao" onclick="responder(this,'errada','Mesmo endereço é mero indício, não basta.')">C) Sim, se tiverem o mesmo endereço físico.</button>
-<button class="q-opcao" onclick="responder(this,'errada','Não são imunes; sofrem se houver fraude.')">D) Não, grupos econômicos são imunes.</button>
-</div>
-<div class="q-feedback"></div>
-</div>
-</div>
+        function showSlide(i) {
+            slidesList.forEach(s => s.classList.remove("active"));
+            slidesList[i].classList.add("active");
+            current = i;
+            if(counter) counter.textContent = (current + 1) + " / " + totalSlides;
+            if(progressBar) progressBar.style.width = ((current + 1) / totalSlides * 100) + "%";
+        }
 
-<div class="slide pratica">
-<div class="slide-header">
-<div class="slide-num">Questão 28</div>
-<div class="slide-title">Sociedades em Comum</div>
-<div class="title-line"></div>
-</div>
-<div class="questao-box">
-<div class="q-enunciado">O que são as 'Sociedades em Comum' ou irregulares no Direito Civil?</div>
-<div class="q-opcoes">
-<button class="q-opcao" onclick="responder(this,'errada','Atuar online não torna a empresa irregular.')">A) Empresas estrangeiras que atuam online.</button>
-<button class="q-opcao" onclick="responder(this,'errada','Esse é o conceito material de Associação.')">B) PJs sem fins lucrativos de assistência.</button>
-<button class="q-opcao" onclick="responder(this,'certa','Exato. A atividade econômica existe no mundo real, mas o contrato nunca foi levado a registro no Estado.')">C) Grupos que exercem comércio MAS nunca registraram o ato constitutivo.</button>
-<button class="q-opcao" onclick="responder(this,'errada','Cooperativas possuem registro e formalidades.')">D) Cooperativas de produtores rurais.</button>
-</div>
-<div class="q-feedback"></div>
-</div>
-</div>
+        function nextSlide() { if (current < totalSlides - 1) showSlide(current + 1); }
+        function prevSlide() { if (current > 0) showSlide(current - 1); }
 
-<div class="slide pratica">
-<div class="slide-header">
-<div class="slide-num">Questão 29</div>
-<div class="slide-title">A Responsabilidade na Irregularidade</div>
-<div class="title-line"></div>
-</div>
-<div class="questao-box">
-<div class="q-enunciado">Qual a consequência principal para os sócios que operam uma 'Sociedade em Comum'?</div>
-<div class="q-opcoes">
-<button class="q-opcao" onclick="responder(this,'errada','Não há benefício fiscal na irregularidade.')">A) Isenção total de impostos.</button>
-<button class="q-opcao" onclick="responder(this,'certa','Perfeito. Como a empresa não tem personalidade civil, os bens pessoais do dono garantem tudo (ilimitada).')">B) Respondem solidária e ilimitadamente pelas obrigações da empresa informal.</button>
-<button class="q-opcao" onclick="responder(this,'errada','Responsabilidade LTDA é benefício do registro.')">C) Estão protegidos pela responsabilidade limitada.</button>
-<button class="q-opcao" onclick="responder(this,'errada','O Estado não avaliza sonegadores/informais.')">D) O Estado assume suas dívidas trabalhistas.</button>
-</div>
-<div class="q-feedback"></div>
-</div>
-</div>
+        function responder(btn, tipo, feedback) {
+            const box = btn.closest('.questao-box');
+            if (box.dataset.respondido) return;
+            box.dataset.respondido = "1";
+            btn.classList.add(tipo);
+            const fbDiv = box.querySelector('.q-feedback');
+            fbDiv.textContent = feedback;
+            fbDiv.className = 'q-feedback ' + tipo;
+            fbDiv.style.display = 'block';
+            fbDiv.style.background = tipo === 'certa' ? 'rgba(34,197,94,0.1)' : 'rgba(239,68,68,0.1)';
+            fbDiv.style.color = tipo === 'certa' ? '#86efac' : '#fca5a5';
+        }
 
-<div class="slide pratica">
-<div class="slide-header">
-<div class="slide-num">Questão 30</div>
-<div class="slide-title">PJs Públicas</div>
-<div class="title-line"></div>
-</div>
-<div class="questao-box">
-<div class="q-enunciado">Qual destas é classificada como PJ de Direito Público Interno (Art. 41 do CC)?</div>
-<div class="q-opcoes">
-<button class="q-opcao" onclick="responder(this,'errada','A ONU é de Direito Público Externo.')">A) Organização das Nações Unidas (ONU).</button>
-<button class="q-opcao" onclick="responder(this,'certa','Correto. O bloco clássico da Administração Direta e Indireta (excluídas as estatais lucrativas).')">B) Autarquias e Municípios.</button>
-<button class="q-opcao" onclick="responder(this,'errada','Empresas Públicas seguem o Direito Privado.')">C) Empresas Públicas (Correios, Caixa).</button>
-<button class="q-opcao" onclick="responder(this,'errada','Sindicatos são associações privadas.')">D) Sindicatos Patronais.</button>
-</div>
-<div class="q-feedback"></div>
-</div>
-</div>
+        document.addEventListener("keydown", e => {
+            switch(e.key){
+                case "ArrowRight": case "PageDown": case " ": nextSlide(); break;
+                case "ArrowLeft": case "PageUp": prevSlide(); break;
+            }
+        });
 
-<div class="slide pratica">
-<div class="slide-header">
-<div class="slide-num">Questão 31</div>
-<div class="slide-title">Fases da Extinção</div>
-<div class="title-line"></div>
-</div>
-<div class="questao-box">
-<div class="q-enunciado">A extinção regular da PJ requer fases (Art. 51). Qual a ordem correta?</div>
-<div class="q-opcoes">
-<button class="q-opcao" onclick="responder(this,'errada','Primeiro se decide fechar (Dissolução).')">A) Liquidação -> Dissolução -> Cancelamento.</button>
-<button class="q-opcao" onclick="responder(this,'errada','A baixa (cancelamento) é o último passo.')">B) Cancelamento -> Dissolução -> Liquidação.</button>
-<button class="q-opcao" onclick="responder(this,'certa','Exato! 1º) Decide terminar (Dissolve). 2º) Paga dívidas (Liquida). 3º) Apaga o CNPJ (Cancela).')">C) Dissolução -> Liquidação -> Cancelamento da Inscrição (Extinção).</button>
-<button class="q-opcao" onclick="responder(this,'errada','Falência é caso de quebra, não extinção comum.')">D) Falência -> Intervenção Federal -> Baixa.</button>
-</div>
-<div class="q-feedback"></div>
-</div>
-</div>
+        const cur = document.getElementById("cursor");
+        document.addEventListener("mousemove", e => {
+            cur.style.transform = `translate(${e.clientX - 7}px, ${e.clientY - 7}px)`;
+        });
+        document.addEventListener("mousedown", () => cur.classList.add("big"));
+        document.addEventListener("mouseup", () => cur.classList.remove("big"));
 
-<div class="slide pratica">
-<div class="slide-header">
-<div class="slide-num">Questão 32</div>
-<div class="slide-title">Personalidade na Liquidação</div>
-<div class="title-line"></div>
-</div>
-<div class="questao-box">
-<div class="q-enunciado">Durante a 'Liquidação' (pagamento das dívidas finais), o que ocorre com a PJ?</div>
-<div class="q-opcoes">
-<button class="q-opcao" onclick="responder(this,'errada','Se cessasse, ela não poderia atuar em juízo.')">A) A personalidade jurídica cessa imediatamente.</button>
-<button class="q-opcao" onclick="responder(this,'certa','Correto. A empresa precisa existir para fechar as contas. Seu nome deve constar \'em liquidação\'.')">B) Subsiste a personalidade jurídica para os fins de liquidação, até que se conclua.</button>
-<button class="q-opcao" onclick="responder(this,'errada','Personalidade não é transferível.')">C) A personalidade é transferida para o juiz.</button>
-<button class="q-opcao" onclick="responder(this,'errada','Não pode operar novos contratos na liquidação.')">D) Obrigada a captar novos clientes.</button>
-</div>
-<div class="q-feedback"></div>
-</div>
-</div>
-
-<div class="slide pratica">
-<div class="slide-header">
-<div class="slide-num">Questão 33</div>
-<div class="slide-title">Domicílio da PJ (Estatuto Omisso)</div>
-<div class="title-line"></div>
-</div>
-<div class="questao-box">
-<div class="q-enunciado">Se o estatuto for omisso, qual será o domicílio da PJ de direito privado (Art. 75, IV)?</div>
-<div class="q-opcoes">
-<button class="q-opcao" onclick="responder(this,'errada','CNPJ indica a Receita, não o endereço real civil.')">A) A capital do Estado do CNPJ inicial.</button>
-<button class="q-opcao" onclick="responder(this,'certa','Exatamente. O critério legal é a sede da administração (cabeça pensante).')">B) O lugar onde funcionarem as diretorias e administrações.</button>
-<button class="q-opcao" onclick="responder(this,'errada','Sócios e empresa não misturam domicílios.')">C) Domicílio residencial do acionista principal.</button>
-<button class="q-opcao" onclick="responder(this,'errada','DF é da União.')">D) Sempre o Distrito Federal.</button>
-</div>
-<div class="q-feedback"></div>
-</div>
-</div>
-
-<div class="slide pratica">
-<div class="slide-header">
-<div class="slide-num">Questão 34</div>
-<div class="slide-title">Múltiplas Filiais</div>
-<div class="title-line"></div>
-</div>
-<div class="questao-box">
-<div class="q-enunciado">Havendo filiais em lugares diferentes, qual deles será o domicílio da PJ?</div>
-<div class="q-opcoes">
-<button class="q-opcao" onclick="responder(this,'errada','Protegeria apenas a matriz.')">A) Apenas a Matriz central terá validade.</button>
-<button class="q-opcao" onclick="responder(this,'certa','Correto. A descentralização facilita quem negocia com a filial (Art. 75, §1º).')">B) O lugar de cada filial será o domicílio para os atos nela praticados.</button>
-<button class="q-opcao" onclick="responder(this,'errada','A filial não atrai foros globais da matriz.')">C) A filial responde por dívidas globais da matriz.</button>
-<button class="q-opcao" onclick="responder(this,'errada','Privilégio inexistente.')">D) Nenhum, foro é Brasília.</button>
-</div>
-<div class="q-feedback"></div>
-</div>
-</div>
-
-<div class="slide pratica">
-<div class="slide-header">
-<div class="slide-num">Questão 35</div>
-<div class="slide-title">Teoria do Órgão</div>
-<div class="title-line"></div>
-</div>
-<div class="questao-box">
-<div class="q-enunciado">De acordo com o CC (Art. 47), a PJ responde civilmente pelos atos de seus administradores?</div>
-<div class="q-opcoes">
-<button class="q-opcao" onclick="responder(this,'errada','A atuação é institucional, a empresa arca.')">A) Não, o administrador responde sempre sozinho.</button>
-<button class="q-opcao" onclick="responder(this,'certa','Correto! Se o gestor atua nos limites do contrato (Teoria do Órgão), a PJ assume a obrigação.')">B) Sim, obrigam a PJ os atos exercidos nos limites de seus poderes.</button>
-<button class="q-opcao" onclick="responder(this,'errada','A empresa pode se eximir de atos claramente ultra vires (fora do estatuto).')">C) Sim, responde mesmo por atos cometidos fora dos limites.</button>
-<button class="q-opcao" onclick="responder(this,'errada','É regra geral a todas as PJs.')">D) Apenas S/A respondem pela diretoria.</button>
-</div>
-<div class="q-feedback"></div>
-</div>
-</div>
-
-<div class="slide pratica">
-<div class="slide-header">
-<div class="slide-num">Questão 36</div>
-<div class="slide-title">Fundação Autárquica</div>
-<div class="title-line"></div>
-</div>
-<div class="questao-box">
-<div class="q-enunciado">Qual é a base legal exigida para a criação de uma PJ de Direito Público?</div>
-<div class="q-opcoes">
-<button class="q-opcao" onclick="responder(this,'errada','Junta é para ente privado empresarial.')">A) Contrato social registrado na Junta.</button>
-<button class="q-opcao" onclick="responder(this,'errada','Testamento gera fundação privada.')">B) Testamento deixado por milionário.</button>
-<button class="q-opcao" onclick="responder(this,'certa','Perfeito. Devido à Legalidade, um ente público só nasce da vontade do Parlamento (Lei Específica).')">C) Lei específica que a crie ou autorize sua instituição.</button>
-<button class="q-opcao" onclick="responder(this,'errada','Decreto fere a Separação de Poderes.')">D) Decreto do Prefeito, sem lei.</button>
-</div>
-<div class="q-feedback"></div>
-</div>
-</div>
-
-<div class="slide pratica">
-<div class="slide-header">
-<div class="slide-num">Questão 37</div>
-<div class="slide-title">Estrutura Adequada</div>
-<div class="title-line"></div>
-</div>
-<div class="questao-box">
-<div class="q-enunciado">Empresários querem criar uma PJ para compra/venda de mercado e divisão de lucros. Qual estrutura usar?</div>
-<div class="q-opcoes">
-<button class="q-opcao" onclick="responder(this,'errada','Não pode buscar lucro.')">A) Fundação Privada.</button>
-<button class="q-opcao" onclick="responder(this,'errada','Foco na fé, não no mercado.')">B) Organização Religiosa.</button>
-<button class="q-opcao" onclick="responder(this,'errada','Associação proíbe partilha de lucros.')">C) Associação Comercial.</button>
-<button class="q-opcao" onclick="responder(this,'certa','Exato! Sociedades são feitas para agrupar capital, atuar no mercado e ratear lucros.')">D) Sociedade Empresária.</button>
-</div>
-<div class="q-feedback"></div>
-</div>
-</div>
-
-<div class="slide pratica">
-<div class="slide-header">
-<div class="slide-num">Questão 38</div>
-<div class="slide-title">Revogação da EIRELI</div>
-<div class="title-line"></div>
-</div>
-<div class="questao-box">
-<div class="q-enunciado">Com a Lei de Liberdade Econômica, o que ocorreu com as EIRELIs?</div>
-<div class="q-opcoes">
-<button class="q-opcao" onclick="responder(this,'errada','Existem S/A, Simples, etc.')">A) Tornaram-se a única forma do país.</button>
-<button class="q-opcao" onclick="responder(this,'certa','Correto. A EIRELI morreu e nasceu a Sociedade Limitada Unipessoal (SLU), bem mais fácil de abrir.')">B) Foram substituídas pela Sociedade Limitada Unipessoal (SLU).</button>
-<button class="q-opcao" onclick="responder(this,'errada','EIRELI pedia 100 salários. SLU não exige valor mínimo.')">C) Exigem capital de 1.000 salários mínimos.</button>
-<button class="q-opcao" onclick="responder(this,'errada','Tinham fim lucrativo, incompatível com Associação.')">D) Transformadas compulsoriamente em Associações.</button>
-</div>
-<div class="q-feedback"></div>
-</div>
-</div>
-
-<div class="slide pratica">
-<div class="slide-header">
-<div class="slide-num">Questão 39</div>
-<div class="slide-title">Domicílio de Estado Estrangeiro</div>
-<div class="title-line"></div>
-</div>
-<div class="questao-box">
-<div class="q-enunciado">No CC, os Estados estrangeiros acionados no Brasil responderão em qual local?</div>
-<div class="q-opcoes">
-<button class="q-opcao" onclick="responder(this,'errada','Itamaraty atua diplomaticamente, não judicialmente para intimações civis.')">A) No Ministério das Relações Exteriores.</button>
-<button class="q-opcao" onclick="responder(this,'certa','Correto. Para demandas na jurisdição nacional contra nações externas, a capital é o foro civil competente (Art. 75, I).')">B) No Distrito Federal, ou no foro especificado em tratado.</button>
-<button class="q-opcao" onclick="responder(this,'errada','Embaixadas não são Varas Judiciais.')">C) Nas Embaixadas, sendo vedada ação externa.</button>
-<button class="q-opcao" onclick="responder(this,'errada','A fronteira não atrai jurisdição universal.')">D) Em qualquer comarca fronteiriça.</button>
-</div>
-<div class="q-feedback"></div>
-</div>
-</div>
-
-<div class="slide pratica">
-<div class="slide-header">
-<div class="slide-num">Questão 40</div>
-<div class="slide-title">Dívida de Associação</div>
-<div class="title-line"></div>
-</div>
-<div class="questao-box">
-<div class="q-enunciado">Uma Associação tomou R$ 100 mil, gastou tudo e quebrou. O credor pode cobrar os associados?</div>
-<div class="q-opcoes">
-<button class="q-opcao" onclick="responder(this,'errada','O clube/ONG responde por si próprio.')">A) Sim, responsabilidade solidária ilimitada pelo clube.</button>
-<button class="q-opcao" onclick="responder(this,'errada','A associação TEM personalidade jurídica.')">B) Não, pois a Associação é ente despersonalizado.</button>
-<button class="q-opcao" onclick="responder(this,'certa','Gabarito! O muro da autonomia patrimonial protege o associado (salvo casos drásticos de desconsideração).')">C) Não, associados não respondem pelas obrigações da Associação.</button>
-<button class="q-opcao" onclick="responder(this,'errada','Diretoria só paga se houve fraude (abuso) clara.')">D) Sim, mas limitado a cobrar a diretoria e conselho.</button>
-</div>
-<div class="q-feedback"></div>
-</div>
-</div>
-
-<div class="slide capa">
-<div class="capa-inner">
-<div class="capa-title">Gabarito Finalizado!</div>
-<div class="capa-sub">Teoria Geral da Pessoa Jurídica</div>
-<div class="badge">MAGSUL - Prof. Adriano Március 2026</div>
-</div>
-</div>
-
-<div id="nav">
-<button class="nav-btn" onclick="prevSlide()">‹</button>
-<span id="slide-counter">1 / 42</span>
-<button class="nav-btn" onclick="nextSlide()">›</button>
-</div>
-
-<script>
-let current = 0;
-const slidesList = document.querySelectorAll(".slide");
-const totalSlides = slidesList.length;
-const counter = document.getElementById("slide-counter");
-const progressBar = document.getElementById("progress-bar");
-
-function showSlide(i) {
-    slidesList.forEach(s => s.classList.remove("active"));
-    slidesList[i].classList.add("active");
-    current = i;
-    counter.textContent = (current + 1) + " / " + totalSlides;
-    progressBar.style.width = ((current + 1) / totalSlides * 100) + "%";
-}
-
-function nextSlide() { if (current < totalSlides - 1) showSlide(current + 1); }
-function prevSlide() { if (current > 0) showSlide(current - 1); }
-
-function responder(btn, tipo, feedback) {
-    const box = btn.closest('.questao-box');
-    if (box.dataset.respondido) return;
-    box.dataset.respondido = "1";
-    btn.classList.add(tipo);
-    const fbDiv = box.querySelector('.q-feedback');
-    fbDiv.textContent = feedback;
-    fbDiv.className = 'q-feedback ' + tipo;
-    fbDiv.style.display = 'block';
-}
-
-document.addEventListener("keydown", e => {
-    switch(e.key){
-        case "ArrowRight": case "PageDown": case " ": nextSlide(); break;
-        case "ArrowLeft": case "PageUp": prevSlide(); break;
-    }
-});
-
-const cur = document.getElementById("cursor");
-document.addEventListener("mousemove", e => {
-    cur.style.left = e.clientX - 7 + "px";
-    cur.style.top = e.clientY - 7 + "px";
-});
-document.addEventListener("mousedown", () => cur.classList.add("big"));
-document.addEventListener("mouseup", () => cur.classList.remove("big"));
-
-window.onload = () => showSlide(0);
-</script>
+        showSlide(0);
+    </script>
 </body>
 </html>
